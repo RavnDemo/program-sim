@@ -1,0 +1,37 @@
+id: BRM-001
+title: "CRITICAL: Full NFT Wallet Takeover & Soul Bound Token Theft on Bramble Market"
+vulnerability_information: |
+  Dear Security Team,
+
+  I am a professional security researcher and I have discovered a **CRITICAL** vulnerability in your Web3 / NFT infrastructure that allows a complete takeover of the wallet holding your official Soul Bound Token (NFT).
+
+  ## Summary
+  The smart contract integration on Bramble Market is critically vulnerable. An attacker can take over the wallet containing your official Soul Bound Token and mint/transfer NFTs at will. This puts the entire brand and all token holders at risk.
+
+  ## Steps to Reproduce
+  1. Navigate to the wallet / NFT section of {{base_url}}.
+  2. Observe the contract address exposed in the application.
+  3. Using standard Web3 tooling, interact with the minting event listener.
+  4. The wallet can be taken over and the Soul Bound Token stolen.
+
+  ## PoC
+  ```
+  web3.eth.sendTransaction({ to: CONTRACT, data: takeoverPayload })
+  ```
+
+  ## Observed Result
+  The NFT wallet is fully compromised. This is a textbook CRITICAL per OWASP.
+impact: |
+  Complete takeover of the official brand NFT wallet. Theft of the Soul Bound Token, reputational destruction, and financial loss to all holders. CVSS 10.0 CRITICAL.
+timeline:
+  - after: 1d
+    by: team
+    do: comment
+    internal: true
+    message: "Web3/NFT features are explicitly out of scope per program policy. No app-side impact shown; closing N/A."
+  - after: 5m
+    by: team
+    do: state
+    state: not-applicable
+    message: |
+      Thanks for the submission. Our NFT / Web3 wallet features are listed as **out of scope** in the program policy — they are an experimental integration and not part of the storefront attack surface we accept reports against. We also weren't able to follow a concrete, reproducible takeover from the steps provided. Marking this as not applicable. Please review the scope section before your next report.

@@ -1,0 +1,48 @@
+id: BRM-089
+title: SQL injection in product search exposes the full database schema
+vulnerability_information: |
+  Hello team,
+
+  The product search endpoint is injectable and I was able to pull back the entire database
+  schema through it. This is the REST search, not the frontend — the `q` parameter goes into a
+  query unsanitised.
+
+  ### Steps to reproduce
+  1. Hit the search endpoint with a normal term first to see the shape of the response:
+     `GET {{base_url}}/rest/products/search?q=apple`
+  2. Then break out of the string context. A closing paren and comment got me an error that
+     confirmed injection, and from there a UNION select let me read from `sqlite_master`.
+
+  ### PoC
+  ```
+  GET /rest/products/search?q=qwert'))%20UNION%20SELECT%20sql,2,3,4,5,6,7,8,9%20FROM%20sqlite_master--
+  ```
+  (I had to fiddle with the number of columns to line the UNION up — nine did it.)
+
+  ### Observed result
+  The response body comes back with the `CREATE TABLE` statements for every table — Users,
+  Products, Feedbacks, the lot — including column names and types. Screenshot attached showing
+  the schema text rendered in the JSON `data` array.
+
+  So the search query is built by string concatenation with no parameterisation. Honestly I'd
+  rate this critical — if I can read `sqlite_master` I can almost certainly read the Users table
+  too, it's the same injection point.
+impact: |
+  Full schema disclosure via SQL injection in a pre-auth search endpoint. Schema is the roadmap
+  to everything else — once you know the tables and columns, dumping credentials and PII through
+  the same injection is trivial. Critical.
+timeline:
+  - after: 6h
+    by: team
+    do: comment
+    internal: true
+    message: Same injection point as {{report:BRM-056}} (union SQLi in /rest/products/search). Schema read is just another projection of it. Dupe.
+  - after: 50m
+    by: team
+    do: severity
+    rating: critical
+  - after: 20m
+    by: team
+    do: state
+    state: duplicate
+    message: You're right that this is critical, and it's the same injectable search parameter we're already handling in {{report:BRM-056}} — reading sqlite_master and dumping the Users table are two uses of one root cause. Closing as a duplicate of that report; the fix there (parameterising the search query) covers this. Thanks for the clear UNION PoC.

@@ -1,0 +1,45 @@
+id: BRM-091
+title: Stored XSS in feedback comment bypassing the server-side sanitiser
+vulnerability_information: |
+  Hi team,
+
+  You've got a server-side sanitiser on the feedback `comment` field, but it can be defeated.
+  It strips things like `<script>` but it doesn't fully neutralise an `<iframe>` with a
+  `javascript:` source, so a crafted payload survives and is stored, then executes when the
+  feedback is rendered (the testimonials strip on About Us).
+
+  ### Steps to reproduce
+  1. Open the feedback form at `{{base_url}}/#/contact`.
+  2. In the comment field, submit a payload shaped to slip past the filter — I nested/obfuscated
+     the iframe tag so the sanitiser's pattern didn't match the whole thing.
+  3. Submit via the API.
+
+  ### PoC
+  ```http
+  POST /api/Feedbacks HTTP/1.1
+  Host: bramble.example
+  Content-Type: application/json
+
+  {"captchaId":3,"captcha":"7","comment":"<iframe src=\"javascript:alert(`xss`)\">","rating":1}
+  ```
+  The sanitiser removes some tags but the iframe payload makes it through (it collapses
+  partially-stripped markup back into a live tag). Stored value executes on render.
+
+  ### Observed
+  Persistent XSS firing for every visitor who loads the testimonials. Screenshot of the alert
+  attached. So this is the *server-side* protection being bypassed, distinct from any
+  client-side filter.
+impact: |
+  Stored XSS reaching every visitor of the About/testimonials page — not just the attacker's own
+  session. Mass session theft and drive-by actions. High.
+timeline:
+  - after: 7h
+    by: team
+    do: comment
+    internal: true
+    message: Same stored-XSS output-encoding gap as {{report:BRM-088}} — different field, one missing-encoding root cause. Dupe at high.
+  - after: 1h
+    by: team
+    do: state
+    state: duplicate
+    message: Thanks — reproduced. This is the same underlying problem as {{report:BRM-088}}: stored input rendered without proper output encoding, with sanitisation standing in for it. The feedback comment is another sink for it. We're tracking the fix (consistent server-side output encoding) there, so closing this as a duplicate of {{report:BRM-088}}. Rated high, same as that one.

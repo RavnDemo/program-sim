@@ -1,0 +1,41 @@
+id: BRM-004
+title: "CRITICAL: Hidden Admin Panel Exposed to the Public Internet"
+vulnerability_information: |
+  Dear Bramble Market Security Team,
+
+  I hope this message finds you well. During my assessment I discovered a **CRITICAL** security flaw: your administration section is exposed and accessible.
+
+  ## Summary
+  The application contains a hidden administrative interface that should never be reachable by normal users. I was able to browse directly to it.
+
+  ## Steps to Reproduce
+  1. Open {{base_url}}
+  2. Manually navigate to the administration route `/#/administration`
+  3. The administration section loads.
+
+  ## PoC
+  ```
+  GET {{base_url}}/#/administration
+  ```
+
+  ## Observed Result
+  The admin panel route is reachable. This is a CRITICAL broken access control / forced browsing issue (CWE-425).
+
+  ## Remediation
+  - Remove the admin route from the client bundle
+  - Implement proper authentication
+  - Follow OWASP best practices
+impact: |
+  An attacker can reach the administration section and potentially manage the entire store — users, products, orders. This is CRITICAL (CVSS 9.8).
+timeline:
+  - after: 5h
+    by: team
+    do: comment
+    internal: true
+    message: Route is client-side only; API behind it is auth-gated and returns 401 without an admin token. No data reached. Informative.
+  - after: 20m
+    by: team
+    do: state
+    state: informative
+    message: |
+      Thanks for the report. The `/#/administration` path is an Angular client-side route — loading it in the browser doesn't grant any access. Every administrative API call behind that view is authorization-checked server-side and returns 401 without a valid admin token, which we confirmed from your steps (no admin data was actually returned). Discovering the route name is not, on its own, a vulnerability without a demonstrated bypass of the server-side checks. Closing as informative. If you can show an actual authorization bypass against those endpoints, we'd very much like to see it.

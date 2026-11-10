@@ -1,0 +1,60 @@
+id: BRM-087
+title: Stored XSS via True-Client-IP header rendered on the last-login-IP view
+vulnerability_information: |
+  Hey folks,
+
+  This one took me a while to track down but I think it's a good one. The application records
+  the IP address of your last login and shows it back to you later. The catch is that it
+  doesn't take the IP from the socket — it trusts the `True-Client-IP` request header, and it
+  stores and renders that value without encoding it. So I can store an HTML payload in a header
+  and it executes when the page that displays "last login IP" is loaded.
+
+  ### Steps to reproduce
+  1. Log in once with any account, sending a crafted `True-Client-IP` header on the login request.
+  2. The server saves that header value as your "last login IP".
+  3. Visit the account/order page that prints the last login IP back to you — the payload fires.
+
+  ### PoC request
+  ```http
+  POST /rest/user/login HTTP/1.1
+  Host: bramble.example
+  Content-Type: application/json
+  True-Client-IP: <iframe src="javascript:alert(`xss`)">
+
+  {"email":"shopper@bramble.example","password":"hunter2"}
+  ```
+  Then load the page that shows your last login IP. (I confirmed the stored value comes back
+  verbatim inside the DOM, no escaping.) Screenshot attached of the alert box firing.
+
+  ### Observed result
+  The `<iframe src="javascript:...">` payload is persisted against my user and executes in my
+  session each time the last-login-IP value is rendered. Because the IP string is attacker-set
+  and stored, this is persistent, not reflected.
+
+  I *think* the root cause is the `saveLoginIp` handler taking `True-Client-IP` ahead of the
+  connection IP, but the missing output encoding on the render side is the other half of it.
+impact: |
+  Persistent cross-site scripting. An attacker who can set the header (directly, or via a proxy
+  that forwards it) gets script execution in the victim's authenticated session when they view
+  their account — session token theft, actions on behalf of the user, credential harvesting via
+  a fake re-login prompt. Rating this high.
+timeline:
+  - after: 1d
+    by: team
+    do: state
+    state: triaged
+    message: Nice find — we reproduced the stored payload coming back through the last-login-IP view. Confirmed it's the True-Client-IP header being trusted and rendered unencoded. Triaged as high.
+  - after: 15m
+    by: team
+    do: severity
+    rating: high
+  - after: 9d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved. We now take the connection IP rather than the client header for the stored value, and the view encodes it on output. Thanks for the detailed trace through both halves of the bug.
+  - after: 4h
+    by: team
+    do: bounty
+    amount: 1500
+    message: Bounty for a well-isolated stored XSS. Appreciated.

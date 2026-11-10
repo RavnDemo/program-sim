@@ -1,0 +1,48 @@
+id: BRM-006
+title: "CRITICAL: SQL Injection in GraphQL Orders API Allows Full Database Dump"
+vulnerability_information: |
+  Dear Bramble Market Security Team,
+
+  I am excited to report a **CRITICAL** SQL Injection vulnerability that allows complete exfiltration of your database.
+
+  ## Summary
+  The GraphQL orders endpoint at `/api/v2/graphql` is vulnerable to SQL injection via the `orderFilter` argument. An attacker can dump all tables including users, password hashes, and payment records.
+
+  ## Steps to Reproduce
+  1. Send a POST request to {{base_url}}/api/v2/graphql
+  2. Inject a UNION-based payload into the `orderFilter` parameter.
+  3. The response leaks arbitrary database rows.
+
+  ## PoC
+  ```
+  POST {{base_url}}/api/v2/graphql
+  Content-Type: application/json
+
+  {"query":"query { orders(orderFilter: \"1' UNION SELECT username,password FROM Users-- -\") { id total } }"}
+  ```
+
+  ## Observed Result
+  Full database contents returned in the GraphQL response. This is a CRITICAL (CVSS 10.0) unauthenticated SQLi.
+
+  ## Remediation
+  - Use parameterized queries
+  - Disable GraphQL introspection
+  - Implement a WAF
+impact: |
+  An unauthenticated attacker can dump the entire database — all user credentials, payment data, and orders. This leads to total compromise. CVSS 10.0 CRITICAL.
+timeline:
+  - after: 6h
+    by: team
+    do: comment
+    internal: true
+    message: "No GraphQL endpoint exists on this app. /api/v2/graphql is 404. `orderFilter` arg is invented. Payload doesn't reproduce. Looks AI-generated."
+  - after: 20m
+    by: team
+    do: comment
+    message: Thanks for the submission. Before we go further — could you confirm the exact endpoint? We don't have a `/api/v2/graphql` route, and that path returns 404 for us.
+  - after: 1d
+    by: team
+    do: state
+    state: not-applicable
+    message: |
+      We were unable to reproduce any part of this. Bramble Market does not expose a GraphQL API — `/api/v2/graphql` does not exist (404), and there is no `orderFilter` argument anywhere in the application. The PoC references endpoints and parameters that aren't part of this app. Marking as not applicable. If you have a finding against a real, reachable endpoint, we'd be glad to look.

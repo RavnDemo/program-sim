@@ -1,0 +1,62 @@
+id: BRM-048
+title: Arbitrary local file read via layout parameter on POST /dataerasure
+vulnerability_information: |
+  ## Summary
+  The data-erasure form passes its `layout` body parameter straight into the Pug
+  render path. The handler does `path.resolve(req.body.layout)` and renders the
+  resolved file as a template, returning the first ~100 bytes. A path-traversal
+  value reads arbitrary files off the web server.
+
+  ## Steps to reproduce
+  1. Authenticate and obtain a `token` cookie.
+  2. POST to the erasure endpoint with a traversal `layout`:
+
+  ```
+  POST {{base_url}}/dataerasure HTTP/1.1
+  Cookie: token=<session>
+  Content-Type: application/x-www-form-urlencoded
+
+  email=x@bramble.example&securityAnswer=x&layout=../../../../../../etc/passwd
+  ```
+
+  ## Observed result
+  ```
+  root:x:0:0:root:/root:/bin/bash......
+  ```
+  The first 100 characters of `/etc/passwd` are reflected back, truncated with
+  the handler's `......` marker.
+
+  ## Root cause
+  `path.resolve(req.body.layout)` with user input, then `res.render` on the
+  result. The only guard is a blocklist of `ftp`, `ctf.key`, and `encryptionkeys`
+  substrings — everything else on the filesystem is readable.
+impact: |
+  Read access to any file the Node process can reach: application source,
+  configuration, environment-bearing files, adjacent secrets not covered by the
+  three-string blocklist. High — unauthenticated-adjacent (any logged-in user),
+  no further interaction. CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N (6.5).
+timeline:
+  - after: 1h
+    by: team
+    do: comment
+    internal: true
+    message: Repro'd /etc/passwd read. Blocklist is trivially incomplete. This is the serious one in today's queue.
+  - after: 35m
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed on prod with the exact payload. The layout parameter reaches path.resolve and renders. Triaged, treating as high.
+  - after: 10m
+    by: team
+    do: severity
+    rating: high
+  - after: 7d
+    by: team
+    do: state
+    state: resolved
+    message: layout is no longer caller-controlled — we pin the template and ignore the body value entirely. Verified traversal no longer reads outside the views dir. Thanks for the tight PoC.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500
+    message: Clear, reproducible, correctly rated. Thank you.

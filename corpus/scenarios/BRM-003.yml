@@ -1,0 +1,45 @@
+id: BRM-003
+title: Hardcoded third-party API key committed in the published source
+vulnerability_information: |
+  Hey folks,
+
+  Spent an evening reading through the published source for Bramble Market at {{source_url}} (I tend to start with source review before touching the live site — old habit). I found what looks like a live, hardcoded third-party API key baked straight into a committed file. It's not in an env var or a secret store, it's right there in the tree.
+
+  ## Where it is
+  Grepping the repository for key-shaped strings turns it up quickly — it's in one of the bundled/static files that ships with the app, so it's also reachable from the deployed frontend at {{base_url}} if you pull the bundle. I've confirmed the key matches the format of the provider it belongs to.
+
+  ## Steps to reproduce
+  1. Clone / browse {{source_url}}.
+  2. Search the tree for the provider's key prefix (the usual `sk-`/token-shaped pattern).
+  3. The key is present in plaintext in a committed file.
+  4. The same string is retrievable from the deployed JS bundle on the live site.
+
+  ## Why high
+  A committed, live credential for a third-party service can be abused for billing/abuse against your account, and depending on the provider's scope could expose data or let an attacker act as the shop. Even if it's low-privilege today, committed secrets have a way of being more powerful than anyone remembers. Rotation + removal from history is needed, not just deletion from HEAD.
+impact: |
+  An attacker who extracts the key can run up charges on the associated third-party account, exhaust quota, or — depending on the key's scope — access data or act on the shop's behalf. Because it's in version history, deleting the file is not enough; the credential must be rotated and purged. Rating high.
+timeline:
+  - after: 3h
+    by: team
+    do: comment
+    message: Thanks for flagging — we can see the key you mean. Rotating it now as a precaution before anything else.
+  - after: 4h
+    by: team
+    do: comment
+    internal: true
+    message: Key confirmed live. Rotated with the provider, revoked old one, scrubbing from history. Valid high.
+  - after: 2h
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced and triaged as high. Key has already been rotated and revoked upstream; we're now purging it from source history.
+  - after: 5d
+    by: team
+    do: state
+    state: resolved
+    message: Old key revoked, new one moved into our secret store, and the string removed from history. Thanks for the careful source review — exactly the kind of thing we want caught.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500
+    message: Appreciated. Bounty for a clean, high-impact secrets finding.

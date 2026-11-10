@@ -1,0 +1,39 @@
+id: BRM-002
+title: Outdated, end-of-life base image / vulnerable infrastructure component in use
+vulnerability_information: |
+  Hi team,
+
+  First off, thanks for running a public program — I've enjoyed poking at Bramble Market. While I was reading through what's published about how the shop is built, I noticed it ships on an infrastructure component that's well past its supported life, and I wanted to flag it before someone less friendly does.
+
+  ## What I found
+  The app is served on a stack pinned to an outdated runtime image. I was able to identify it fairly specifically from the published build/source metadata at {{source_url}} and from behaviour of the live site at {{base_url}}. The pinned version has a number of known CVEs against it (several of them in the networking/TLS layer), and it is no longer receiving security patches upstream.
+
+  ## Steps to reproduce
+  1. Look at the published Dockerfile / build metadata for the project.
+  2. Note the base image tag — it's an end-of-life release line.
+  3. Cross-reference the version against public CVE databases — multiple known advisories apply, none patched because the line is EOL.
+
+  ## Why I'm reporting it as low
+  I can't point at a working exploit chain on the live site today — this is a "you're exposed and one disclosure away from trouble" finding rather than a pop-a-shell finding. So I'm filing it as low severity / best practice, but it's the kind of thing that quietly becomes a high later.
+impact: |
+  Running an end-of-life base image means any newly disclosed vulnerability in that line lands unpatched. Today it's hygiene; the day a new RCE drops against that version it becomes an unauthenticated server compromise with no vendor fix available. Recommend pinning to a supported, actively-patched image.
+timeline:
+  - after: 6h
+    by: team
+    do: comment
+    message: Thanks — good catch, and we appreciate the heads up rather than waiting for it to bite us. Confirming the pinned image and pulling the CVE list now.
+  - after: 1d
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed — the base image is on an EOL line as you describe. Triaging as low / hardening. We'll bump to a supported, patched image.
+  - after: 4d
+    by: team
+    do: state
+    state: resolved
+    message: Image rebased onto a current supported release and redeployed. Thanks for the clear, responsible report.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 150
+    message: Small token of thanks for the hygiene find.

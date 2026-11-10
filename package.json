@@ -1,0 +1,15 @@
+{
+  "name": "program-sim",
+  "private": true,
+  "type": "module",
+  "description": "Deterministic simulator for the Bramble Market HackerOne sandbox program",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "sim": "node src/cli.ts",
+    "validate": "node src/cli.ts validate",
+    "test": "node --test test/*.test.ts"
+  },
+  "dependencies": {
+    "yaml": "^2.8.1"
+  }
+}

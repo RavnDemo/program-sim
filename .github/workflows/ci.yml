@@ -1,0 +1,19 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: node src/cli.ts validate
+      - run: npm test
+      - name: Dry-run 30 days of the program
+        run: node src/cli.ts simulate 30d --backfill >> "$GITHUB_STEP_SUMMARY"

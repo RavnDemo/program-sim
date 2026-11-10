@@ -1,0 +1,53 @@
+id: BRM-007
+title: IDOR in POST /api/BasketItems lets you add products to another user's basket
+vulnerability_information: |
+  ## Summary
+  `POST /api/BasketItems` trusts the client-supplied `BasketId` and only weakly checks it against the caller's own basket, so an authenticated user can insert items into a basket they don't own.
+
+  ## Root cause
+  The handler compares the caller's `bid` against the submitted `BasketId` with a loose (`!=`) check and bails only on the first id; a request carrying a different `BasketId` is accepted and the item is written to the victim's basket.
+
+  ## Steps to reproduce
+  1. Register/log in as attacker; note your own basket id (e.g. 1).
+  2. Identify a victim basket id (sequential, e.g. 2).
+  3. Send:
+
+  ```
+  POST {{base_url}}/api/BasketItems
+  Authorization: Bearer <attacker_token>
+  Content-Type: application/json
+
+  {"ProductId": 1, "BasketId": 2, "quantity": 1}
+  ```
+
+  ## Observed result
+  `201 Created`. The product is added to basket id 2 (the victim's), not the attacker's. Confirmed by loading the victim account — the item is present.
+
+  ## Severity
+  Authenticated IDOR, integrity impact on another user's basket, no confidentiality of PII. CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N ≈ 4.3 (medium).
+impact: |
+  Any logged-in user can manipulate the contents of arbitrary other users' baskets. Integrity violation and a building block for checkout/pricing abuse. Medium.
+timeline:
+  - after: 40m
+    by: team
+    do: comment
+    message: Clean repro, thanks. Reproduced against the BasketItems endpoint on our side.
+  - after: 25m
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed and triaged. Agree with your medium rating — authorization on BasketId needs to be enforced server-side.
+  - after: 10m
+    by: team
+    do: severity
+    rating: medium
+  - after: 7d
+    by: team
+    do: state
+    state: resolved
+    message: Fixed — the handler now rejects any BasketId that doesn't belong to the authenticated session. Thanks for the precise write-up.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 500
+    message: Thanks, nightjar — reliable as always.

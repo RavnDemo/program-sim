@@ -1,0 +1,16 @@
+# Hacker personas. Each files reports through the HackerOne Hacker API as its own account.
+# Token env var: H1_<KEY>_TOKEN (upper-case key), e.g. H1_NIGHTJAR_TOKEN.
+hackers:
+  nightjar:
+    h1_username: ravndemo_nightjar
+    email: david+h1-nightjar@davidwelch.co
+  quillfeather:
+    h1_username: ravndemo_quillfeather
+    email: david+h1-quillfeather@davidwelch.co
+  slopstorm:
+    h1_username: ravndemo_slopstorm
+    email: david+h1-slopstorm@davidwelch.co
+team:
+  triager:
+    h1_username: ravndemo_triage
+    email: david+h1-triage@davidwelch.co

@@ -1,0 +1,60 @@
+id: BRM-088
+title: Stored XSS in username — client-side sanitisation bypassed via direct API write
+vulnerability_information: |
+  Stored XSS in the user profile name.
+
+  The profile page strips markup before sending the username, so the client-side control looks
+  effective. It isn't — writing the field directly to the API skips that control entirely, and
+  the stored value is rendered without encoding wherever the username is shown.
+
+  ### Steps
+  1. Authenticate, grab the bearer token.
+  2. PATCH the username straight to the API with an iframe payload, bypassing the frontend.
+  3. Load any view that prints the username — payload executes.
+
+  ### PoC
+  ```http
+  POST /profile HTTP/1.1
+  Host: bramble.example
+  Content-Type: application/x-www-form-urlencoded
+  Cookie: token=<token>
+
+  username=<iframe src="javascript:alert(`xss`)">
+  ```
+  The frontend's own form would HTML-encode this; posting it directly does not. Value is stored
+  verbatim and reflected into the DOM on render.
+
+  ### Observed
+  Persistent execution in the victim's session. Client-side sanitisation is cosmetic — the
+  server neither validates nor encodes on output.
+
+  Root cause: trusting a client-side-only sanitiser. CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:H/I:L/A:N ~ 7.3 → High.
+impact: |
+  Stored XSS executing in any session that renders the attacker's username. Session hijack,
+  account actions, phishing overlays. The client-side filter gives a false sense of safety; the
+  server-side gap is the real exposure. High.
+timeline:
+  - after: 2h
+    by: team
+    do: comment
+    internal: true
+    message: Confirmed — frontend sanitises, API path doesn't. Server-side encoding missing on render. High.
+  - after: 35m
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced via the direct API write — the client-side filter is bypassed exactly as you describe. Triaged, high severity.
+  - after: 5m
+    by: team
+    do: severity
+    rating: high
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: Fixed server-side — username is validated on write and encoded on output everywhere it's rendered. Thanks for being precise about the bypass path.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500
+    message: Bounty sent. Clean report.

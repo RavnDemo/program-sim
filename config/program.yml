@@ -1,0 +1,16 @@
+# The HackerOne program the simulator works. Handles are not secrets; tokens are (see docs/operating.md).
+program:
+  handle: bramble_market          # HackerOne program handle (team_handle)
+  name: Bramble Market
+  base_url: https://bramble.example
+  source_url: https://github.com/RavnDemo/bramble
+
+# Corpus asset key → HackerOne structured scope identifier (asset_identifier). Resolved to scope IDs at run time.
+assets:
+  web: https://bramble.example
+  api: https://bramble.example/api
+  source: https://github.com/RavnDemo/bramble
+
+team:
+  # Customer API identity that works the program (the triager). Token: H1_TEAM_TOKEN.
+  api_identifier: bramble-triage

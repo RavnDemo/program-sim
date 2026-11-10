@@ -1,0 +1,54 @@
+id: BRM-046
+title: "CRITICAL: Exposed CSAF security advisory files leak vulnerability data"
+vulnerability_information: |
+  Dear Security Team,
+
+  During my automated and manual assessment of Bramble Market I identified a
+  CRITICAL Sensitive Data Exposure. Your server publicly exposes CSAF (Common
+  Security Advisory Framework) documents that reveal that your application is
+  KNOWN AFFECTED by a vulnerability for which a fix is still pending.
+
+  ## Proof of Concept
+  1. Browse to the well-known CSAF provider directory:
+
+  ```
+  GET {{base_url}}/.well-known/csaf/provider-metadata.json
+  ```
+
+  2. Follow the index to the advisory document, which lists the product status
+     as "known_affected" and includes a file checksum.
+  3. This information discloses an unpatched vulnerability to the entire internet
+     before a fix is available, which is a CRITICAL exposure of your security
+     posture to attackers.
+
+  ## Impact
+  Attackers learn exactly which vulnerability affects you while it is still
+  unpatched. This is a CRITICAL information disclosure.
+
+  ## Remediation
+  - Remove all CSAF advisory files from public access immediately.
+  - Restrict the .well-known directory.
+  - Implement authentication on security metadata.
+
+  Kindly advise on the reward for this critical submission.
+impact: |
+  Public disclosure of an unpatched vulnerability status allows attackers to
+  target Bramble Market before remediation. CRITICAL.
+timeline:
+  - after: 6h
+    by: team
+    do: comment
+    internal: true
+    message: CSAF is designed to be public by spec. Reporter misreads the whole point of a machine-readable advisory. Informative.
+  - after: 50m
+    by: team
+    do: state
+    state: informative
+    message: >-
+      Thanks for taking the time. CSAF (the Common Security Advisory Framework) is
+      intentionally published at a well-known, public location — that is how
+      downstream consumers and scanners discover advisories. Serving it is the
+      correct, standards-compliant behaviour, not a leak, and "known_affected" is a
+      status field the format is built to carry. There is no private data in those
+      documents and no demonstrated impact, so we are closing this as informative.
+      We do appreciate the due-diligence check of the published checksum.

@@ -1,0 +1,64 @@
+id: BRM-092
+title: Hardcoded symmetric key in committed IaC lets anyone forge the cloud-admin's login
+vulnerability_information: |
+  Credential-material disclosure in the published source.
+
+  The repository at {{source_url}} ships Infrastructure-as-Code that contains a hardcoded
+  symmetric key. That same key is what the app uses to derive/verify the cloud-admin account's
+  stored secret, so possession of the key is enough to authenticate as `cloud-admin@bramble.example`
+  — no SQL injection, no password guessing.
+
+  ### Steps to reproduce
+  1. Clone the source: `git clone {{source_url}}`.
+  2. Grep the IaC for key material — there's a base64 symmetric key committed in a Terraform
+     variables/locals file under the infra directory.
+  3. The cloud-admin user's password in the seed data is the encoded form of a known string under
+     that key. Decode/derive it with the committed key.
+  4. Log in at `{{base_url}}/#/login` as `cloud-admin@bramble.example` with the derived secret.
+
+  ### PoC
+  ```
+  $ git clone {{source_url}} && cd bramble
+  $ grep -R "default .*=.*[A-Za-z0-9+/]\{20,\}=" terraform/ infrastructure/
+  # -> hardcoded key
+  # derive the cloud-admin secret from the seed using that key, then:
+  POST /rest/user/login
+  {"email":"cloud-admin@bramble.example","password":"<derived>"}
+  ```
+
+  ### Observed result
+  Valid token for the cloud-admin account. A key that controls account secrets should never be
+  in version control, and certainly not in the shipped IaC.
+
+  Root cause: secret committed to the repo + that secret being the trust anchor for a privileged
+  account. Critical — AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H.
+impact: |
+  Anyone with read access to the public source can authenticate as the cloud-admin without any
+  app-layer vulnerability. Full privileged account takeover, and because the key is a trust
+  anchor, rotating one password isn't enough — the key itself must be rotated and purged from
+  history. Critical.
+timeline:
+  - after: 3h
+    by: team
+    do: comment
+    internal: true
+    message: Confirmed key in terraform/. Also the trust anchor for cloud-admin. Needs key rotation + history purge, not just a password change. Critical.
+  - after: 25m
+    by: team
+    do: state
+    state: triaged
+    message: Verified — the key is committed in the IaC and it does gate the cloud-admin credential. Thanks for separating this cleanly from the SQLi paths. Triaged as critical.
+  - after: 10m
+    by: team
+    do: severity
+    rating: critical
+  - after: 11d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved. Key rotated, removed from the repo and purged from history, cloud-admin secret re-derived under a secret-manager-held key, and IaC scanning added to CI to stop a recurrence. Excellent report.
+  - after: 2d
+    by: team
+    do: bounty
+    amount: 3000
+    message: Top-band bounty — this was exactly the kind of supply-chain-adjacent finding we most want to hear about. Thank you.

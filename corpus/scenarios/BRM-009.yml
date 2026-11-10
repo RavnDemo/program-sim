@@ -1,0 +1,64 @@
+id: BRM-009
+title: Username / account enumeration through differing login responses
+vulnerability_information: |
+  Hi team,
+
+  I think the login flow leaks whether an email address has an account or not. The error you get back isn't the same for a known vs unknown address, so you can enumerate who's registered. I noticed it while testing with a couple of accounts and the responses felt different, but I haven't fully nailed the exact difference down yet — wanted to get it in front of you.
+
+  ## Rough steps
+  1. Go to the login page on {{base_url}}.
+  2. Try logging in with an email you know exists vs one you're sure doesn't.
+  3. The behaviour differs.
+
+  I'll dig into the exact signal if helpful.
+impact: |
+  An attacker can build a list of valid customer email addresses, which feeds phishing and credential-stuffing. Low severity on its own but a useful precursor.
+timeline:
+  - after: 5h
+    by: team
+    do: comment
+    message: Thanks — we'd like to chase this down but we need the specific difference. Could you capture the two raw responses (status code, timing, and body) for a known vs unknown email? Right now we can't tell what signal you're keying on.
+  - after: 2h
+    by: team
+    do: state
+    state: needs-more-info
+    message: Marking as needs-more-info pending the side-by-side responses. No rush.
+  - after: 1d
+    by: reporter
+    do: comment
+    message: |
+      Sorry, should have led with this. It's the response body, not timing:
+
+      - Known email, wrong password → `401` with body `Invalid password.`
+      - Unknown email → `401` with body `User not found.`
+
+      ```
+      POST {{base_url}}/rest/user/login
+      {"email":"admin@bramble.example","password":"wrong"}   -> 401 "Invalid password."
+      {"email":"nobody@bramble.example","password":"wrong"}  -> 401 "User not found."
+      ```
+
+      So the body distinguishes registered from unregistered addresses. Enumeration confirmed on my end.
+  - after: 3h
+    by: team
+    do: comment
+    message: Perfect, that's exactly what we needed — reproduced. The two bodies do differ as you describe.
+  - after: 20m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged as low. We'll collapse both cases to a single generic "Invalid email or password." response.
+  - after: 1h
+    by: team
+    do: severity
+    rating: low
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: Login now returns one uniform error for both cases. Thanks for coming back with the clean repro.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 150
+    message: Thanks for sticking with it through the follow-up.

@@ -1,0 +1,82 @@
+name: sim
+# Works the HackerOne program. Hourly on a schedule; any command by hand (Actions → sim → Run workflow).
+# Scheduled runs do nothing until the repo variable SIM_ENABLED is "true", and act on HackerOne only when
+# SIM_LIVE is "true" (otherwise they dry-run against a separate dry-run ledger).
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+    inputs:
+      command:
+        description: What to run
+        type: choice
+        default: tick
+        options: [tick, status, check, file, step, backfill, retry, validate]
+      arg:
+        description: Scenario id (file/step/retry) or count (backfill)
+        type: string
+        required: false
+      live:
+        description: Act on HackerOne (unchecked = dry run)
+        type: boolean
+        default: false
+
+concurrency:
+  group: sim
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    if: github.event_name == 'workflow_dispatch' || vars.SIM_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      LIVE: ${{ github.event_name == 'workflow_dispatch' && inputs.live || vars.SIM_LIVE == 'true' }}
+      COMMAND: ${{ inputs.command || 'tick' }}
+      ARG: ${{ inputs.arg }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check out the ledger branch
+        run: |
+          git fetch origin ledger:ledger 2>/dev/null || true
+          if git rev-parse --verify ledger >/dev/null 2>&1; then
+            git worktree add .ledger ledger
+          else
+            git worktree add --detach .ledger
+            git -C .ledger switch --orphan ledger
+          fi
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Run
+        env:
+          H1_TEAM_TOKEN: ${{ secrets.H1_TEAM_TOKEN }}
+          H1_NIGHTJAR_TOKEN: ${{ secrets.H1_NIGHTJAR_TOKEN }}
+          H1_QUILLFEATHER_TOKEN: ${{ secrets.H1_QUILLFEATHER_TOKEN }}
+          H1_SLOPSTORM_TOKEN: ${{ secrets.H1_SLOPSTORM_TOKEN }}
+        run: |
+          set -o pipefail
+          ledger=".ledger/$([ "$LIVE" = true ] && echo ledger.json || echo dry-run.json)"
+          flags=(--ledger "$ledger")
+          [ "$LIVE" = true ] && flags+=(--live)
+          node src/cli.ts "$COMMAND" ${ARG:+"$ARG"} "${flags[@]}" | tee run.log
+          {
+            echo "### sim $COMMAND ${ARG} ($([ "$LIVE" = true ] && echo live || echo dry run))"
+            echo '```'; tail -n 200 run.log; echo '```'
+            echo '#### status'
+            echo '```json'; node src/cli.ts status "${flags[@]}"; echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Save the ledger
+        if: always()
+        run: |
+          cd .ledger
+          git add -A
+          git diff --cached --quiet && exit 0
+          git -c user.name='program-sim[bot]' -c user.email='program-sim@users.noreply.github.com' \
+            commit -q -m "ledger: $COMMAND ${ARG} ($([ "$LIVE" = true ] && echo live || echo dry run))"
+          git push -q origin ledger

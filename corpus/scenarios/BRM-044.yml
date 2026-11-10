@@ -1,0 +1,58 @@
+id: BRM-044
+title: "CRITICAL: Stored XSS gives full account takeover of Bramble Market!!!"
+vulnerability_information: |
+  Dear Security Team,
+
+  I am a professional bug bounty hunter and I have discovered a CRITICAL Stored
+  Cross-Site Scripting (XSS) vulnerability in your application Bramble Market that
+  leads to FULL ACCOUNT TAKEOVER and theft of all customer data.
+
+  ## Proof of Concept
+  1. Open {{base_url}} in Google Chrome.
+  2. Press F12 to open Developer Tools and go to the Console tab.
+  3. Paste the following payload and press Enter:
+
+  ```
+  document.body.innerHTML = '<img src=x onerror=alert(document.cookie)>'
+  localStorage.setItem('token', '<attacker token>')
+  ```
+
+  4. OBSERVE: an alert box pops up showing the cookie, proving arbitrary
+     JavaScript execution. The page is completely rewritten by my payload.
+
+  This confirms that attacker-controlled JavaScript runs in the context of
+  {{base_url}}, which means I can steal session tokens, rewrite the DOM, and
+  impersonate any user including the administrator.
+
+  ## Impact
+  Full compromise of every user account and all PII in the database.
+
+  ## Remediation
+  - Implement a strict Content-Security-Policy.
+  - Sanitize all user input with a trusted library.
+  - Enable HttpOnly and Secure flags on all cookies.
+  - Conduct a full security audit of the codebase.
+
+  Please confirm the bounty amount for this CRITICAL finding as soon as possible.
+impact: |
+  An attacker can execute arbitrary JavaScript on Bramble Market leading to
+  complete account takeover, theft of all customer PII, and full administrative
+  compromise. CVSS 9.8 CRITICAL.
+timeline:
+  - after: 3h
+    by: team
+    do: comment
+    internal: true
+    message: Self-XSS. Reporter is pasting into their own devtools console. No injection sink, no cross-user vector. Closing N/A.
+  - after: 25m
+    by: team
+    do: state
+    state: not-applicable
+    message: >-
+      Thanks for the report. What you have shown is code you typed into your own
+      browser's developer console running in your own browser — this is "self-XSS"
+      and does not cross a trust boundary. There is no stored or reflected input
+      sink here: nothing you submit is served back to another user. Per our policy,
+      self-XSS with no cross-user delivery path is not in scope. If you can show the
+      payload reaching a second account without the victim pasting it themselves,
+      please reopen with those steps.

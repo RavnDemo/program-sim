@@ -1,0 +1,38 @@
+id: BRM-008
+title: "CRITICAL: Server Version Disclosure via X-Powered-By / Response Headers"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have identified a **CRITICAL** information disclosure vulnerability affecting Bramble Market.
+
+  ## Summary
+  The server reveals its underlying framework and version through HTTP response headers. Attackers can use this to fingerprint the stack and launch targeted exploits.
+
+  ## Steps to Reproduce
+  1. Run `curl -I {{base_url}}`
+  2. Observe the `X-Powered-By: Express` header (and framework version hints).
+
+  ## PoC
+  ```
+  $ curl -sI {{base_url}} | grep -i powered
+  X-Powered-By: Express
+  ```
+
+  ## Observed Result
+  The technology stack is disclosed. This is CRITICAL per OWASP and must be remediated immediately.
+
+  ## Remediation
+  - Disable `X-Powered-By`
+  - Add security headers
+  - Follow best practices
+
+  P.S. What is the bounty range for critical findings? Looking forward to a quick payout.
+impact: |
+  Disclosure of the server technology allows attackers to craft version-specific exploits. CRITICAL. I expect this to be rewarded accordingly.
+timeline:
+  - after: 1d
+    by: team
+    do: state
+    state: informative
+    message: |
+      Thanks for the report. The `X-Powered-By` header is a best-practice hardening item, not a vulnerability in itself — it discloses the framework name but no credentials, user data, or exploitable condition, and there's no demonstrated impact attached. We'll quietly remove the header as housekeeping, but per program policy this is informative and not eligible for a bounty. We'd encourage focusing future reports on findings with a concrete, demonstrated security impact.

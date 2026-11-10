@@ -1,0 +1,38 @@
+id: BRM-005
+title: "CRITICAL: Unreleased / Hidden Language File Disclosure"
+vulnerability_information: |
+  Dear Security Team,
+
+  I am writing to responsibly disclose a **CRITICAL** information disclosure vulnerability on Bramble Market.
+
+  ## Summary
+  The application exposes an internal language/translation file that was never meant to be released to production. This represents a serious leak of internal assets.
+
+  ## Steps to Reproduce
+  1. Enumerate the i18n/translation assets served by {{base_url}}.
+  2. Request the language files under the assets path.
+  3. One of the returned files is a language that is not offered in the live language selector — i.e. it never made it into production.
+
+  ## PoC
+  ```
+  GET {{base_url}}/assets/i18n/<unreleased-locale>.json
+  ```
+
+  ## Observed Result
+  A hidden, unreleased language file is served to anyone. CRITICAL data exposure (CWE-200).
+
+  ## Remediation
+  Remove all non-production files, implement access controls, follow OWASP ASVS.
+impact: |
+  Disclosure of internal/unreleased application files to the public. This leaks internal development artifacts and is a CRITICAL confidentiality breach (CVSS 9.1).
+timeline:
+  - after: 8h
+    by: team
+    do: comment
+    message: Thanks for writing in. Let us take a look at what's being served under the i18n assets.
+  - after: 1d
+    by: team
+    do: state
+    state: informative
+    message: |
+      We looked into this. The file is a static translation asset — it contains UI strings only, no credentials, user data, or internal secrets. A locale not yet shown in the selector being fetchable is a content/housekeeping matter, not a security exposure; publicly-served static assets are expected to be, well, public. Without any sensitive data in the file, there's no demonstrated impact here, so we're marking it informative. We do appreciate you taking the time to report.

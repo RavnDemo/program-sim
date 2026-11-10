@@ -1,0 +1,49 @@
+id: BRM-090
+title: Authentication bypass — log in as a never-registered accountant via SQLi in the login form
+vulnerability_information: |
+  Hi there,
+
+  Following on from the injectable areas of the site, the login form itself is vulnerable and I
+  was able to authenticate as an account that doesn't even exist as a registered user —
+  `acc0unt4nt@bramble.example`. I'm guessing this is a privileged accounting role from the name.
+
+  ### Steps to reproduce
+  1. Go to the login page `{{base_url}}/#/login`.
+  2. In the email field, inject so the query returns the row for that email while the password
+     check is commented out.
+
+  ### PoC
+  ```http
+  POST /rest/user/login HTTP/1.1
+  Host: bramble.example
+  Content-Type: application/json
+
+  {"email":"acc0unt4nt@bramble.example'--","password":"anything"}
+  ```
+  The trailing `'--` closes the email string and comments out the rest of the WHERE clause
+  (the password comparison), so the query matches on email alone.
+
+  ### Observed result
+  I get a valid bearer token back and I'm logged in as the accountant, having never known or
+  set a password. Screenshot of the authenticated session attached.
+
+  The login query is clearly concatenating the email straight into SQL. This is critical — it's
+  a full authentication bypass for arbitrary accounts.
+impact: |
+  SQL-injection authentication bypass: an attacker signs in as any account by email with no
+  password, including privileged roles. Complete account takeover across the store. Critical.
+timeline:
+  - after: 4h
+    by: team
+    do: comment
+    internal: true
+    message: Login-form SQLi again — same root cause as the admin login bypass in {{report:BRM-050}}. Dupe, keep critical.
+  - after: 30m
+    by: team
+    do: severity
+    rating: critical
+  - after: 15m
+    by: team
+    do: state
+    state: duplicate
+    message: Confirmed and critical — but this is the same injectable login query we're already tracking in {{report:BRM-050}}, where the same `'--` trick signs in as the administrator. Any email works because the password clause is commented out; the accountant is one instance of that. Closing as a duplicate of {{report:BRM-050}}. Thanks.

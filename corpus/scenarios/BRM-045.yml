@@ -1,0 +1,56 @@
+id: BRM-045
+title: Typosquatted frontend dependency ngy-cookie shipped in the Angular bundle
+vulnerability_information: |
+  ## Summary
+  The frontend depends on `ngy-cookie`, a typosquat of the legitimate
+  `ngx-cookie` package. The name differs by one character and the package is a
+  known impostor. It is pulled into the built Angular bundle served from
+  {{base_url}}, which means a supply-chain compromise of that package executes in
+  every visitor's browser.
+
+  ## Steps to reproduce
+  1. Pull the client bundle and grep the vendor chunk:
+
+  ```
+  curl -s {{base_url}}/main.js | grep -o 'ngy-cookie'
+  ```
+
+  2. The string is present — the module is linked, not tree-shaken out. The
+     Angular compiler could not drop it because it is referenced at runtime.
+  3. Cross-check the dependency manifest: `ngy-cookie` appears alongside the real
+     `ngx-cookie`, confirming the typosquat was installed rather than the
+     intended package.
+
+  ## Observed result
+  A malicious, name-confusable dependency is compiled into production frontend
+  code and runs with full DOM access in every customer session.
+
+  ## Root cause
+  Dependency confusion / typosquatting: `ngy-cookie` vs `ngx-cookie`. The
+  culprit is **ngy-cookie**.
+impact: |
+  If the typosquat package is (or becomes) malicious, it runs arbitrary JS in
+  every visitor's browser — token theft, DOM rewriting, card skimming on the
+  checkout page. Even today it is unvetted third-party code in the trusted
+  frontend origin. Medium: no demonstrated active payload, but a live
+  supply-chain exposure in production.
+timeline:
+  - after: 1d
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed — ngy-cookie is in the bundle and it is not the package we meant to use. Good catch, triaging.
+  - after: 40m
+    by: team
+    do: severity
+    rating: medium
+  - after: 9d
+    by: team
+    do: state
+    state: resolved
+    message: Removed ngy-cookie and pinned the correct ngx-cookie. Rebuilt and redeployed the frontend. Thanks.
+  - after: 4h
+    by: team
+    do: bounty
+    amount: 500
+    message: Named the exact culprit and showed it shipping. Thank you.

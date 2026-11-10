@@ -1,0 +1,15 @@
+# How fast the program moves. Everything here is deterministic: jitter is derived from scenario ids, not Math.random.
+arrivals:
+  enabled: true
+  per_week: 6              # average new reports per week once live
+  jitter: 0.5              # each gap is per_week-average × [1-jitter, 1+jitter]
+  max_per_tick: 1
+steps:
+  enabled: true
+  speed: 1.0               # multiplies every timeline `after` (0.5 = team works twice as fast)
+  max_per_tick: 25
+# Backfill: file the first N scenarios quickly with compressed timelines, to give the program a history.
+backfill:
+  count: 40
+  speed: 0.1               # timelines run at 10% of real time during backfill (a 5d resolve takes ~12h)
+  gap: 2h                  # between backfill arrivals (40 reports ≈ 3.3 days)

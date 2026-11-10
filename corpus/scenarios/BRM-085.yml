@@ -1,0 +1,64 @@
+id: BRM-085
+title: Feedback can be posted in another customer's name via the UserId field
+vulnerability_information: |
+  Hi team, hope you're doing well!
+
+  While poking around the "Contact Us" / customer feedback flow I noticed the feedback
+  API trusts a `UserId` value that comes straight from the request body. That means I can
+  attach my feedback to *any* account I like, not just my own — including the store
+  administrator's. The testimonial then shows up on the About Us page as if that person wrote it.
+
+  ### Steps to reproduce
+  1. Register and log in as a normal shopper at `{{base_url}}/#/register`.
+  2. Open the feedback form at `{{base_url}}/#/contact`, solve the little math captcha, type a comment, pick a star rating.
+  3. Submit, but intercept the request first (I used the browser dev-tools network tab and "copy as fetch"). The JSON body looks like `{"captchaId":2,"captcha":"12","comment":"nice shop (anonymous)","rating":1}`.
+  4. Add a `UserId` field pointing at someone else — `1` is the admin in a default install — and replay it.
+
+  ### PoC request
+  ```http
+  POST /api/Feedbacks HTTP/1.1
+  Host: bramble.example
+  Content-Type: application/json
+  Authorization: Bearer <my-own-token>
+
+  {"captchaId":5,"captcha":"10","comment":"Totally trust this store with my card number!","rating":1,"UserId":1}
+  ```
+
+  ### Observed result
+  The API returns `201` and echoes `"UserId": 1`. The feedback is now owned by the admin
+  account. On the About Us testimonials strip it renders as the admin's own words. I've
+  attached a screenshot showing my planted comment sitting next to the genuine ones with the
+  admin's masked email beside it.
+
+  Root cause looks like the create-feedback handler reading `UserId` from the body instead of
+  deriving it from the authenticated session token.
+impact: |
+  An attacker can forge feedback/testimonials in the name of any user, including staff and the
+  administrator. Low direct severity, but it's a trust and reputation problem: planted
+  testimonials with a victim's identity attached, and it muddies any audit trail that assumes
+  feedback authorship is trustworthy.
+timeline:
+  - after: 5h
+    by: team
+    do: comment
+    internal: true
+    message: Repro'd. Handler takes UserId from the body rather than the session. Clear low-sev BAC.
+  - after: 20m
+    by: team
+    do: state
+    state: triaged
+    message: Thanks for the clean write-up — reproduced on our side. The feedback endpoint is trusting a client-supplied UserId. Triaging now, we'll follow up when it's fixed.
+  - after: 10m
+    by: team
+    do: severity
+    rating: low
+  - after: 7d
+    by: team
+    do: state
+    state: resolved
+    message: Fixed — the handler now derives the author from the authenticated token and ignores any UserId in the body. Nice catch.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 150
+    message: Bounty for a tidy access-control report. Thanks!

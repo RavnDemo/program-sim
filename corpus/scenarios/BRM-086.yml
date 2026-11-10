@@ -1,0 +1,55 @@
+id: BRM-086
+title: "CRITICAL: Attacker can DELETE all 5-star customer feedback / full feedback DB wipe"
+vulnerability_information: |
+  Dear Security Team,
+
+  I am writing to responsibly disclose a CRITICAL severity vulnerability affecting your
+  application Bramble Market. During my security assessment I discovered that an attacker is
+  able to permanently DELETE customer feedback entries, including all of your positive 5-star
+  reviews, leading to catastrophic data loss and total business reputation collapse.
+
+  ### Steps to Reproduce
+  1. Navigate to the Administration area and observe the list of customer feedback.
+  2. Observe that each feedback row has a delete control.
+  3. By issuing DELETE requests against the feedback API, an attacker can systematically remove
+     every single 5-star rating until none remain.
+
+  ### Proof of Concept
+  ```
+  DELETE /api/Feedbacks/1
+  DELETE /api/Feedbacks/2
+  DELETE /api/Feedbacks/3
+  ... (repeat for every 5-star entry)
+  ```
+
+  ### Observed Result
+  All 5-star feedback is removed from the store. This completely destroys customer trust and
+  could bankrupt the business.
+
+  ### Remediation
+  - Implement proper authentication and authorization.
+  - Apply the principle of least privilege.
+  - Enforce role-based access control (RBAC).
+  - Add rate limiting and Web Application Firewall (WAF) rules.
+  - Conduct regular penetration testing.
+
+  Please let me know the bounty amount for this CRITICAL finding. Looking forward to being
+  added to your Hall of Fame.
+impact: |
+  CRITICAL impact. Complete destruction of customer feedback data, total reputational damage,
+  potential business bankruptcy, and loss of customer trust. CVSS 9.8.
+timeline:
+  - after: 3h
+    by: team
+    do: comment
+    internal: true
+    message: Same underlying issue as {{report:BRM-085}} — feedback endpoint authz. Dupe, drop sev to low.
+  - after: 40m
+    by: team
+    do: severity
+    rating: low
+  - after: 5m
+    by: team
+    do: state
+    state: duplicate
+    message: Thanks for the report. This is the same broken feedback-authorization root cause we're already tracking in {{report:BRM-085}}, so we're closing this as a duplicate. The severity here is low, not critical — the feedback admin surface is behind auth and the real issue is the endpoint's authorization model. No action needed from you.

@@ -1,0 +1,50 @@
+id: BRM-010
+title: Password change endpoint omits current-password check, enabling CSRF account takeover
+vulnerability_information: |
+  ## Summary
+  `GET /rest/user/change-password` sets a new password when `new` and `repeat` match, but only validates the `current` password *if it is supplied*. Omit `current` entirely and the change goes through on the session token alone. Combined with it being a GET, this is a one-request CSRF / takeover primitive.
+
+  ## Root cause
+  The handler checks `if (currentPassword && hash(currentPassword) !== stored)` — so when `current` is absent the branch is skipped and the update proceeds.
+
+  ## Steps to reproduce
+  As the logged-in victim (or via a forged cross-site GET carrying their bearer):
+
+  ```
+  GET {{base_url}}/rest/user/change-password?new=slurmCl4ssic&repeat=slurmCl4ssic
+  Authorization: Bearer <victim_token>
+  ```
+
+  No `current` parameter. Response `200` with the updated user; the account's password is now `slurmCl4ssic`.
+
+  I verified against the bender@bramble.example account — logged in afterward with the new password.
+
+  ## Severity
+  Account takeover of any session you can ride, no knowledge of the existing password. Because it's a GET with no CSRF token it's trivially weaponisable. CVSS ~7.5 (high).
+impact: |
+  Any authenticated session can have its password reset without the current password, and the GET-based design makes CSRF straightforward. End result is full account takeover. High.
+timeline:
+  - after: 50m
+    by: team
+    do: comment
+    internal: true
+    message: Confirmed — current-password check is conditional on the param being present. Also need to move this off GET. Valid high.
+  - after: 30m
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced on bender@bramble.example exactly as described. Triaged high — thanks.
+  - after: 15m
+    by: team
+    do: severity
+    rating: high
+  - after: 8d
+    by: team
+    do: state
+    state: resolved
+    message: Current password is now mandatory for any change, and the endpoint no longer honours GET. Nice find.
+  - after: 4h
+    by: team
+    do: bounty
+    amount: 1500
+    message: Bounty for a clean account-takeover chain.
