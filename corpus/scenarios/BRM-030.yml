@@ -1,0 +1,45 @@
+id: BRM-030
+title: Typosquatting npm dependency shipped in a historical build (epilogue-js)
+vulnerability_information: |
+  ## Summary
+  A dependency manifest recoverable from the project (the forgotten `/ftp/package.json.bak`, also in history at {{source_url}}) pins `epilogue-js` — a typosquat of the legitimate `epilogue` REST package. The typosquatted package name was present at least as of the `v6.2.0-SNAPSHOT` build. Typosquatted packages are a classic supply-chain backdoor vector.
+
+  ## Steps to reproduce
+  1. Recover the backup manifest (see {{base_url}}/ftp, null-byte access, or history at {{source_url}}).
+  2. Inspect the dependency list; `epilogue-js` appears alongside the expected packages.
+  3. Confirm `epilogue-js` is not the legitimate `epilogue` package — it's a name squat.
+
+  ## Culprit
+  `epilogue-js` (typosquat of `epilogue`).
+
+  ## Observed result
+  A build of Bramble Market depended on a typosquatted npm package, meaning a malicious maintainer of that name could have executed code in your build/runtime.
+
+  ## Severity
+  Supply-chain exposure from a typosquatted dependency (CWE-1357). No live RCE demonstrated on current prod, but it's a real build-integrity risk. CVSS ~5–6 (medium).
+impact: |
+  A typosquatted dependency in the build means attacker-controlled code could run during install/runtime. Build-integrity / supply-chain risk. Medium.
+timeline:
+  - after: 5h
+    by: team
+    do: comment
+    message: Good catch — confirmed `epilogue-js` in the historical manifest. That's a squat of `epilogue`. Checking whether it ever reached a deployed build.
+  - after: 1d
+    by: team
+    do: comment
+    internal: true
+    message: Squatted dep present in the snapshot manifest. Current prod doesn't resolve it, but purge from history and add a dependency allowlist/lockfile check. Medium.
+  - after: 3h
+    by: team
+    do: state
+    state: triaged
+    message: Triaged medium. Removing the reference and adding a check to catch squatted names in CI.
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: The squatted reference is gone and CI now flags look-alike package names against our allowlist. Thanks for naming the exact culprit.
+  - after: 2d
+    by: team
+    do: bounty
+    amount: 500

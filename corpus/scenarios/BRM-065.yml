@@ -1,0 +1,55 @@
+id: BRM-065
+title: Open redirect via substring allowlist bypass on /redirect
+vulnerability_information: |
+  ## Summary
+  `/redirect?to=` checks the target against an allowlist using
+  `url.includes(allowedUrl)` — a substring test, not an origin check. Embedding an
+  allowlisted URL anywhere in an attacker URL passes the filter, so the endpoint
+  redirects to an arbitrary origin.
+
+  ## Steps to reproduce
+  ```
+  GET {{base_url}}/redirect?to=https://attacker.test/?x=https://github.com/RavnDemo/bramble HTTP/1.1
+  ```
+
+  ## Observed result
+  `302 Found` with `Location: https://attacker.test/?x=https://github.com/RavnDemo/bramble`.
+  The browser lands on `attacker.test`. The allowlisted string
+  `https://github.com/RavnDemo/bramble` is present only as a query parameter,
+  yet the substring check is satisfied.
+
+  ## Root cause
+  ```
+  allowed = allowed || url.includes(allowedUrl)
+  ```
+  A membership test on raw substring instead of parsing the URL and comparing the
+  resolved origin against the allowlist.
+impact: |
+  Attacker-controlled open redirect from a trusted {{base_url}} link: phishing
+  with a legitimate-looking domain, OAuth/token redirection, and bypass of
+  users' "only click bramble.example links" intuition. Medium.
+  CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N (5.4).
+timeline:
+  - after: 4h
+    by: team
+    do: comment
+    internal: true
+    message: Confirmed substring bypass. Need to parse and compare origin, not includes(). Medium.
+  - after: 45m
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced — the allowlist is a substring match and the query-param trick defeats it. Triaged medium.
+  - after: 15m
+    by: team
+    do: severity
+    rating: medium
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: Redirect targets are now parsed and matched on exact origin against the allowlist; the embedded-URL trick no longer passes. Thanks.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 500

@@ -1,0 +1,56 @@
+id: BRM-108
+title: Cross-domain SVG embedded via profile-image URL renders attacker content on the site
+vulnerability_information: |
+  Cross-domain content injection via the profile-image-by-URL feature.
+
+  The profile image can be set to an arbitrary URL. If I point it at an externally-hosted SVG,
+  the app stores the URL and later embeds that remote SVG in pages that show the avatar (e.g. the
+  delivery/order imagery). SVG is an active-content format, so I control markup that renders in
+  the site's context.
+
+  ### Steps
+  1. Authenticate.
+  2. Set the profile image to a remote SVG I host:
+  ```http
+  POST /profile/image/url HTTP/1.1
+  Host: bramble.example
+  Content-Type: application/x-www-form-urlencoded
+  Cookie: token=<token>
+
+  imageUrl=https://attacker.example/kitten.svg
+  ```
+  3. The handler keeps the external URL as the profile image (it falls back to storing the link
+     directly). The SVG is then loaded from my domain wherever the avatar renders.
+
+  ### Observed
+  My cross-domain SVG renders inside the application's pages. Beyond the obvious "arbitrary
+  images on your delivery boxes", SVG can carry script/markup, so this is an XSS-adjacent
+  content-injection and a loss of control over what renders in the site.
+
+  Medium — it requires an authenticated user and the impact depends on where the avatar is shown
+  and how the SVG is served, but letting a user point site-rendered content at an arbitrary
+  external domain is wrong.
+impact: |
+  An authenticated user can cause arbitrary externally-hosted SVG (active content) to render
+  within the application's pages, enabling defacement and script/content injection in the site's
+  context. Medium.
+timeline:
+  - after: 3h
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced — the profile-image-by-URL path stores and renders an arbitrary external SVG. Agreed it shouldn't allow site-rendered content to come from an arbitrary domain. Triaged, medium.
+  - after: 10m
+    by: team
+    do: severity
+    rating: medium
+  - after: 7d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved — remote images are fetched and re-encoded server-side rather than embedded by URL, SVG is no longer rendered inline, and the allowed content types are restricted. Thanks for the detailed write-up.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 500
+    message: Bounty sent.

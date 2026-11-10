@@ -1,0 +1,56 @@
+id: BRM-057
+title: "CRITICAL: SQL Injection in search reveals hidden Christmas product!!!"
+vulnerability_information: |
+  Dear Security Team,
+
+  I am excited to report a CRITICAL SQL Injection vulnerability in the product
+  search feature of Bramble Market. Using this vulnerability I was able to reveal
+  a hidden/deleted product (a "Christmas Special" offer from 2014) and even order
+  it, proving full database manipulation.
+
+  ## Proof of Concept
+  1. Send the following request to the search endpoint:
+
+  ```
+  GET {{base_url}}/rest/products/search?q=')) UNION SELECT * FROM Products WHERE name LIKE '%Christmas%'--
+  ```
+
+  2. OBSERVE: a product that is normally hidden (soft-deleted) is returned in the
+     results.
+  3. I then added it to my basket by its id and completed checkout successfully.
+
+  This proves the search field is fully injectable and that deleted records can
+  be resurfaced and purchased.
+
+  ## Impact
+  CRITICAL SQL Injection allowing access to hidden database records and
+  manipulation of the product catalogue.
+
+  ## Remediation
+  - Use parameterized queries.
+  - Deploy a WAF.
+  - Audit all database queries.
+
+  Please confirm my bounty for this CRITICAL finding promptly.
+impact: |
+  Full SQL injection in the search endpoint exposing hidden records and allowing
+  catalogue manipulation. CRITICAL.
+timeline:
+  - after: 3h
+    by: team
+    do: comment
+    internal: true
+    message: Same search SQLi as {{report:BRM-056}}. The christmas-product angle is just another SELECT through the same hole. Dup.
+  - after: 1h
+    by: team
+    do: severity
+    rating: critical
+  - after: 30m
+    by: team
+    do: state
+    state: duplicate
+    message: >-
+      Thanks for the submission. The injectable search query you are using is the
+      same vulnerability already reported in {{report:BRM-056}}; surfacing the old
+      Christmas product is one more thing reachable through that single injection
+      point, so we are closing this as a duplicate and fixing the query centrally.

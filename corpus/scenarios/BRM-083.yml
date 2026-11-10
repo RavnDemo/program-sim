@@ -1,0 +1,63 @@
+id: BRM-083
+title: Coupon codes are z85-encoded, not signed — forgeable for arbitrary discounts
+vulnerability_information: |
+  ## Summary
+  Coupon codes are produced by z85-encoding the plaintext string `MMMYY-<discount>`
+  (e.g. `NOV26-80`). There is no signature or secret involved, so anyone can
+  z85-encode their own `MMMYY-<discount>` and mint a valid coupon for any discount,
+  including 80%+.
+
+  ## Steps to reproduce
+  1. Observe a real coupon decodes (z85) to `MMMYY-dd`, matching
+     `/(JAN|...|DEC)[0-9]{2}-[0-9]{2}/`.
+  2. Forge one for the current month at 80%:
+
+  ```
+  python3 -c "import pyzmq" # or any z85 impl
+  # z85.encode(b'NOV26-80')  ->  <forged code>
+  ```
+
+  3. Apply it to a basket:
+
+  ```
+  PUT {{base_url}}/rest/basket/<your bid>/coupon/<forged z85 code>
+  Authorization: Bearer <token>
+  ```
+
+  ## Observed result
+  The coupon is accepted and an 80% discount is applied at checkout. The server
+  z85-decodes the code, matches the format regex, and parses the discount integer —
+  with no authenticity check.
+
+  ## Root cause
+  `generateCoupon` = `z85.encode(MMMYY + '-' + discount)`; validation is a z85
+  decode plus a format regex. Encoding is being used where a signature (HMAC/MAC)
+  is required. Anyone can reproduce the encoding.
+impact: |
+  Any user can forge coupons for arbitrary discounts, including free or
+  near-free orders, causing direct revenue loss at scale. High.
+  CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N (6.5).
+timeline:
+  - after: 1h
+    by: team
+    do: comment
+    internal: true
+    message: Confirmed — coupons are just z85(MMMYY-discount), no MAC. Forged NOV26-80 applied fine. Revenue impact. High.
+  - after: 40m
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced — a hand-encoded z85 string in the MMMYY-dd format is accepted as a valid coupon. Triaged high. Thanks for the precise root cause.
+  - after: 15m
+    by: team
+    do: severity
+    rating: high
+  - after: 8d
+    by: team
+    do: state
+    state: resolved
+    message: Coupons are now HMAC-signed with a server-side secret and the signature is verified before any discount is applied; z85-only codes are rejected. Verified your forged code no longer works. Thank you.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500

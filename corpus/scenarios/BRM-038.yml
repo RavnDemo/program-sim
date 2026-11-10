@@ -1,0 +1,62 @@
+id: BRM-038
+title: No rate limiting on the forgot-password security-question answer enables brute force
+vulnerability_information: |
+  ## Summary
+  The Forgot Password flow verifies a user's security-question answer with no rate limiting, lockout, or CAPTCHA on the answer submission. An attacker can brute-force the answer offline-speed against the live endpoint and reset any user's password. Demonstrated against `morty@bramble.example`.
+
+  ## Steps to reproduce
+  1. Start the reset for the target:
+
+  ```
+  GET {{base_url}}/rest/user/security-question?email=morty@bramble.example
+  ```
+
+  returns the question id.
+
+  2. Submit answer guesses with no throttling:
+
+  ```
+  POST {{base_url}}/rest/user/reset-password
+  {"email":"morty@bramble.example","answer":"<guess>","new":"N3wPass!","repeat":"N3wPass!"}
+  ```
+
+  3. Iterate `answer` through a wordlist. There is no delay, lockout, or CAPTCHA — hundreds of attempts per second succeed until the correct (obfuscated) answer resets the password.
+
+  ## Root cause
+  Missing anti-automation controls on a security-sensitive endpoint (CWE-307, improper restriction of excessive authentication attempts).
+
+  ## Observed result
+  Morty's password reset after brute-forcing the answer, with zero friction from the server.
+
+  ## Severity
+  Brute-forceable account recovery → account takeover. Mitigated somewhat by needing a wordlist that includes the answer. CVSS ~6.5 (medium).
+impact: |
+  An attacker can brute-force security-question answers unthrottled and reset arbitrary users' passwords, leading to account takeover. Medium.
+timeline:
+  - after: 2h
+    by: team
+    do: comment
+    message: Confirmed — no throttling on the reset answer; we ran a quick burst and it never slowed us down. Thanks, triaging.
+  - after: 40m
+    by: team
+    do: comment
+    internal: true
+    message: Add rate limiting + lockout + CAPTCHA to the reset answer. Medium. Also consider dropping security questions entirely.
+  - after: 20m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged medium. We'll add rate limiting and lockout to the reset flow.
+  - after: 10m
+    by: team
+    do: severity
+    rating: medium
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: The reset answer endpoint is now rate-limited and locks out after repeated failures, with a CAPTCHA gate. Verified the brute-force no longer runs unthrottled. Thanks.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 500

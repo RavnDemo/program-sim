@@ -1,0 +1,53 @@
+id: BRM-033
+title: Missing authorization on PUT /api/Products/:id allows product tampering
+vulnerability_information: |
+  ## Summary
+  `PUT /api/Products/:id` updates product records without enforcing an admin/authorization check on the write. Any authenticated user can modify product fields — including the description HTML — of products they don't own and have no rights to edit.
+
+  ## Steps to reproduce
+  1. As an ordinary logged-in user, update a product's description to change the embedded link target:
+
+  ```
+  PUT {{base_url}}/api/Products/9
+  Authorization: Bearer <ordinary_user_token>
+  Content-Type: application/json
+
+  {"description":"<a href=\"https://owasp.slack.com\" target=\"_blank\">More...</a>"}
+  ```
+
+  2. Response `200` with the updated product.
+  3. Reload the O-Saft product page — the `href` inside the description now points at the attacker-chosen URL.
+
+  ## Root cause
+  The update route has no authorization gate distinguishing admins from regular users (CWE-285, improper authorization); it only requires a valid session.
+
+  ## Observed result
+  A non-privileged user tampered with catalogue content. Combined with the description being rendered as HTML, this is also a stored-content injection vector for phishing/redirect.
+
+  ## Severity
+  Authenticated broken authorization allowing catalogue tampering (integrity, plus phishing via altered links). CVSS ~7.1 (high).
+impact: |
+  Any logged-in user can alter product listings and the links shown to all shoppers, enabling defacement and phishing from trusted product pages. High.
+timeline:
+  - after: 1h
+    by: team
+    do: comment
+    message: Reproduced — a regular account updated product 9. There's no authz gate on the write. Thanks, triaging.
+  - after: 30m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged high. Product writes will require admin authorization server-side.
+  - after: 10m
+    by: team
+    do: severity
+    rating: high
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: PUT/DELETE on products now require the admin role; the ordinary-user request is rejected with 401. Verified. Thank you.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500

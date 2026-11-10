@@ -1,0 +1,35 @@
+id: BRM-034
+title: "CRITICAL: User Password Exposed in Publicly Posted Media (MC SafeSearch)"
+vulnerability_information: |
+  Dear Security Team,
+
+  I discovered a **CRITICAL** credential exposure affecting one of your users.
+
+  ## Summary
+  The original account password for the user known as "MC SafeSearch" is discoverable from publicly posted media associated with the account. I was able to recover the password and log in to the user's original account at {{base_url}} without using SQL injection or any bypass.
+
+  ## Steps to Reproduce
+  1. Review the publicly available media / content linked to the MC SafeSearch persona.
+  2. The password is spoken/embedded within the media.
+  3. Use the recovered password to log in to the original user account.
+
+  ## Observed Result
+  Full access to the user's original account. This is a CRITICAL credential exposure (CWE-200).
+
+  ## Remediation
+  - Force a password reset
+  - Enforce strong password policy
+  - Do not embed credentials in media
+impact: |
+  An attacker can recover the user's password from public media and take over the account. CRITICAL. All users who reuse passwords are at risk.
+timeline:
+  - after: 8h
+    by: team
+    do: comment
+    message: Thanks for the report. Let us look at how this credential was recovered before we categorise it.
+  - after: 1d
+    by: team
+    do: state
+    state: informative
+    message: |
+      We appreciate the write-up. What you've described is a weak/guessable credential that happens to be referenced in content outside the application — recovering it is an OSINT exercise against publicly posted media, not a defect in Bramble Market's code or access controls. Logging in with a valid password is the app working as intended. There's no vulnerability in the application to fix here (nothing we control is disclosing the credential), so we're marking this informative. We'll nudge a reset on the affected account. Thanks for flagging it.

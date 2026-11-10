@@ -1,0 +1,42 @@
+id: BRM-020
+title: Forgotten developer backup file retrievable from /ftp
+vulnerability_information: |
+  Hello team,
+
+  Nice program! I was poking around the `/ftp` directory on {{base_url}} and found that a developer backup file is sitting there that really shouldn't be reachable. When I request it normally I get a `403` saying only `.md` and `.pdf` are allowed, but I found a way around that filter and pulled the file down anyway.
+
+  ## What I did
+  1. Requesting the backup directly is blocked:
+
+  ```
+  GET {{base_url}}/ftp/package.json.bak   -> 403
+  ```
+
+  2. But if I tack on an encoded null byte and a `.md` on the end, the filter is happy and the server hands me the real backup:
+
+  ```
+  GET {{base_url}}/ftp/package.json.bak%2500.md   -> 200
+  ```
+
+  ## What's in it
+  It's a forgotten `package.json.bak` — basically an old copy of the dependency manifest. It reveals the full dependency list and version pins (including some old/odd-looking package names), which is handy reconnaissance and arguably shouldn't be exposed at all.
+
+  I think this is high because exposing a developer backup leaks internal build details. Screenshots attached showing the 403 vs the successful download.
+impact: |
+  Exposure of a forgotten developer backup file reveals the application's full dependency manifest and internal build details, aiding further targeted attacks. I'd rate it high given it's an unintended file disclosure.
+timeline:
+  - after: 5h
+    by: team
+    do: comment
+    internal: true
+    message: Same poison-null-byte bypass as {{report:BRM-019}}, just a different target file under /ftp. Duplicate.
+  - after: 2h
+    by: team
+    do: comment
+    message: Thanks for the report — solid work, and the screenshots are clear.
+  - after: 1d
+    by: team
+    do: state
+    state: duplicate
+    message: |
+      This is the same underlying issue as {{report:BRM-019}}: the retrieval here relies on the poison-null-byte bypass of the `/ftp` extension filter, which was already reported and triaged. The backup file is just another file reachable through that one root cause, so we're closing this as a duplicate of {{report:BRM-019}}. The fix for that report will close this off too. Thanks for the thorough write-up — please do keep them coming.

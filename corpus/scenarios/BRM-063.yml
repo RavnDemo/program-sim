@@ -1,0 +1,61 @@
+id: BRM-063
+title: JWT verification accepts alg=none, allowing forged unsigned tokens
+vulnerability_information: |
+  ## Summary
+  The token verification accepts JWTs with `"alg":"none"`. A forged, unsigned
+  token with an arbitrary payload is treated as authentic, so any identity can be
+  impersonated — including non-existent users the app trusts by email.
+
+  ## Steps to reproduce
+  1. Build a token with header `{"alg":"none","typ":"JWT"}` and payload
+     `{"data":{"email":"jwtn3d@bramble.example"}}`, base64url-encoded, with an
+     empty signature (trailing dot, no bytes):
+
+  ```
+  eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJkYXRhIjp7ImVtYWlsIjoiand0bjNkQGJyYW1ibGUuZXhhbXBsZSJ9fQ.
+  ```
+
+  2. Present it to any authenticated endpoint:
+
+  ```
+  GET {{base_url}}/rest/user/whoami
+  Authorization: Bearer <token above>
+  Cookie: token=<token above>
+  ```
+
+  ## Observed result
+  The request is accepted as the forged identity `jwtn3d@bramble.example`. The
+  server decoded and trusted the token without verifying a signature.
+
+  ## Root cause
+  The verify path does not pin the expected algorithm and allows `none`, so a
+  token with no signature passes verification. Standard JWT `alg:none` confusion.
+impact: |
+  Complete authentication bypass by token forgery: an attacker mints a token for
+  any identity with no key and no signature. Full account impersonation including
+  privileged roles. Critical.
+  CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H (9.8).
+timeline:
+  - after: 50m
+    by: team
+    do: comment
+    internal: true
+    message: Confirmed alg:none accepted. Forged token impersonates at will. Critical, same class to watch for RSA/HS confusion variants.
+  - after: 25m
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced on prod — an unsigned token is accepted and authenticates as the forged email. Critical. Escalating.
+  - after: 10m
+    by: team
+    do: severity
+    rating: critical
+  - after: 7d
+    by: team
+    do: state
+    state: resolved
+    message: Verification now pins the expected algorithm and rejects none (and any mismatch). Forged/unsigned tokens are refused. Verified against your PoC. Thank you.
+  - after: 8h
+    by: team
+    do: bounty
+    amount: 3000

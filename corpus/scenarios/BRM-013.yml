@@ -1,0 +1,40 @@
+id: BRM-013
+title: "CRITICAL: Logout CSRF Vulnerability on Bramble Market"
+vulnerability_information: |
+  Dear Security Team,
+
+  I am reporting a **CRITICAL** Cross-Site Request Forgery (CSRF) vulnerability in the logout functionality.
+
+  ## Summary
+  The logout action is not protected by a CSRF token. An attacker can force a victim to be logged out of their session by tricking them into visiting a malicious page.
+
+  ## Steps to Reproduce
+  1. Log in to {{base_url}}
+  2. Host an attacker page containing an auto-loading request to the logout flow.
+  3. When the victim visits, their session is terminated.
+
+  ## PoC
+  ```html
+  <img src="{{base_url}}/rest/user/logout">
+  ```
+
+  ## Observed Result
+  The victim is logged out without consent. This is a CRITICAL CSRF (CWE-352).
+
+  ## Remediation
+  - Add anti-CSRF tokens
+  - SameSite cookies
+  - Follow OWASP CSRF prevention
+impact: |
+  An attacker can forcibly log victims out, disrupting their experience. CRITICAL denial of session.
+timeline:
+  - after: 10h
+    by: team
+    do: comment
+    message: Thanks for the report. Let us assess the actual impact of a forced logout here.
+  - after: 1d
+    by: team
+    do: state
+    state: informative
+    message: |
+      Logout CSRF is a recognised low-value / best-practice class: the only effect is that a victim is signed out, which changes no state they can't trivially undo by signing back in, and exposes no data. Per our policy, logout CSRF with no further impact is treated as informative. We'll consider a hardening tweak, but there's no security impact to reward here. Thanks for taking the time.

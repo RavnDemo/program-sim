@@ -1,0 +1,43 @@
+id: BRM-037
+title: "CRITICAL: User Registration Accepts Empty Email and Password"
+vulnerability_information: |
+  Dear Bramble Market Security Team,
+
+  I am reporting a **CRITICAL** input validation vulnerability in the user registration API.
+
+  ## Summary
+  The registration endpoint accepts an empty email and empty password, creating a malformed user account. This is a serious validation failure.
+
+  ## Steps to Reproduce
+  1. Send a registration request with empty values:
+
+  ```
+  POST {{base_url}}/api/Users
+  Content-Type: application/json
+
+  {"email":"","password":""}
+  ```
+
+  2. The account is created with no email and no password.
+
+  ## Observed Result
+  A user with empty credentials is created. This is a CRITICAL input validation flaw (CWE-20).
+
+  ## Remediation
+  - Validate all inputs
+  - Enforce required fields
+  - Follow OWASP input validation guidelines
+impact: |
+  Attackers can create malformed accounts with empty credentials, polluting the user database and potentially causing authentication bypass. CRITICAL.
+timeline:
+  - after: 10h
+    by: team
+    do: comment
+    internal: true
+    message: Input-validation nit, no security impact (can't log into an empty-credential account, no bypass shown). Informative.
+  - after: 2h
+    by: team
+    do: state
+    state: informative
+    message: |
+      Thanks for the report. Creating a record with empty fields is a data-quality/validation issue, but you haven't demonstrated any security impact from it — the empty-credential account can't be authenticated into, and there's no bypass, data exposure, or privilege gain shown. We treat validation gaps with no demonstrated impact as informative. We'll tighten the required-field checks as housekeeping, but it isn't a rewardable finding. If you can chain this into an actual auth bypass or data access, please do follow up.

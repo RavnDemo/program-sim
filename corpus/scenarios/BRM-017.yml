@@ -1,0 +1,27 @@
+id: BRM-017
+title: Logged into a Bramble Market account using a password found in a leaked dump
+vulnerability_information: |
+  Hi team,
+
+  I do a fair amount of OSINT, and while trawling some leaked-credential dumps on a paste site I came across a password that turned out to belong to one of your users. I tried it against the login on {{base_url}} and it worked — I got into the account. The password itself was sitting in a third-party leak, not on your site.
+
+  ## Steps
+  1. Found a leaked password on an external paste/dump host.
+  2. Matched it to a Bramble Market user account (the dump included the email).
+  3. Logged in at {{base_url}}/#/login with those credentials — success.
+
+  ## Note
+  I did not change anything in the account. Reporting so you're aware the account is exposed. I rated it low since it's really a credential-reuse issue rather than a flaw in your code, but figured you'd want to know.
+impact: |
+  An attacker who finds this user's leaked password can access their Bramble Market account. Low — it stems from credential reuse and an external leak rather than a defect in the application.
+timeline:
+  - after: 6h
+    by: team
+    do: comment
+    message: Thanks for letting us know, and for not touching the account. Want to make sure we categorise this correctly, though.
+  - after: 1d
+    by: team
+    do: state
+    state: not-applicable
+    message: |
+      We appreciate the heads-up and we'll reach out to the affected user to prompt a reset. That said, this isn't a vulnerability in Bramble Market: the credential was exposed in a third-party breach, and logging in with a valid (if reused) password is the system working as designed. Findings that depend on credentials leaked on external/third-party hosts are out of scope per our policy, so we're marking this not applicable. If you find a way to *obtain* credentials from the application itself, that's a different and very welcome report.

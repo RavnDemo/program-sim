@@ -1,0 +1,62 @@
+id: BRM-106
+title: Expired campaign coupon can still be redeemed
+vulnerability_information: |
+  Hi team,
+
+  I managed to redeem a coupon that should have already expired. The expiry looks like it's
+  decided using a date the client controls, so if I adjust that, the server accepts an old
+  campaign code.
+
+  ### Steps to reproduce
+  1. Find an expired campaign code (there are a few that have rolled off).
+  2. Apply it at checkout.
+  3. It gets accepted and the discount applies.
+
+  ### Observed result
+  The expired code works and the discount is applied to my order. Attaching a screenshot of the
+  applied discount.
+
+  I think the expiry check is comparing against a timestamp it shouldn't trust, but I didn't
+  fully nail down which value — wanted to get it in front of you quickly.
+impact: |
+  Customers can keep redeeming expired promotional codes indefinitely by manipulating their own
+  clock, bypassing campaign time limits and leaking discount revenue. Medium.
+timeline:
+  - after: 5h
+    by: team
+    do: state
+    state: needs-more-info
+    message: Thanks for this. We can see an expired code being accepted on our side too, but we want to confirm the mechanism before we triage. Can you share the exact request you sent when redeeming (the checkout/coupon call and its body/headers), and specifically what you changed to make the expiry pass? A HAR or the raw request would be ideal.
+  - after: 1d
+    by: reporter
+    do: comment
+    message: |
+      Sure! It's the client clock. The campaign code is validated against a date that comes from
+      the browser side, so I set my system clock back to inside the campaign window before applying
+      the code and the server honoured it. Raw request:
+
+      ```
+      POST /rest/basket/<id>/coupon/<expiredCode>
+      ```
+
+      No special body — the trick is purely that my machine's date was rolled back when I sent it,
+      and the expiry comparison trusted a client-influenced timestamp rather than server time.
+  - after: 3h
+    by: team
+    do: state
+    state: triaged
+    message: That's the piece we needed — reproduced by rolling the clock back into the campaign window. The expiry check is trusting a client-side date. Triaged as medium.
+  - after: 10m
+    by: team
+    do: severity
+    rating: medium
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved — coupon expiry is now evaluated against server time only, so a client clock change has no effect. Thanks for the follow-up detail.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 500
+    message: Bounty sent. Thanks for sticking with it through the questions.

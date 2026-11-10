@@ -1,0 +1,46 @@
+id: BRM-123
+title: "CRITICAL: Exposed smart-contract code sandbox allows arbitrary contract deployment"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have discovered a CRITICAL vulnerability: an accidentally deployed code sandbox for writing
+  and compiling smart contracts on the fly is publicly accessible in your application. This
+  Web3/blockchain component should never be exposed and represents a CRITICAL risk.
+
+  ### Steps to Reproduce
+  1. Through content/route discovery I found a hidden sandbox page for authoring smart contracts.
+  2. Navigate to the sandbox.
+  3. You can write and compile contract code directly in the browser.
+
+  ### Proof of Concept
+  ```
+  {{base_url}}/#/<web3-sandbox-route>
+  ```
+  The sandbox loads and accepts Solidity-style contract code for compilation.
+
+  ### Observed Result
+  A fully functional smart-contract sandbox is exposed to the public. An attacker could abuse this
+  Web3 feature to deploy malicious contracts, drain wallets, or mint unauthorized NFTs. This is
+  CRITICAL.
+
+  ### Remediation
+  - Remove the Web3 sandbox from production.
+  - Restrict access to blockchain features.
+  - Deploy a WAF.
+  - Conduct regular penetration testing.
+
+  Please confirm the CRITICAL severity and the bounty.
+impact: |
+  CRITICAL exposure of a Web3 smart-contract sandbox enabling malicious contract deployment,
+  wallet draining and unauthorized NFT minting. CVSS 9.5.
+timeline:
+  - after: 5h
+    by: team
+    do: comment
+    internal: true
+    message: Web3/blockchain surface is explicitly out of scope for this program. No wallet/contract integration in the in-scope storefront. N/A.
+  - after: 1d
+    by: team
+    do: state
+    state: not-applicable
+    message: Thanks for the report. Web3, blockchain, smart-contract and NFT features are explicitly out of scope for this program per our policy — they're experimental and not part of the in-scope storefront or its API. There's also no wallet or contract integration that a visitor could abuse to move funds. Marking this not-applicable as out of scope. Please focus on the in-scope targets at `{{base_url}}` and its API.

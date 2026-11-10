@@ -1,0 +1,53 @@
+id: BRM-040
+title: Deluxe membership obtainable for free by manipulating paymentMode
+vulnerability_information: |
+  ## Summary
+  `POST /rest/deluxe-membership` grants the Deluxe role based on a client-supplied `paymentMode`. The handler charges a wallet or card only for `paymentMode: "wallet"` or `"card"`, but a separate branch still upgrades the user when `paymentMode` is anything else — so sending an unrecognised value grants Deluxe without any payment.
+
+  ## Steps to reproduce
+  1. As a logged-in, non-deluxe user, request the upgrade with a junk payment mode:
+
+  ```
+  POST {{base_url}}/rest/deluxe-membership
+  Authorization: Bearer <token>
+  Content-Type: application/json
+
+  {"paymentMode":"none"}
+  ```
+
+  2. Response: `200 {"status":"success","data":{"confirmation":"Congratulations! You are now a deluxe member!"}}`.
+  3. The account now holds the deluxe role and deluxe benefits — no wallet debit, no card charge.
+
+  ## Root cause
+  Business-logic flaw: the upgrade path isn't gated on a *successful payment*; it treats "not wallet and not card" as a valid, free path (CWE-840, business logic errors).
+
+  ## Observed result
+  Free Deluxe membership (normally a paid upgrade), confirmed by the role change and access to deluxe-only pricing/features without any charge.
+
+  ## Severity
+  Authenticated payment/business-logic bypass with direct revenue impact. CVSS ~7.1 (high).
+impact: |
+  Any user can grant themselves the paid Deluxe membership for free, bypassing payment entirely — direct financial loss and entitlement abuse. High.
+timeline:
+  - after: 1h
+    by: team
+    do: comment
+    message: Reproduced — a bogus paymentMode upgrades the account with no charge. Nice. Triaging.
+  - after: 30m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged high. The upgrade must only happen after a verified successful payment; unknown payment modes will be rejected.
+  - after: 10m
+    by: team
+    do: severity
+    rating: high
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: Deluxe upgrade now requires a confirmed wallet/card payment and rejects any other paymentMode. Verified the free path is closed. Thanks.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500

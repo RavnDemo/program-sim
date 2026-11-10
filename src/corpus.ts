@@ -122,7 +122,8 @@ export function validate(c: Corpus, assets: Record<string, string>, personas: st
       const last = [...s.timeline].reverse().find((t) => t.do === 'state') as { message?: string }
       if (!last?.message?.includes(`{{report:${r.duplicate_of}}}`)) p(`duplicate close must reference {{report:${r.duplicate_of}}}`)
     }
-    const text = JSON.stringify(s)
+    const { row: _row, ...own } = s
+    const text = JSON.stringify(own) // what gets sent; the index row is internal
     for (const ref of text.matchAll(/\{\{report:([A-Z]+-\d+)\}\}/g)) {
       if ((pos.get(ref[1]) ?? Infinity) >= pos.get(r.id)!) p(`references ${ref[1]}, which is filed later`)
     }

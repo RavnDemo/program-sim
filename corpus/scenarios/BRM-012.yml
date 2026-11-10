@@ -1,0 +1,28 @@
+id: BRM-012
+title: "Partnership Opportunity — Boost Bramble Market SEO Rankings #1 on Google"
+vulnerability_information: |
+  Dear Owner / Webmaster,
+
+  Hello! My name is a professional SEO specialist and digital marketing expert. I was reviewing your website {{base_url}} and I noticed it has GREAT potential but is NOT ranking on the first page of Google!!
+
+  I can help you get:
+  - 10,000+ high quality DO-FOLLOW backlinks
+  - #1 ranking for your target keywords
+  - 300% more organic traffic GUARANTEED
+
+  I have a special discount package this month only. We also do:
+  - Social media marketing
+  - Guest posting on DA90+ sites
+  - Press release distribution
+
+  Please reply with your best email and I will send you our full catalog and pricing. Let's grow your business together!
+
+  Looking forward to our partnership.
+impact: |
+  Grow your traffic and sales with our proven SEO services.
+timeline:
+  - after: 1d
+    by: team
+    do: state
+    state: spam
+    message: This is not a security report. Closing as spam.

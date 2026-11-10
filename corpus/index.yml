@@ -249,7 +249,7 @@ scenarios:
   bounty: 0
 - id: BRM-023
   slug: N-cross-program
-  gist: Upstream Juice Shop dependency issue already public upstream; accepted risk.
+  gist: Issue in an upstream open-source dependency, already public upstream; accepted risk.
   reporter: nightjar
   asset: source
   weakness: cwe-1104

@@ -1,0 +1,50 @@
+id: BRM-080
+title: "CRITICAL: Hidden easter egg file exposes confidential data in /ftp"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have discovered a CRITICAL Broken Access Control and information disclosure
+  vulnerability in Bramble Market. There is a hidden "easter egg" file concealed in
+  your file server that exposes confidential internal content.
+
+  ## Proof of Concept
+  1. I enumerated the `/ftp` directory and surrounding paths.
+  2. I located a hidden easter egg file that developers left in the application.
+  3. Accessing it reveals hidden developer content that was not meant to be public.
+
+  ```
+  GET {{base_url}}/ftp/eastere.gg
+  ```
+
+  4. OBSERVE: hidden content is returned, proving unauthorized access to concealed
+     files.
+
+  ## Impact
+  CRITICAL exposure of hidden internal/developer content and broken access control
+  on the file server.
+
+  ## Remediation
+  - Remove all hidden files from the public server.
+  - Implement strict access controls on /ftp.
+  - Audit for other concealed files.
+
+  Please confirm my bounty for this CRITICAL finding.
+impact: |
+  Exposure of hidden developer content via an easter egg file. CRITICAL broken
+  access control.
+timeline:
+  - after: 8h
+    by: team
+    do: comment
+    internal: true
+    message: It's a deliberate easter egg — a joke file with no sensitive data. Not critical, not really a finding. Informative.
+  - after: 1h
+    by: team
+    do: state
+    state: informative
+    message: >-
+      Thanks for the report. The file you found is an intentional easter egg — a bit
+      of developer fun — and it contains no confidential, internal, or customer data;
+      it's meant to be discoverable. There's no sensitive disclosure and no access
+      boundary being crossed to something private, so we're closing this as
+      informative rather than a security issue. Nice bit of enumeration, though.

@@ -1,0 +1,48 @@
+id: BRM-101
+title: "CRITICAL: Unhandled server error leaks stack traces / full application internals"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have discovered a CRITICAL vulnerability in your error handling. By sending malformed input
+  to the API I was able to trigger an unhandled exception that returns a verbose error, exposing
+  internal application details and demonstrating a complete lack of graceful error handling.
+
+  ### Steps to Reproduce
+  1. Send a malformed request to an API endpoint (e.g. a broken JSON body, or an unexpected type
+     where a number is expected).
+  2. Observe the server returns an error response that is neither graceful nor consistent.
+
+  ### Proof of Concept
+  ```
+  POST /api/Feedbacks
+  Content-Type: application/json
+
+  {"rating": [broken json
+  ```
+
+  ### Observed Result
+  The server responds with an error disclosing internal information. This is a CRITICAL
+  information disclosure that hands attackers a roadmap of your backend.
+
+  ### Remediation
+  - Implement global error handling.
+  - Return generic error messages.
+  - Disable stack traces in production.
+  - Deploy a WAF.
+  - Conduct regular penetration testing.
+
+  Please confirm the CRITICAL rating and the bounty amount at your earliest convenience.
+impact: |
+  CRITICAL information disclosure. Verbose error output reveals internal application structure and
+  aids attackers in crafting further exploits. CVSS 9.1.
+timeline:
+  - after: 9h
+    by: team
+    do: comment
+    internal: true
+    message: Error output is generic in prod — no stack trace, no paths, no versions. Inconsistent HTTP status at most. Informative.
+  - after: 1d
+    by: team
+    do: state
+    state: informative
+    message: Thanks for the report. We checked the responses our production environment returns for malformed input — they don't include stack traces, file paths, framework versions, or other internals; it's a generic error with (at worst) an inconsistent status code. Without demonstrated disclosure of sensitive internals or a concrete security impact, this falls under best-practice hardening, so we're marking it informative. We'll smooth out the status-code consistency regardless. Appreciate the submission.

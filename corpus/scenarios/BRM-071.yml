@@ -1,0 +1,47 @@
+id: BRM-071
+title: Password reset security question is guessable (Bjoern's OWASP account)
+vulnerability_information: |
+  Hi team,
+
+  Another instance of the weak password-reset flow — this time against what looks
+  like a secondary account for Bjoern (the OWASP one). The security question asks
+  for a favourite pet's name, which is exactly the kind of thing that's findable
+  online, and answering it lets me set a new password with no email check.
+
+  ## Steps to reproduce
+  1. Go to {{base_url}}/#/forgot-password.
+  2. Enter `bjoern@owasp.org`.
+  3. The security question comes back asking for the favourite pet's name.
+  4. I supplied the answer (which I turned up with a bit of searching) and a new
+     password, and the reset went through.
+  5. Logged in successfully with the new password.
+
+  ## Observed result
+  Same as the other reset reports: the only barrier is a low-entropy, OSINT-able
+  security answer. No token, no email confirmation.
+
+  ## Impact
+  Account takeover of this account. Medium, same mechanism as the other reset
+  findings — I filed it separately in case the accounts are handled differently,
+  but it's the same underlying weakness.
+impact: |
+  Takeover of the account via the security-question-only password reset. Medium.
+timeline:
+  - after: 7h
+    by: team
+    do: comment
+    internal: true
+    message: Same reset weakness as {{report:BRM-069}}. Reporter even says so. Dup, medium.
+  - after: 1h
+    by: team
+    do: severity
+    rating: medium
+  - after: 25m
+    by: team
+    do: state
+    state: duplicate
+    message: >-
+      Thanks, and you're right that it's the same underlying issue. This is the
+      guessable-security-question password reset already tracked in
+      {{report:BRM-069}}; the accounts share the same reset flow, so we're closing
+      this as a duplicate of that report. The fix there covers this account too.

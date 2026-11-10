@@ -1,0 +1,62 @@
+id: BRM-102
+title: Negative basket quantity produces a negative order total (store pays the customer)
+vulnerability_information: |
+  Hi team,
+
+  You can put a negative quantity into the basket and the order total goes negative — effectively
+  the store owes the customer money. The quantity isn't validated as a positive integer on the
+  server.
+
+  ### Steps to reproduce
+  1. Log in, add any product to the basket.
+  2. Update the basket item's quantity to a negative number via the API (the UI stepper won't let
+     you, but the endpoint will).
+  3. View the basket / proceed to checkout.
+
+  ### PoC
+  ```http
+  PUT /api/BasketItems/<basketItemId> HTTP/1.1
+  Host: bramble.example
+  Content-Type: application/json
+  Authorization: Bearer <token>
+
+  {"quantity": -100}
+  ```
+  Line total becomes negative, dragging the order total below zero (or below the price of other
+  items). Screenshot of the basket showing a negative total attached.
+
+  ### Observed result
+  The API accepts the negative quantity and the computed total reflects it — a "make yourself
+  rich" bug. No server-side check that quantity must be a positive integer.
+
+  I'd call this high: it's a direct financial-integrity flaw, and depending on how checkout/
+  refunds are wired it could translate into real money or balance credit.
+impact: |
+  An attacker can drive an order total negative by submitting a negative quantity, undermining
+  payment integrity and potentially extracting store credit or reducing a legitimate order's cost
+  to nothing. Direct financial impact. High.
+timeline:
+  - after: 4h
+    by: team
+    do: comment
+    internal: true
+    message: Repro'd. Quantity accepts negatives server-side; total goes negative. Financial integrity. High.
+  - after: 30m
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced — the basket-item endpoint accepts a negative quantity and the total follows it down. Agreed this is a financial-integrity issue. Triaged as high.
+  - after: 10m
+    by: team
+    do: severity
+    rating: high
+  - after: 7d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved — quantity is now validated as a positive integer on the server for both add and update. Thanks for the clear PoC.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500
+    message: Bounty for a direct financial-impact finding. Thank you.

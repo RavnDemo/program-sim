@@ -1,0 +1,60 @@
+id: BRM-109
+title: SSRF via profile-image URL fetch reaches internal server resources
+vulnerability_information: |
+  Server-side request forgery in the profile-image-by-URL feature.
+
+  `POST /profile/image/url` takes a user-supplied `imageUrl` and the server fetches it. There's
+  no restriction on the target, so the server will make requests to internal/loopback addresses
+  and other resources it can reach but I can't.
+
+  ### Steps
+  1. Authenticate.
+  2. Set the profile image URL to an internal target:
+  ```http
+  POST /profile/image/url HTTP/1.1
+  Host: bramble.example
+  Content-Type: application/x-www-form-urlencoded
+  Cookie: token=<token>
+
+  imageUrl=http://127.0.0.1:<port>/
+  ```
+  3. The server issues the fetch. Timing differences and error/success behaviour between an open
+     and a closed internal port let me infer what's listening, and for endpoints that return a
+     fetchable body the content is pulled in.
+
+  ### Observed
+  The server performs requests to attacker-chosen URLs including loopback and internal hosts —
+  classic SSRF. I was able to distinguish reachable internal endpoints from unreachable ones, and
+  reach a resource through the server that isn't exposed externally.
+
+  Root cause: outbound fetch of a user-controlled URL with no allow-list / no block on internal
+  address ranges. CVSS ~7.7 High.
+impact: |
+  SSRF lets an attacker use the server as a proxy into the internal network: port/host enumeration,
+  reaching internal-only services, and (in cloud deployments) a stepping stone toward metadata
+  endpoints and credential theft. High.
+timeline:
+  - after: 2h
+    by: team
+    do: comment
+    internal: true
+    message: Confirmed outbound fetch of arbitrary URL incl. loopback. No internal-range block. High. Check metadata-endpoint reachability in our deploy.
+  - after: 50m
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced — the image-URL fetch will hit internal/loopback targets. Triaged as high; we're also checking exposure toward cloud metadata in our environment.
+  - after: 10m
+    by: team
+    do: severity
+    rating: high
+  - after: 10d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved — the fetch now enforces an allow-list of schemes/hosts and blocks private, loopback and link-local ranges, with redirects re-validated. No reachability to internal services or metadata remains. Excellent report.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500
+    message: Bounty sent. Thanks for the careful internal-reachability evidence.

@@ -1,0 +1,50 @@
+id: BRM-075
+title: "CRITICAL: Exposed security.txt file reveals internal security contacts"
+vulnerability_information: |
+  Dear Security Team,
+
+  During my assessment of Bramble Market I identified a CRITICAL information
+  disclosure. Your server exposes a `security.txt` file that reveals internal
+  security contact information and policy details to anyone on the internet.
+
+  ## Proof of Concept
+  1. Request the well-known security policy file:
+
+  ```
+  GET {{base_url}}/.well-known/security.txt
+  ```
+
+  2. OBSERVE: the file is publicly served and discloses contact addresses, policy
+     URLs, and other security program details.
+
+  This exposes your security posture and contacts to attackers. CRITICAL.
+
+  ## Impact
+  CRITICAL disclosure of internal security contact and policy information.
+
+  ## Remediation
+  - Remove security.txt from public access.
+  - Restrict the .well-known directory.
+  - Keep security contacts private.
+
+  Please confirm the bounty for this critical disclosure.
+impact: |
+  Public exposure of internal security contacts and policy via security.txt.
+  CRITICAL.
+timeline:
+  - after: 7h
+    by: team
+    do: comment
+    internal: true
+    message: security.txt is an RFC 9116 file that is *meant* to be public. Reporter has the purpose exactly backwards. Informative.
+  - after: 40m
+    by: team
+    do: state
+    state: informative
+    message: >-
+      Thanks for writing in. `security.txt` is a standard file (RFC 9116) that is
+      intentionally published at a well-known public path — its entire purpose is to
+      tell researchers like you how to reach us and where our policy lives. Serving
+      it is correct and deliberate, not a disclosure, and the contacts in it are the
+      ones we publish on purpose. There's no vulnerability here, so we're closing
+      this as informative.

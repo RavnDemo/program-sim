@@ -1,0 +1,41 @@
+id: BRM-096
+title: "CRITICAL: Zero-star rating injection bypasses the 1-5 star validation"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have identified a CRITICAL input validation vulnerability. The feedback rating system is
+  supposed to accept 1 to 5 stars, but by tampering with the request I was able to submit a
+  review with ZERO stars, which the UI does not permit. This is a serious breach of input
+  validation integrity.
+
+  ### Steps to Reproduce
+  1. Open the feedback form.
+  2. Intercept the submission and set the rating value to 0.
+  3. The feedback is accepted with a 0-star rating.
+
+  ### Proof of Concept
+  ```json
+  POST /api/Feedbacks
+  {"captchaId":1,"captcha":"4","comment":"test","rating":0}
+  ```
+
+  ### Observed Result
+  A zero-star review is stored despite the interface only allowing 1-5. This demonstrates a
+  complete failure of server-side validation and could be weaponized at scale.
+
+  ### Remediation
+  - Enforce strict server-side input validation.
+  - Whitelist allowed values.
+  - Deploy a WAF.
+  - Conduct regular pentests.
+
+  Kindly confirm this CRITICAL finding and the associated reward.
+impact: |
+  CRITICAL failure of input validation allowing out-of-range rating values to be persisted,
+  undermining data integrity across the entire feedback system. CVSS 9.1.
+timeline:
+  - after: 1d
+    by: team
+    do: state
+    state: informative
+    message: Thanks for the report. Submitting a 0-star rating doesn't cross a security boundary — there's no impact to another user, no data exposure, and no integrity effect beyond a value the UI happens not to offer. Under our policy a best-practice input-validation nit with no demonstrated impact is informative rather than a vulnerability. We may tighten the range as a hardening step, but we won't be treating this as a security issue. Appreciate you taking the time.

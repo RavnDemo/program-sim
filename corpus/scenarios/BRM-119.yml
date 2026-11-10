@@ -1,0 +1,44 @@
+id: BRM-119
+title: "CRITICAL: Hidden internal admin/metrics page exposed to the public"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have discovered a CRITICAL vulnerability: a hidden, undocumented internal page that is not
+  linked from anywhere in the navigation but is fully accessible to the public. Exposing hidden
+  internal pages is a serious security risk and a clear information disclosure.
+
+  ### Steps to Reproduce
+  1. Through content discovery / inspecting the client-side routing, I found a route that isn't in
+     the main menu.
+  2. Navigate directly to that hidden route in the browser.
+  3. The internal page loads without any restriction.
+
+  ### Proof of Concept
+  ```
+  {{base_url}}/#/<hidden-route>
+  ```
+
+  ### Observed Result
+  A hidden internal page loads for any anonymous visitor. The fact that it is deliberately hidden
+  proves it was meant to be private, and its public exposure is a CRITICAL information disclosure.
+
+  ### Remediation
+  - Remove hidden pages from production.
+  - Require authentication for internal pages.
+  - Deploy a WAF.
+  - Conduct regular penetration testing.
+
+  Please confirm the CRITICAL rating and let me know the bounty.
+impact: |
+  CRITICAL information disclosure via a publicly accessible hidden internal page. CVSS 9.0.
+timeline:
+  - after: 10h
+    by: team
+    do: comment
+    internal: true
+    message: That page is intentionally public — it's a status/overview page, no customer data, no privileged actions, nothing sensitive. "Hidden route" = not in the nav, by design. Informative.
+  - after: 1d
+    by: team
+    do: state
+    state: informative
+    message: Thanks for the report. The page you found is intentionally public — it's an overview/status page with no customer data, no credentials, and no privileged functionality. "Not linked from the menu" isn't the same as "meant to be private"; there's no sensitive information disclosed and no action a visitor can take there. Under our policy, discovering an unlisted-but-intentionally-public page with no demonstrated impact is informative rather than a vulnerability. Appreciate you taking a look.

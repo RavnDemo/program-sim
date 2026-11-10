@@ -1,0 +1,67 @@
+id: BRM-024
+title: Arbitrary file write via zip-slip in the complaint file upload overwrites legal.md
+vulnerability_information: |
+  ## Summary
+  The B2B complaint upload (`/file-upload`) accepts `.zip` archives and extracts them without validating entry paths. An archive entry with a traversal path (`../../ftp/legal.md`) is written to the resolved absolute path, overwriting arbitrary files the process can reach — classic zip-slip.
+
+  ## Steps to reproduce
+  1. Craft a zip whose single entry has a traversal name resolving to the target:
+
+  ```
+  entry name: ../../ftp/legal.md
+  entry body: "pwned by nightjar"
+  ```
+
+  2. Upload it:
+
+  ```
+  POST {{base_url}}/file-upload
+  Content-Type: multipart/form-data; boundary=...
+  (file field: exploit.zip)
+  ```
+
+  3. Fetch the overwritten file:
+
+  ```
+  GET {{base_url}}/ftp/legal.md    -> now contains "pwned by nightjar"
+  ```
+
+  ## Root cause
+  Extraction resolves each entry to an absolute path and writes it without confining to a safe extraction directory; there is no check that the resolved path stays inside the intended folder.
+
+  ## Observed result
+  `ftp/legal.md` is overwritten with attacker content, confirming arbitrary file write. The same primitive can target other writable paths the Node process can reach (config, source, startup files) → RCE-adjacent.
+
+  ## Severity
+  Unauthenticated arbitrary file write. Realistically a path to code execution/defacement. CVSS ~9.1 (critical).
+impact: |
+  An unauthenticated attacker can write arbitrary files on the server via a crafted zip, overwriting application files and plausibly escalating to code execution. Critical.
+timeline:
+  - after: 1h
+    by: team
+    do: comment
+    message: Reproduced — legal.md overwritten from a crafted archive. This is serious; escalating.
+  - after: 30m
+    by: team
+    do: comment
+    internal: true
+    message: Zip-slip, no path confinement on extraction. Treat as critical; audit whether anything worse than legal.md was writable. Patch to confine + reject traversal entries.
+  - after: 20m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged critical. Fix will confine extraction to a sandbox dir and reject entries that escape it.
+  - after: 5m
+    by: team
+    do: severity
+    rating: critical
+  - after: 10d
+    by: team
+    do: state
+    state: resolved
+    message: Extraction is now confined to an isolated directory and any entry resolving outside it is rejected. Verified the traversal archive no longer writes outside the sandbox. Excellent report.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 3000
+    message: Critical bounty — thank you.

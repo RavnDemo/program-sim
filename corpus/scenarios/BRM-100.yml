@@ -1,0 +1,58 @@
+id: BRM-100
+title: Race condition in review "like" lets a single user like the same review repeatedly
+vulnerability_information: |
+  Hi team,
+
+  Small one, but a real bug. The "like" on a product review is supposed to be one-per-user, but
+  there's a race: the handler reads the current like state, then writes, and if you fire several
+  requests concurrently they all pass the check before any of them commit. So I can rack up
+  multiple likes on the same review as the same user.
+
+  ### Steps to reproduce
+  1. Log in, find a product review id.
+  2. Fire several `POST /rest/products/reviews` like-requests for the same review id at the same
+     time (I used a tiny loop with `&` / a burst in Burp Intruder with no delay).
+
+  ### PoC
+  ```bash
+  TOKEN=<token>; RID=<review-id>
+  for i in $(seq 1 20); do
+    curl -s -X POST {{base_url}}/rest/products/reviews \
+      -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' \
+      -d "{\"id\":\"$RID\",\"message\":\"like\"}" &
+  done; wait
+  ```
+  Sending them concurrently is the point — spaced-out requests get correctly rejected after the
+  first.
+
+  ### Observed result
+  The like counter on that review goes up by several from one account. The check-then-update
+  isn't atomic, so concurrent requests all see "not yet liked". Screenshot of the inflated count
+  attached.
+
+  Low severity — it's integrity of a vanity counter, not access or data — but it's a genuine
+  TOCTOU.
+impact: |
+  A single user can inflate (or, used en masse, manipulate) review like counts by racing the
+  non-atomic check-then-update. Impact is limited to the integrity of review popularity signals,
+  so low — but it does let one account masquerade as many votes. Low.
+timeline:
+  - after: 10h
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced with a concurrent burst — spaced requests are rejected, simultaneous ones aren't. Agreed it's a TOCTOU in the like handler. Triaged, low.
+  - after: 15m
+    by: team
+    do: severity
+    rating: low
+  - after: 9d
+    by: team
+    do: state
+    state: resolved
+    message: Fixed — the like is now enforced atomically (unique constraint + guarded update) so concurrent requests can't all pass. Nice, well-scoped report.
+  - after: 2d
+    by: team
+    do: bounty
+    amount: 150
+    message: Bounty for the race-condition find. Thanks!

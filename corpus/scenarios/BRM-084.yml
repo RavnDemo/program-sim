@@ -1,0 +1,55 @@
+id: BRM-084
+title: High-severity vulnerable dependency shipped directly (sanitize-html 1.4.2)
+vulnerability_information: |
+  Hi team,
+
+  I had a look at the dependencies Bramble Market pulls in directly and spotted one
+  with a known high-severity vulnerability. I'm reporting via the contact form as
+  due diligence, with the exact library and version.
+
+  ## Details
+  - Library: **sanitize-html**
+  - Version: **1.4.2**
+
+  This version of sanitize-html has a publicly disclosed high-severity flaw (its
+  sanitizer can be bypassed, allowing XSS to pass through content it's supposed to
+  clean). It's a direct dependency, not a transitive one, so it's squarely yours to
+  bump.
+
+  ## Steps to reproduce
+  1. Inspect the dependency manifest / lockfile.
+  2. Confirm `sanitize-html@1.4.2` is present as a direct dependency.
+  3. Cross-reference against the public advisory for that package/version.
+
+  ## Observed result
+  A directly-used dependency is pinned to a version with a known high-severity
+  advisory and no fix applied.
+
+  ## Impact
+  Depends on where the sanitizer is relied on, but a bypassable HTML sanitizer in
+  production is a real XSS exposure. Reporting the component itself; I'd defer to
+  you on the exact rating. Low-to-medium as a components finding.
+impact: |
+  A direct dependency (sanitize-html 1.4.2) carries a known high-severity
+  advisory; a bypassable sanitizer is an XSS exposure wherever it's trusted. Low
+  as a vulnerable-components finding pending a demonstrated bypass.
+timeline:
+  - after: 7h
+    by: team
+    do: comment
+    internal: true
+    message: Valid component flag, but it's the same "known vulnerable / outdated components" issue already tracked under {{report:BRM-002}}. Rolling it in there. Dup, low.
+  - after: 1h
+    by: team
+    do: severity
+    rating: low
+  - after: 40m
+    by: team
+    do: state
+    state: duplicate
+    message: >-
+      Thanks for the specific library and version — that's exactly how we like these
+      reported. This falls under the known-vulnerable/outdated-component tracking we
+      already opened in {{report:BRM-002}}, where we're handling the dependency
+      upgrades together, so we're closing this as a duplicate of that report. The
+      sanitize-html bump is on that list.

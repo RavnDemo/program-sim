@@ -1,0 +1,56 @@
+id: BRM-056
+title: UNION-based SQL injection in product search dumps all user credentials
+vulnerability_information: |
+  ## Summary
+  `GET /rest/products/search?q=` interpolates `q` into a raw SQL `LIKE` query. A
+  UNION SELECT appends the Users table to the product result set, returning every
+  email and password hash.
+
+  ## Steps to reproduce
+  ```
+  GET {{base_url}}/rest/products/search?q=')) UNION SELECT id,email,password,'4','5','6','7','8','9' FROM Users-- HTTP/1.1
+  ```
+  (column count padded to match the Products projection).
+
+  ## Observed result
+  The JSON product array contains rows whose fields hold user emails and their
+  password hashes, e.g. `admin@bramble.example` with its MD5 hash. All rows from
+  Users are returned.
+
+  ## Root cause
+  ```
+  SELECT * FROM Products WHERE ((name LIKE '%<q>%' OR description LIKE '%<q>%') AND deletedAt IS NULL) ORDER BY name
+  ```
+  `criteria` is user input truncated to 200 chars and concatenated — no binding.
+  The `'))` closes the two predicate parens and the string, then UNION is free.
+impact: |
+  Unauthenticated disclosure of the entire credential store — every user's email
+  and password hash. With the weak MD5 hashing in use these crack quickly,
+  yielding account takeover across the platform including admin. Critical.
+  CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N (7.5) for the dump; chained to
+  takeover it is effectively critical.
+timeline:
+  - after: 45m
+    by: team
+    do: comment
+    internal: true
+    message: Reproduced — full Users dump via UNION on search. Credentials out the door. Critical, pair with the MD5 finding.
+  - after: 20m
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed on prod — the search endpoint returns the Users table via UNION. Escalating as critical. Thank you for the exact column padding.
+  - after: 10m
+    by: team
+    do: severity
+    rating: critical
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: Search is now a parameterised query; UNION payloads return no rows and errors are no longer reflected. Verified against your PoC. Thanks.
+  - after: 12h
+    by: team
+    do: bounty
+    amount: 3000
+    message: Exactly the kind of report we want — minimal, reproducible, correctly scoped. Thank you.

@@ -144,7 +144,7 @@ SYNTHETIC = [
   ['N-nmi-then-valid',   'qf', 'resolved',       'low',  nil, 'api', 'cwe-204', 'User enumeration via different login error; first report vague, needs-more-info, reporter answers with PoC.'],
   ['N-oos-cdn',          'qf', 'not-applicable', 'none', nil, nil,   'cwe-16',  'Misconfiguration on a third-party CDN host Bramble does not own (out of scope).'],
   ['N-oos-staging',      'nj', 'not-applicable', 'none', nil, nil,   'cwe-200', 'Finding on staging host not in scope; reporter asked to retest on production.'],
-  ['N-cross-program',    'nj', 'informative',    'none', nil, 'source', 'cwe-1104', 'Upstream Juice Shop dependency issue already public upstream; accepted risk.'],
+  ['N-cross-program',    'nj', 'informative',    'none', nil, 'source', 'cwe-1104', 'Issue in an upstream open-source dependency, already public upstream; accepted risk.'],
   ['N-dup-of-own',       'qf', 'duplicate',      'medium','directoryListingChallenge', 'web', 'cwe-548', 'Same reporter re-files their own /ftp listing report with a new title.'],
 ]
 SEV_CLAIM = { 'ss' => 'critical' } # slopstorm always claims critical

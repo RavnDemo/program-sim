@@ -1,0 +1,54 @@
+id: BRM-058
+title: "CRITICAL: No rate limiting allows unlimited requests / DoS"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have identified a CRITICAL vulnerability in Bramble Market: the application
+  does NOT implement rate limiting on its endpoints. This allows an attacker to
+  send unlimited requests, leading to Denial of Service, resource exhaustion, and
+  brute-force attacks.
+
+  ## Proof of Concept
+  1. I wrote a small loop to send requests to the feedback/newsletter endpoint:
+
+  ```
+  for i in $(seq 1 100000); do curl -s {{base_url}}/api/Feedbacks -d '...'; done
+  ```
+
+  2. OBSERVE: all requests are accepted, there is no 429 Too Many Requests
+     response and no CAPTCHA throttling. I sent tens of thousands of requests.
+
+  This proves there is no rate limiting, which is a CRITICAL availability and
+  security issue.
+
+  ## Impact
+  Denial of Service, resource exhaustion, and enablement of brute-force attacks.
+  CRITICAL.
+
+  ## Remediation
+  - Implement rate limiting on all endpoints.
+  - Add exponential backoff.
+  - Deploy a WAF with throttling.
+
+  Please advise the bounty for this critical finding.
+impact: |
+  Unlimited requests enable DoS, resource exhaustion, and brute-force. CRITICAL.
+timeline:
+  - after: 5h
+    by: team
+    do: comment
+    internal: true
+    message: No demonstrated impact beyond "I sent a lot of requests". DoS/volumetric testing is explicitly out of scope. Informative.
+  - after: 40m
+    by: team
+    do: state
+    state: informative
+    message: >-
+      Thanks for writing in. Two things: first, denial-of-service and volumetric
+      load testing are out of scope under our program policy, and we ask that you do
+      not run high-volume request loops against production. Second, "no rate limit"
+      on its own, without a concrete demonstrated impact (an account actually
+      brute-forced, a resource actually exhausted to the point of outage), is a
+      best-practice observation rather than a vulnerability we can action here. We
+      are marking this informative. If you can show a specific endpoint being
+      brute-forced to a real result, we would review that as a new report.

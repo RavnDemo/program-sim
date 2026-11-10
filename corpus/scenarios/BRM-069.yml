@@ -1,0 +1,66 @@
+id: BRM-069
+title: Password reset protected only by a guessable security question (Jim)
+vulnerability_information: |
+  Hi team,
+
+  I managed to reset another user's password through the "Forgot Password" flow
+  because the only thing standing in the way is a security question whose answer
+  is easy to find/guess. There's no email verification step or token — answer the
+  question and you set a new password.
+
+  ## Steps to reproduce
+  1. Go to {{base_url}}/#/forgot-password and enter the victim's email
+     (`jim@bramble.example`).
+  2. The app shows the user's chosen security question ("Your eldest siblings
+     middle name?").
+  3. Supply the answer and a new password.
+  4. The account's password is changed and I can now log in as that user.
+
+  ## Observed result
+  The reset succeeds purely on the security-question answer, with no second factor
+  and no email round-trip. Because the question is public-knowledge / guessable,
+  the control doesn't protect the account.
+impact: |
+  Account takeover of any user whose security-question answer can be guessed or
+  OSINT'd, with no email verification required. I think medium.
+timeline:
+  - after: 8h
+    by: team
+    do: state
+    state: needs-more-info
+    message: >-
+      Thanks for the report. We want to make sure we reproduce exactly what you saw:
+      can you share the precise request/response for the reset submission (the
+      endpoint and body), and confirm the exact answer string you used? The question
+      text alone isn't enough for us to verify the bypass end to end.
+  - after: 1d
+    by: reporter
+    do: comment
+    message: >-
+      Sure! The submission goes to POST {{base_url}}/rest/user/reset-password with
+      body {"email":"jim@bramble.example","answer":"Samuel","new":"<newpass>","repeat":"<newpass>"}.
+      It returns 200 and the password is changed — I then logged in with the new
+      password. The answer "Samuel" is the one the flow accepted.
+  - after: 3h
+    by: team
+    do: comment
+    internal: true
+    message: Repro'd with the supplied request. Security-question-only reset, no email step. This is the root pattern for the whole reset cluster. Medium.
+  - after: 40m
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced with your request, thank you. The reset relies only on the security-question answer. Triaged medium.
+  - after: 15m
+    by: team
+    do: severity
+    rating: medium
+  - after: 7d
+    by: team
+    do: state
+    state: resolved
+    message: Reset now requires an emailed, time-limited token in addition to (and ahead of) any security question, and we rate-limit attempts. Thanks for the clear follow-up.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 500

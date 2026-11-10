@@ -1,0 +1,63 @@
+id: BRM-122
+title: Passkey login signature not properly verified — authenticate as passkey-user without the key
+vulnerability_information: |
+  Passkey (WebAuthn) authentication bypass: the login assertion's signature isn't properly
+  verified, so I can sign in as `passkey-user@bramble.example` without ever possessing their
+  authenticator.
+
+  ### Steps
+  1. Request login options for the target to obtain the challenge and the credential id:
+  ```http
+  POST /rest/passkey/login-options HTTP/1.1
+  Host: bramble.example
+  Content-Type: application/json
+
+  {"email":"passkey-user@bramble.example"}
+  ```
+  2. Build a login-verify request echoing the credential id and challenge, but with a signature
+     that is absent/forged/doesn't actually verify against the stored public key.
+  ```http
+  POST /rest/passkey/login-verify HTTP/1.1
+  Host: bramble.example
+  Content-Type: application/json
+
+  {"id":"<victim credential id>","response":{"authenticatorData":"...","clientDataJSON":"...","signature":"<forged>"},"challenge":"<from options>"}
+  ```
+
+  ### Observed
+  The server returns a valid session for `passkey-user` even though the signature does not verify
+  against the registered public key. In other words, the assertion signature check is missing or
+  ineffective — the server trusts the credential id without proving possession of the private key.
+
+  This defeats the entire point of WebAuthn (possession of the private key). Critical —
+  AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H. Root cause: improper verification of the cryptographic
+  signature on the authentication assertion.
+impact: |
+  Complete authentication bypass of the passkey login: an attacker signs in as any passkey user
+  with a forged/absent signature, no device required. Account takeover that defeats the strongest
+  authenticator on the site. Critical.
+timeline:
+  - after: 1h
+    by: team
+    do: comment
+    internal: true
+    message: Confirmed — login-verify issues a session without the assertion signature verifying against the stored pubkey. Core WebAuthn check broken. Critical.
+  - after: 45m
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced — a login-verify with a signature that doesn't validate against the registered public key still yields a session. That's a core verification failure. Triaged critical.
+  - after: 10m
+    by: team
+    do: severity
+    rating: critical
+  - after: 12d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved — the assertion signature is now verified against the stored credential public key, with challenge, origin and user-handle checks enforced, and a failed verification rejects the login. We added regression tests around the verify path. Outstanding report — thank you.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 3000
+    message: Top-band bounty for a critical auth bypass. Much appreciated.

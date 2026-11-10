@@ -13,7 +13,7 @@ const cfg: Config = {
   root: '.',
   program: { program: { handle: 'p', name: 'P', base_url: 'https://b.example', source_url: 'https://g/x' }, assets: { web: 'https://b.example' }, team: { api_identifier: 't' } },
   personas: { hackers: { a: { h1_username: 'a', email: 'a@x' } }, team: {} },
-  cadence: { arrivals: { enabled: true, per_week: 7, jitter: 0, max_per_tick: 1 }, steps: { enabled: true, speed: 1, max_per_tick: 50 }, backfill: { count: 2, speed: 0.5, gap: '1h' } },
+  cadence: { arrivals: { enabled: true, per_week: 7, jitter: 0, max_per_tick: 1 }, steps: { enabled: true, speed: 1, max_per_tick: 50 }, backfill: { count: 2, speed: 0.5, gap: '1h' }, bounties: { enabled: true } },
 }
 
 function corpus(): Corpus {
@@ -105,4 +105,16 @@ test('backfill files on the backfill gap and runs timelines faster', async () =>
   assert.equal(Object.keys(l.scenarios).length, 2)
   assert.equal(l.scenarios['T-001'].speed, 0.5)
   assert.equal(l.backfill, undefined)
+})
+
+test('bounties are skipped, not sent, when disabled', async () => {
+  const c = corpus()
+  const l = emptyLedger('p')
+  const { h1, calls } = recorder()
+  const off = { ...cfg, cadence: { ...cfg.cadence, bounties: { enabled: false } } }
+  const t0 = Date.parse('2026-11-10T00:00:00Z')
+  for (let t = t0; t <= t0 + 10 * H; t += H) await tick(t, c, off, l, h1, { dryRun: true })
+  assert.ok(!calls.some((x) => x.startsWith('bounty')))
+  assert.ok(l.scenarios['T-001'].done)
+  assert.ok(l.log.some((x) => x.detail?.startsWith('skipped: bounties disabled')))
 })

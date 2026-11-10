@@ -1,0 +1,56 @@
+id: BRM-120
+title: Infrastructure-as-Code files accidentally bundled into the web deliverable are publicly served
+vulnerability_information: |
+  Hi team,
+
+  It looks like some Infrastructure-as-Code files got swept into the frontend build and are now
+  being served as static assets on the storefront. These shouldn't be in the web deliverable at
+  all — they describe your infrastructure and can contain things you'd rather not publish.
+
+  ### Steps to reproduce
+  1. Browse the static assets served under the app (I found these by walking the assets path and
+     guessing common IaC filenames).
+  2. Request the IaC files directly, e.g.:
+  ```
+  $ curl -s {{base_url}}/assets/public/<path>/main.tf
+  $ curl -s {{base_url}}/assets/public/<path>/terraform.tfstate
+  ```
+  3. They download and render in the browser.
+
+  ### Observed result
+  Terraform/IaC files are publicly readable from the storefront. Even if the most sensitive
+  values aren't in these particular files, serving infrastructure definitions publicly leaks how
+  your environment is laid out (resource names, regions, module structure) and is a mistake in the
+  build/packaging step. Screenshot of one of the files loading in the browser attached.
+
+  Root cause is a packaging slip — IaC under source control ended up copied into the frontend
+  dist that gets deployed. Medium.
+impact: |
+  Public exposure of infrastructure definitions discloses environment layout, resource naming and
+  module structure useful for targeting further attacks, and risks leaking any sensitive values
+  that sit in those files. A build/packaging defect. Medium.
+timeline:
+  - after: 6h
+    by: team
+    do: comment
+    internal: true
+    message: Confirmed — IaC files are being copied into frontend/dist and served. Packaging bug. Scrub them and fix the build glob. Medium.
+  - after: 45m
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced — those IaC files are indeed being served as static assets. That's a packaging mistake on our side. Triaging as medium while we pull them and fix the build.
+  - after: 10m
+    by: team
+    do: severity
+    rating: medium
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved — the IaC files are removed from the deployed assets and the build no longer copies anything outside the intended static directory. We also reviewed the exposed files for sensitive values. Thanks for catching the packaging slip.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 500
+    message: Bounty sent. Thanks!

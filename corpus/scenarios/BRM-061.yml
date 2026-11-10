@@ -1,0 +1,54 @@
+id: BRM-061
+title: "CRITICAL: Forgotten sales backup file exposed in public directory"
+vulnerability_information: |
+  Dear Security Team,
+
+  I am reporting a CRITICAL Sensitive Data Exposure in Bramble Market. A
+  salesman's forgotten backup file is publicly accessible in your file server,
+  exposing internal business data.
+
+  ## Proof of Concept
+  1. Browse the `/ftp` static area.
+  2. Non-markdown/non-PDF files appear blocked, but the filter can be bypassed by
+     appending a null byte and a fake allowed extension:
+
+  ```
+  GET {{base_url}}/ftp/coupons_2013.md.bak%2500.md
+  ```
+
+  3. OBSERVE: the `.bak` backup file downloads in full, revealing historical sales
+     and coupon data.
+
+  ## Impact
+  Exposure of internal/confidential business backup data to the public internet.
+  CRITICAL.
+
+  ## Remediation
+  - Remove all backup files from the public directory.
+  - Patch the file extension filter against null-byte bypass.
+  - Review the whole /ftp folder for other leftovers.
+
+  Please let me know the bounty for this critical finding.
+impact: |
+  Public exposure of a forgotten sales/coupon backup file containing internal
+  business data. CRITICAL.
+timeline:
+  - after: 6h
+    by: team
+    do: comment
+    internal: true
+    message: Again the null-byte /ftp bypass = {{report:BRM-019}}. coupons_2013.md.bak is just another file behind the same hole. Dup, high.
+  - after: 1h
+    by: team
+    do: severity
+    rating: high
+  - after: 35m
+    by: team
+    do: state
+    state: duplicate
+    message: >-
+      Thanks for flagging it. The %2500 trick you used to pull the backup is the
+      same poison-null-byte filter bypass already reported in {{report:BRM-019}} —
+      the forgotten backup is one of the files that bypass exposes. We are fixing it
+      centrally there and closing this as a duplicate. The underlying issue is rated
+      high on our side.

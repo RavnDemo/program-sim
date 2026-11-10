@@ -1,0 +1,58 @@
+id: BRM-054
+title: Any user can edit another customer's product review (no ownership check)
+vulnerability_information: |
+  Hello Bramble security team,
+
+  I found what looks like a broken access control issue in the product reviews.
+  The edit-review endpoint doesn't seem to check that the review actually belongs
+  to the person editing it, so I was able to change someone else's review text.
+
+  ## Steps I took
+  1. Logged in as my own test account.
+  2. Opened a product page and noted an existing review written by a different
+     customer (the author email showed in the API response for the product's
+     reviews, `GET {{base_url}}/rest/products/1/reviews`).
+  3. Sent an edit for that review using its id:
+
+  ```
+  PATCH {{base_url}}/rest/products/reviews
+  Authorization: Bearer <my token>
+  Content-Type: application/json
+
+  {"id":"<the other user's review id>","message":"edited by someone who is not the author"}
+  ```
+
+  4. The response came back `{"modified":1,...}` and when I reloaded the product
+     page the review now showed my new text, still attributed to the original
+     author. I attached a before/after screenshot.
+
+  I think the handler just takes the id I give it and updates that document
+  without comparing the review's author to my own account.
+
+  ## Impact
+  Anyone can rewrite anyone else's reviews — put words in another customer's
+  mouth, insert misleading or offensive content under their name, etc. I'd call
+  this high because it's a trust/integrity problem across the whole catalogue.
+impact: |
+  An authenticated attacker can silently modify any other user's review,
+  attributing attacker-chosen text to them. Integrity and reputational harm
+  across all products. High.
+timeline:
+  - after: 6h
+    by: team
+    do: comment
+    internal: true
+    message: Same handler and missing scoping as {{report:BRM-052}} — that report's fix (coerce id, drop multi, own-document only) closes this too. Dup, but valid and well-written.
+  - after: 50m
+    by: team
+    do: severity
+    rating: high
+  - after: 30m
+    by: team
+    do: state
+    state: duplicate
+    message: >-
+      Nice find and a clear writeup. This is the same reviews endpoint and the same
+      root cause (no caller/author scoping on the update) already reported in
+      {{report:BRM-052}}; the fix there covers the single-document edit path you
+      showed, so we are closing this as a duplicate of it.

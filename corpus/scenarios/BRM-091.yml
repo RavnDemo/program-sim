@@ -42,4 +42,4 @@ timeline:
     by: team
     do: state
     state: duplicate
-    message: Thanks — reproduced. This is the same underlying problem as {{report:BRM-088}}: stored input rendered without proper output encoding, with sanitisation standing in for it. The feedback comment is another sink for it. We're tracking the fix (consistent server-side output encoding) there, so closing this as a duplicate of {{report:BRM-088}}. Rated high, same as that one.
+    message: Thanks — reproduced. This is the same underlying problem as {{report:BRM-088}} — stored input rendered without proper output encoding, with sanitisation standing in for it. The feedback comment is another sink for it. We're tracking the fix (consistent server-side output encoding) there, so closing this as a duplicate of {{report:BRM-088}}. Rated high, same as that one.

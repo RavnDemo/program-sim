@@ -1,0 +1,58 @@
+id: BRM-082
+title: Deprecated B2B XML upload interface is still reachable
+vulnerability_information: |
+  Hi team,
+
+  I noticed an old B2B interface that looks like it was meant to be retired but is
+  still live. The file-upload endpoint still accepts XML "B2B order/complaint"
+  uploads and processes them, even though the UI no longer offers this and the
+  error text itself calls it deprecated.
+
+  ## Steps to reproduce
+  1. POST an XML file to the upload endpoint:
+
+  ```
+  POST {{base_url}}/file-upload
+  Content-Type: multipart/form-data; ...
+
+  (file field "file" = small.xml containing <order><item>1</item></order>)
+  ```
+
+  2. The server accepts the `.xml` file and runs it through the legacy B2B XML
+     handler. The response even says "B2B customer complaints via file upload have
+     been deprecated for security reasons" — which confirms the path is still
+     wired up and parsing input that was supposed to be shut off.
+
+  ## Observed result
+  A deprecated interface still accepts and parses attacker-supplied XML. On its own
+  I only confirmed it's reachable and parsing; I didn't manage to pull it further,
+  but leaving a deprecated XML parser exposed is risky (it's the kind of surface
+  where XXE-type issues live).
+
+  ## Impact
+  Low as demonstrated — it's an attack surface that should have been removed rather
+  than a proven data-exposure. But a "deprecated for security reasons" XML parser
+  that's still live is a misconfiguration worth closing off.
+impact: |
+  A deprecated B2B XML upload interface remains reachable and parses
+  attacker-supplied XML, leaving an unnecessary (and historically dangerous)
+  attack surface exposed. Low as demonstrated.
+timeline:
+  - after: 1d
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed — the legacy XML upload path still accepts and parses input. Agreed it should be gone. Low, triaged.
+  - after: 30m
+    by: team
+    do: severity
+    rating: low
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: The deprecated B2B XML upload path has been fully removed; the endpoint now rejects XML uploads outright. Thanks for catching that it was still wired up.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 150

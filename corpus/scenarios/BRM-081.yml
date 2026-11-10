@@ -1,0 +1,61 @@
+id: BRM-081
+title: IDOR on /rest/basket/:id lets any user view another customer's basket
+vulnerability_information: |
+  Hi team,
+
+  Found an access-control issue on the basket endpoint. The basket is fetched by a
+  numeric id in the URL, and the server doesn't check that the basket belongs to
+  the requesting user — so by changing the id I can read other customers' baskets.
+
+  ## Steps to reproduce
+  1. Log in as my own account. My basket is id, say, 5.
+  2. Request a different basket id:
+
+  ```
+  GET {{base_url}}/rest/basket/1
+  Authorization: Bearer <my token>
+  ```
+
+  3. The response returns basket 1's contents — products another user added — even
+     though it isn't mine.
+
+  ## Observed result
+  ```
+  {"status":"success","data":{"id":1,"Products":[{"name":"...","price":...}]}}
+  ```
+  I can iterate the id to enumerate other users' baskets. The handler looks up the
+  basket by the id in the path and returns it without comparing it to the basket
+  tied to my session.
+
+  ## Impact
+  Any authenticated user can read any other user's basket contents by guessing or
+  iterating ids. That's a direct object reference leaking other customers' shopping
+  data. I'd rate it high.
+impact: |
+  Horizontal IDOR: any logged-in user can read any other customer's basket by
+  changing the id in the URL, enumerating shopping data across the user base.
+  High.
+timeline:
+  - after: 5h
+    by: team
+    do: comment
+    internal: true
+    message: Repro'd — basket fetched by path id with no ownership check against session bid. Classic IDOR. High.
+  - after: 1h
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed — the basket lookup doesn't verify the id belongs to your session, so iterating ids returns others' baskets. Triaged high. Thanks.
+  - after: 15m
+    by: team
+    do: severity
+    rating: high
+  - after: 7d
+    by: team
+    do: state
+    state: resolved
+    message: The basket endpoint now checks the requested id against the session's own basket and rejects mismatches. Enumeration no longer returns other users' data. Thank you.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500

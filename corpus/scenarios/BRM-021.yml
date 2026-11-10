@@ -1,0 +1,60 @@
+id: BRM-021
+title: Support team's real credentials recoverable from a committed KeePass backup
+vulnerability_information: |
+  ## Summary
+  A KeePass database (`incident-support.kdbx`) left under `/ftp` and present in the published source at {{source_url}} contains the support team's live account credentials. The DB is weakly protected, and once opened it yields the real password for `support@bramble.example`, which authenticates against the production login — no SQLi or other bypass involved.
+
+  ## Steps to reproduce
+  1. Retrieve the backup:
+
+  ```
+  GET {{base_url}}/ftp/incident-support.kdbx
+  ```
+
+  (also present in the repo tree at {{source_url}})
+
+  2. Open the `.kdbx`. The master protection is recoverable from information shipped alongside the app / source.
+  3. Inside is the support account's actual credential. Authenticate:
+
+  ```
+  POST {{base_url}}/rest/user/login
+  {"email":"support@bramble.example","password":"<recovered from kdbx>"}
+  ```
+
+  Login succeeds as the support user.
+
+  ## Observed result
+  Direct account takeover of the support team account using credentials that were committed to the repository and left downloadable.
+
+  ## Severity
+  Exposed hardcoded/committed credentials for a privileged support account → account takeover. CVSS ~8.1 (high).
+impact: |
+  Anyone who finds the committed KeePass backup can log in as the support team and act with its privileges. Committed credentials require rotation plus history purge, not just file removal. High.
+timeline:
+  - after: 4h
+    by: team
+    do: comment
+    message: Confirmed — we were able to recover the support credential from the kdbx and reproduce the login. Rotating that account now.
+  - after: 1h
+    by: team
+    do: comment
+    internal: true
+    message: Rotate support@bramble.example, pull incident-support.kdbx from /ftp and scrub from history. Valid high.
+  - after: 30m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged high. Credential rotated; removing the backup from the repo and from the served directory.
+  - after: 10m
+    by: team
+    do: severity
+    rating: high
+  - after: 8d
+    by: team
+    do: state
+    state: resolved
+    message: Support credential rotated, kdbx removed from /ftp and purged from source history. Thanks for the clear chain.
+  - after: 2d
+    by: team
+    do: bounty
+    amount: 1500

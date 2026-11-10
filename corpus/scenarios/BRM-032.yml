@@ -1,0 +1,31 @@
+id: BRM-032
+title: "CRITICAL SQL INJECTION - FULL DB ACCESS (PoC after payment)"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have found a **CRITICAL** SQL injection vulnerability in your website that gives FULL database access including all customer data, passwords and payment information.
+
+  This is extremely serious and affects your entire company.
+
+  I am an experienced researcher. I will provide the complete proof of concept and the exact vulnerable endpoint **after** we agree on the bounty amount. Please confirm you will pay for critical findings and transfer a good-faith deposit, then I will share everything immediately.
+
+  Trust me, this is the most critical bug you will receive this year. Waiting for your reply ASAP.
+impact: |
+  Full database compromise. All customer data and payments exposed. CRITICAL. Pay first and I share the PoC.
+timeline:
+  - after: 5h
+    by: team
+    do: comment
+    message: |
+      Thanks for reaching out. We don't pay or deposit before a report is validated — that's standard for this program, and the bounty follows a confirmed, reproducible finding. Please share the vulnerable endpoint and reproduction steps and we'll assess it on the merits and reward accordingly if it holds up.
+  - after: 1h
+    by: team
+    do: state
+    state: needs-more-info
+    message: Marking needs-more-info pending the actual endpoint and reproduction steps. We can't triage a finding we can't see.
+  - after: 7d
+    by: team
+    do: state
+    state: not-applicable
+    message: |
+      We followed up requesting the vulnerable endpoint and reproduction steps and received no reply within our response window. With no PoC, no endpoint, and nothing reproducible to assess, there's nothing here we can validate. Closing as not applicable. If you'd like to share the technical details, you're welcome to open a new report — we assess every real finding on its merits, but we don't pay in advance of one.

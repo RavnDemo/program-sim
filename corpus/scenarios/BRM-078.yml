@@ -1,0 +1,50 @@
+id: BRM-078
+title: Weak/guessable credentials on a customer account (Amy)
+vulnerability_information: |
+  Hi team,
+
+  Small one, more of a weak-credential observation than an exploit. I was able to
+  log in as a customer ("Amy") because the account uses a weak, guessable password
+  pattern — a short memorable word padded out with dots. No injection involved,
+  just the actual credentials.
+
+  ## Steps to reproduce
+  1. Through a bit of guesswork around a short memorable base word padded to length
+     with repeated characters, I arrived at Amy's password.
+  2. Logged in normally:
+
+  ```
+  POST {{base_url}}/rest/user/login
+  {"email":"amy@bramble.example","password":"<the guessed password>"}
+  ```
+
+  3. Got a valid token for Amy's account.
+
+  ## Observed result
+  Successful login to another customer's account using a guessable password. It's
+  specific to this account's bad choice rather than a flaw in the app itself.
+
+  ## Impact
+  Low, and honestly borderline — it's one user's weak password, not a systemic
+  bug. Flagging it in case you want to force a reset on accounts with weak
+  credentials. The broader "no password policy" point I'd consider the real issue.
+impact: |
+  One customer account is reachable via a guessable password. Low, and specific to
+  that account's credential choice rather than an application flaw.
+timeline:
+  - after: 10h
+    by: team
+    do: comment
+    internal: true
+    message: Single weak-cred account, no app vuln. The policy gap is covered elsewhere. Informative for this specific-account report.
+  - after: 1h
+    by: team
+    do: state
+    state: informative
+    message: >-
+      Thanks, and we appreciate you being upfront that this is a single account's
+      weak password rather than an application flaw. Guessing one user's credentials
+      isn't a vulnerability in Bramble Market itself, so we're closing this specific
+      report as informative. The systemic point — that we enforce no password policy
+      — is the actionable one, and we're already tracking that separately. We'll
+      prompt a reset on the account you mentioned.

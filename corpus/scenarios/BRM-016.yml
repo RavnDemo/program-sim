@@ -1,0 +1,19 @@
+id: BRM-016
+title: asdkjhaskjdh test report plz ignore
+vulnerability_information: |
+  asdkljhasd test test test
+
+  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  qwerty qwerty 123123 vulnerability???
+
+  is this working
+
+  hello hello testing the submit button
+impact: |
+  test
+timeline:
+  - after: 3h
+    by: team
+    do: state
+    state: spam
+    message: No report content. Closing.

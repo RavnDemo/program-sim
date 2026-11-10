@@ -1,0 +1,52 @@
+id: BRM-125
+title: "CRITICAL: Arbitrary file upload — any file type accepted, full server compromise possible"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have discovered a CRITICAL arbitrary file upload vulnerability. The file-upload feature is
+  supposed to only allow .pdf or .zip files, but I was able to upload a file with a completely
+  different extension, which could lead to REMOTE CODE EXECUTION and FULL SERVER COMPROMISE.
+
+  ### Steps to Reproduce
+  1. Go to the complaint page file upload.
+  2. Intercept the upload and change the filename to a non-.pdf/.zip extension.
+  3. The file is accepted despite not being an allowed type.
+
+  ### Proof of Concept
+  ```
+  POST /file-upload
+  Content-Disposition: form-data; name="file"; filename="shell.xml"
+
+  <payload>
+  ```
+
+  ### Observed Result
+  A file with a disallowed extension is accepted, bypassing the type restriction. This could allow
+  an attacker to upload malicious files and achieve REMOTE CODE EXECUTION, leading to CRITICAL
+  full server compromise.
+
+  ### Remediation
+  - Enforce strict file-type validation (magic bytes, not just extension).
+  - Store uploads outside the web root.
+  - Deploy a WAF.
+  - Conduct regular penetration testing.
+
+  Please confirm the CRITICAL severity and advise on the bounty.
+impact: |
+  CRITICAL arbitrary file upload that bypasses type restrictions, potentially leading to remote
+  code execution and full server compromise. CVSS 9.8.
+timeline:
+  - after: 7h
+    by: team
+    do: comment
+    internal: true
+    message: Same upload-validation gap as {{report:BRM-124}} (type side rather than size). No code execution demonstrated — uploads aren't served/executed. Real sev low. Dupe.
+  - after: 1h
+    by: team
+    do: severity
+    rating: low
+  - after: 20m
+    by: team
+    do: state
+    state: duplicate
+    message: Thanks for the report. Accepting a disallowed extension is the same upload-validation weakness we're already tracking in {{report:BRM-124}} (size there, type here) — one input-validation root cause on the same endpoint. Note no code execution is possible — uploaded files aren't served from the web root or executed, so the "RCE / full server compromise" claim isn't demonstrated and we've rated the class low. Closing as a duplicate of {{report:BRM-124}}.

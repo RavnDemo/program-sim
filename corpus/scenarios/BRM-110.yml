@@ -1,0 +1,62 @@
+id: BRM-110
+title: Server-side code execution via unsafe evaluation of B2B order payload
+vulnerability_information: |
+  The B2B order endpoint evaluates attacker-controlled JavaScript server-side.
+
+  `POST /b2b/v2/orders` passes the `orderLinesData` field into a server-side evaluator. The
+  sandbox caps execution, so a runaway loop is *blocked* rather than running forever — but the
+  fact that my code runs at all on the server is the finding. Blocked-or-not, this is arbitrary
+  code evaluation of request data.
+
+  ### Steps
+  1. Authenticate (B2B path requires auth).
+  2. Send an order with `orderLinesData` set to code rather than data.
+
+  ### PoC
+  ```http
+  POST /b2b/v2/orders HTTP/1.1
+  Host: bramble.example
+  Content-Type: application/json
+  Authorization: Bearer <token>
+
+  {"orderLinesData":"(function(){ while(true){} })()"}
+  ```
+  The evaluator runs my expression and the execution is terminated by the sandbox's iteration/
+  time cap — the response reflects that the loop was detected and stopped. Swapping the body for
+  a benign expression that returns a value (e.g. an arithmetic expression with observable output)
+  confirms my input is being executed, not parsed as data.
+
+  ### Observed
+  Request-supplied code executes in the server process. The sandbox limits a pathological loop,
+  but a sandbox is not a security boundary against arbitrary evaluation — this is remote code
+  execution surface. CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H → Critical.
+impact: |
+  Attacker-supplied code is evaluated in the server process via the order payload. Even with the
+  current loop guard, evaluation of untrusted input server-side is critical — sandbox escapes are
+  a known, ongoing risk and the exposure is arbitrary code execution, not merely resource use.
+  Critical.
+timeline:
+  - after: 1h
+    by: team
+    do: comment
+    internal: true
+    message: Confirmed orderLinesData is eval'd in a vm/notevil sandbox. Loop guard fires but input is executing. This is the RCE surface, not a DoS. Critical.
+  - after: 30m
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced — the order payload is being evaluated server-side; the loop guard stopping a runaway expression actually confirms execution. We're treating this as code-execution surface, not DoS. Triaged critical.
+  - after: 10m
+    by: team
+    do: severity
+    rating: critical
+  - after: 12d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved — `orderLinesData` is now parsed as structured data only; the evaluation path is removed entirely, so there's no execution of request content. Thanks for drawing the line between the sandbox limit and the real issue.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 3000
+    message: Top-band bounty for a code-execution finding. Thank you.

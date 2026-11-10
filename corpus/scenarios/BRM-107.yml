@@ -1,0 +1,57 @@
+id: BRM-107
+title: Stored XSS via the REST product API, no frontend involved
+vulnerability_information: |
+  Stored XSS written through the REST product API and rendered later in the product view.
+
+  The product `description`/`name` accepted via the API is stored and rendered without encoding.
+  The whole attack is API-only — I never touch the SPA.
+
+  ### Steps
+  1. Authenticate, obtain a token.
+  2. Create/update a product directly via the API with an iframe payload in a text field.
+  3. Load the product — payload executes for anyone viewing it.
+
+  ### PoC
+  ```http
+  POST /api/Products HTTP/1.1
+  Host: bramble.example
+  Content-Type: application/json
+  Authorization: Bearer <token>
+
+  {"name":"xss","description":"<iframe src=\"javascript:alert(`xss`)\">","price":1}
+  ```
+
+  ### Observed
+  The payload is persisted on the product and rendered unescaped in the product detail view,
+  executing in every viewer's session. Purely via the API — demonstrates the sink isn't guarded
+  by anything the frontend does.
+
+  Root cause: no server-side output encoding on product text fields. CVSS ~7.4 High.
+impact: |
+  Stored XSS affecting every visitor who views the poisoned product, reachable entirely through
+  the API without the frontend's input path. Mass session hijacking and drive-by actions. High.
+timeline:
+  - after: 2h
+    by: team
+    do: comment
+    internal: true
+    message: Repro'd via API only. Product text fields rendered unencoded. High. Distinct sink from the username/feedback XSS.
+  - after: 40m
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced straight through the API as described — the product fields are stored and rendered without encoding. Triaged as high.
+  - after: 5m
+    by: team
+    do: severity
+    rating: high
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved — product text fields are encoded on output and validated on the API write path. Thanks for showing it's API-reachable independent of the SPA.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500
+    message: Bounty sent. Clean, minimal PoC as always.

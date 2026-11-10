@@ -1,0 +1,55 @@
+id: BRM-060
+title: "CRITICAL: Exposed internal SIEM signature file leaks detection rules"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have found a CRITICAL information disclosure vulnerability in Bramble Market. A
+  sensitive internal SIEM detection signature file (a Sigma rule) has been left
+  accessible in your public file area. This exposes your internal security
+  monitoring logic to attackers.
+
+  ## Proof of Concept
+  1. Enumerate the static file area under `/ftp`.
+  2. The directory normally blocks non-downloadable extensions, but the guard can
+     be bypassed with a trailing null byte on the filename:
+
+  ```
+  GET {{base_url}}/ftp/suspicious_errors.yml%2500.md
+  ```
+
+  3. OBSERVE: the `.yml` Sigma signature file is served in full, revealing your
+     SIEM detection rules.
+
+  ## Impact
+  Attackers learn exactly what your monitoring detects and can craft attacks to
+  evade it. CRITICAL.
+
+  ## Remediation
+  - Remove the file from the public directory immediately.
+  - Fix the extension filtering to reject null bytes.
+  - Audit the entire /ftp directory.
+
+  Please advise on the bounty for this critical disclosure.
+impact: |
+  Exposure of internal SIEM detection signatures allows attackers to tune their
+  activity to evade monitoring. CRITICAL.
+timeline:
+  - after: 4h
+    by: team
+    do: comment
+    internal: true
+    message: The access mechanism is the poison-null-byte /ftp bypass from {{report:BRM-019}}. The signature file is just one of the files it reaches. Dup of that, which we rate high.
+  - after: 1h
+    by: team
+    do: severity
+    rating: high
+  - after: 40m
+    by: team
+    do: state
+    state: duplicate
+    message: >-
+      Thanks for the report. The way you reached this file — the trailing null byte
+      that defeats the /ftp extension filter — is the same vulnerability already
+      reported in {{report:BRM-019}}. The misplaced signature file is one of several
+      things that bypass exposes, so we are tracking the fix there and closing this
+      as a duplicate. We rate the underlying null-byte issue high.

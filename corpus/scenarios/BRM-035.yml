@@ -1,0 +1,40 @@
+id: BRM-035
+title: Product blueprint file downloadable, allowing a paid product to be reproduced for free
+vulnerability_information: |
+  Hi team,
+
+  Hope all's well. I was browsing the product images on {{base_url}} and noticed one of the products has a 3D-printing blueprint file that's just sitting in the public assets, downloadable by anyone. Since the product is sold for money, exposing the blueprint basically lets someone reproduce it themselves and skip buying it — depriving you of the sale.
+
+  ## Steps to reproduce
+  1. Look at the product whose description hints at a downloadable design file.
+  2. The blueprint is served from the public image/assets path, e.g.:
+
+  ```
+  GET {{base_url}}/assets/public/images/products/BrambleMarket.stl
+  ```
+
+  3. The `.stl` blueprint downloads directly — no auth, no purchase.
+
+  ## Why low
+  It's not customer data or a classic security bug — it's more of a business-logic / IP exposure. But it does let people get for free something you intend to charge for, so I'm filing it as low. Screenshot of the downloaded file attached.
+impact: |
+  The downloadable blueprint lets anyone reproduce a for-sale product without paying, costing the shop sales (IP/business-logic exposure). Low — no customer data or classic security impact.
+timeline:
+  - after: 7h
+    by: team
+    do: comment
+    message: Thanks — confirmed the .stl is served from the public assets without any gate. Agreed it shouldn't be freely downloadable.
+  - after: 1d
+    by: team
+    do: state
+    state: triaged
+    message: Triaged low. We'll move the blueprint out of the public assets and gate it behind purchase.
+  - after: 4d
+    by: team
+    do: state
+    state: resolved
+    message: Blueprint removed from the public path; it now requires a valid purchase to access. Thanks for the catch.
+  - after: 2d
+    by: team
+    do: bounty
+    amount: 150

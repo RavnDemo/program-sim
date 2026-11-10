@@ -1,0 +1,58 @@
+id: BRM-029
+title: Mass-assignment on user registration lets anyone self-register as admin
+vulnerability_information: |
+  ## Summary
+  `POST /api/Users` (registration) binds the request body straight to the user model, including the `role` attribute. Supplying `"role":"admin"` at signup creates an administrator account — privilege escalation with no authorisation at all.
+
+  ## Steps to reproduce
+  1. Register with an extra `role` field:
+
+  ```
+  POST {{base_url}}/api/Users
+  Content-Type: application/json
+
+  {"email":"attacker@bramble.example","password":"Passw0rd!","role":"admin"}
+  ```
+
+  2. Response `201` with `"role":"admin"` on the created user.
+  3. Log in as that account and exercise admin-only functionality (user list, product management) — all accepted.
+
+  ## Root cause
+  The create handler does not whitelist assignable fields, so client-controlled `role` is persisted (CWE-915, mass assignment / improperly controlled modification of object attributes).
+
+  ## Observed result
+  A freshly-registered, attacker-chosen account holds the admin role and passes the server-side admin authorization checks.
+
+  ## Severity
+  Unauthenticated privilege escalation to administrator. CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H ≈ 9.8 (critical).
+impact: |
+  Anyone can register an administrator account in a single request, gaining full control over users, products, and orders. Critical.
+timeline:
+  - after: 45m
+    by: team
+    do: comment
+    message: Reproduced — the account came back with role admin and passed the admin endpoints. Escalating.
+  - after: 20m
+    by: team
+    do: comment
+    internal: true
+    message: Mass assignment on registration; role must never be client-settable. Critical. Audit for any admin accounts created this way.
+  - after: 15m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged critical. Registration will whitelist assignable fields and force role server-side.
+  - after: 5m
+    by: team
+    do: severity
+    rating: critical
+  - after: 9d
+    by: team
+    do: state
+    state: resolved
+    message: Registration now ignores client-supplied role (and other privileged fields); the payload creates an ordinary customer. Verified. We also audited for accounts created via this path. Thank you.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 3000
+    message: Critical bounty for a clean privilege-escalation report.

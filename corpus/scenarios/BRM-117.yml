@@ -1,0 +1,43 @@
+id: BRM-117
+title: Security question answer recoverable from photo metadata, enabling password reset
+vulnerability_information: |
+  Hi team,
+
+  This is a bit of an OSINT chain but it works. On the Photo Wall there's an image uploaded by
+  the user John, and the photo's embedded metadata gives away the answer to his account security
+  question. With that answer I can reset his password through Forgot Password and take the
+  account.
+
+  ### Steps to reproduce
+  1. Browse the Photo Wall and find John's upload.
+  2. Download the image and read its EXIF metadata — the geolocation/place tags reveal the sort
+     of detail his security question asks about (a place-based question). I used `exiftool`:
+  ```
+  $ exiftool john-photo.jpg | grep -i gps
+  ```
+  3. Resolve those coordinates to the place name and use it as the security-question answer in
+     Forgot Password for `john@bramble.example`.
+  4. Set a new password; log in as John.
+
+  ### Observed result
+  The EXIF data hands over exactly what the security question wants, and the reset goes through.
+  Account taken over. Screenshot of the EXIF dump (location redacted) and the successful reset
+  attached.
+
+  Two issues braided together: the photo retains sensitive metadata, and the account recovery
+  leans on a security question that's discoverable. I'd rate it medium.
+impact: |
+  An attacker can recover a user's security-question answer from publicly posted photo metadata
+  and use the Forgot Password flow to take over the account. Chained OSINT + weak recovery.
+  Medium.
+timeline:
+  - after: 7h
+    by: team
+    do: comment
+    internal: true
+    message: Recovery-via-security-question is the same weakness as {{report:BRM-069}}. EXIF just supplies the answer here. Dupe, medium.
+  - after: 1h
+    by: team
+    do: state
+    state: duplicate
+    message: Nice chain, thank you. The core security issue — account recovery gated on a discoverable security-question answer — is the one we're already tracking in {{report:BRM-069}}. The EXIF metadata is one way to obtain the answer; the fix we're pursuing there (moving off security questions to token-based reset) closes this path too. Closing as a duplicate of {{report:BRM-069}}. We'll also strip metadata from Photo Wall uploads as a hardening step. Rated medium.

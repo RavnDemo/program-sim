@@ -1,0 +1,52 @@
+id: BRM-079
+title: Permissive CORS / misconfiguration on a third-party CDN host
+vulnerability_information: |
+  Hi team,
+
+  While mapping the assets that load on {{base_url}} I noticed one of the static
+  asset hosts has a loose configuration — it returns a wildcard
+  `Access-Control-Allow-Origin` and some permissive headers. I wanted to flag it,
+  though I realise it may not be a host you actually control.
+
+  ## Steps to reproduce
+  1. Watch the network panel while loading {{base_url}} and note the CDN host
+     serving some of the images/scripts (a `*.cdn-provider.example`-style domain,
+     not bramble.example itself).
+  2. Request an asset from that host with an arbitrary Origin:
+
+  ```
+  curl -s -I -H "Origin: https://attacker.test" https://<cdn-host>/<asset>
+  ```
+
+  3. The response comes back with `Access-Control-Allow-Origin: *` and no
+     restriction on the origin.
+
+  ## Observed result
+  The CDN host reflects/wildcards CORS for static assets. For public static files
+  this is often intentional, but combined with the other permissive headers I
+  thought it was worth raising.
+
+  ## Impact
+  Low, and possibly not applicable depending on ownership — the host is a
+  third-party CDN, not a Bramble-owned domain. No Bramble-owned asset or
+  credentialed endpoint is affected that I could find.
+impact: |
+  Permissive CORS on a third-party CDN host. Low, and likely out of your control
+  since the host isn't a Bramble-owned domain. Raising for awareness.
+timeline:
+  - after: 1d
+    by: team
+    do: comment
+    internal: true
+    message: Host is the CDN provider's, not ours. Wildcard CORS on public static assets is expected there anyway. Out of scope → N/A.
+  - after: 3h
+    by: team
+    do: state
+    state: not-applicable
+    message: >-
+      Thanks, and thanks for noting the ownership caveat yourself. That host is a
+      third-party CDN we don't own or configure, which puts it outside the scope of
+      this program (which covers Bramble-owned assets — the web app and API). A
+      wildcard CORS header on public, non-credentialed static files is also the
+      expected behaviour there. We're marking this not applicable on scope grounds.
+      Appreciate the awareness flag.

@@ -1,0 +1,59 @@
+id: BRM-116
+title: CSP bypass enables script-based XSS via username on a legacy page
+vulnerability_information: |
+  XSS on a legacy page, bypassing the Content-Security-Policy, via the username field.
+
+  There's an older page in the app that carries a weaker/overridable CSP than the main SPA. The
+  username is rendered there without encoding, and the CSP in force on that page doesn't block
+  inline script, so a `<script>` payload in the username actually executes — not just an iframe
+  trick.
+
+  ### Steps
+  1. Authenticate; set the username to a script payload (via the API path, to avoid the SPA's
+     own filtering):
+  ```http
+  POST /profile HTTP/1.1
+  Host: bramble.example
+  Content-Type: application/x-www-form-urlencoded
+  Cookie: token=<token>
+
+  username=<script>alert(`xss`)</script>
+  ```
+  2. Navigate to the legacy page that renders the username.
+
+  ### Observed
+  The inline `<script>` runs — the legacy page's CSP doesn't carry the script-src restrictions
+  the main app relies on, so the usual "CSP would have stopped this" defence isn't present here.
+  This is a true script-execution XSS, not an iframe/javascript-URI workaround.
+
+  Two defects compound: unencoded username output on that page, and a CSP that differs (weaker)
+  from the rest of the app. CVSS ~7.4 High.
+impact: |
+  Inline-script XSS that defeats the app's CSP by living on a page whose policy is weaker,
+  executing in the victim's authenticated session. Session theft and account actions, with the
+  CSP safety net absent. High.
+timeline:
+  - after: 3h
+    by: team
+    do: comment
+    internal: true
+    message: Repro'd — legacy page has a looser CSP and renders username unencoded, so inline script runs. Both the encoding and the CSP divergence need fixing. High.
+  - after: 40m
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced — the legacy page's CSP doesn't carry our script-src restrictions and the username is rendered unencoded there, so the inline script executes. Triaged high. We'll fix both the output encoding and the policy divergence.
+  - after: 10m
+    by: team
+    do: severity
+    rating: high
+  - after: 8d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved — the legacy page now serves the same strict CSP as the rest of the app and the username is encoded on output. Thanks for separating the encoding bug from the CSP gap; both are closed.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500
+    message: Bounty sent. Nice CSP-bypass write-up.

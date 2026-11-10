@@ -1,0 +1,45 @@
+id: BRM-111
+title: B2B order payload evaluation can occupy the server without an infinite loop
+vulnerability_information: |
+  Hi team,
+
+  Building on the idea that the B2B order endpoint evaluates the `orderLinesData` field, I found
+  you don't actually need an infinite loop to tie the server up — a blocking expression that
+  takes a long time but isn't technically infinite slips past the loop guard and keeps the
+  request (and a worker) busy for a while.
+
+  ### Steps to reproduce
+  1. Authenticate for the B2B path.
+  2. Send an order where `orderLinesData` is an expensive-but-finite expression, e.g. a large
+     busy computation or a long synchronous delay, rather than `while(true)`.
+
+  ### PoC
+  ```http
+  POST /b2b/v2/orders HTTP/1.1
+  Host: bramble.example
+  Content-Type: application/json
+  Authorization: Bearer <token>
+
+  {"orderLinesData":"var x=0; for(var i=0;i<5e9;i++){ x+=i; } x"}
+  ```
+  Because it isn't an infinite loop, the "infinite loop detected" guard doesn't trip the same
+  way — the evaluator just chews on it and the server is occupied until the time cap. Response is
+  delayed / the worker is tied up. Screenshot of the long response time attached.
+
+  So the sandbox's loop detection doesn't cover expensive finite work. I'd call it critical since
+  it's the same server-side evaluation of my input.
+impact: |
+  Attacker-supplied code runs server-side and can occupy a worker with expensive finite
+  computation that evades the loop guard, degrading availability — on top of being the same
+  arbitrary-evaluation problem. Critical.
+timeline:
+  - after: 4h
+    by: team
+    do: comment
+    internal: true
+    message: Same eval-of-orderLinesData root cause as {{report:BRM-110}} — just a finite-but-costly expression instead of an infinite loop. Dupe, critical.
+  - after: 45m
+    by: team
+    do: state
+    state: duplicate
+    message: Thanks — this is the same server-side evaluation of the order payload we're already tracking in {{report:BRM-110}}. The finite-vs-infinite distinction is a property of the loop guard, but the root cause (and the fix — removing the evaluation path entirely) is identical, and it covers this case. Closing as a duplicate of {{report:BRM-110}}. Agreed on critical for the class.

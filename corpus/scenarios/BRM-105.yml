@@ -1,0 +1,37 @@
+id: BRM-105
+title: Verbose version banner and debug headers on staging host
+vulnerability_information: |
+  Information disclosure on a staging host.
+
+  While enumerating I found a staging instance (hostname `staging-bramble.internal-dev.example`,
+  resolved off a CNAME I came across) that returns a verbose version banner and debug headers
+  the production site doesn't.
+
+  ### Repro
+  ```
+  $ curl -sI https://staging-bramble.internal-dev.example/
+  Server: <framework>/<exact-version>
+  X-Debug-Mode: on
+  X-Powered-By: <stack> <version>
+  ```
+
+  ### Observed
+  Exact framework/stack versions and a debug-mode header exposed. Useful for fingerprinting and
+  targeting known CVEs against that version.
+
+  Flagging as low. Note this is the staging host, not `{{base_url}}` — I couldn't find the same
+  headers on production, but reporting in case the same build ships.
+impact: |
+  Version and debug-header disclosure easing targeted attacks against the identified build. Low,
+  and observed on staging only.
+timeline:
+  - after: 2h
+    by: team
+    do: comment
+    internal: true
+    message: Host isn't production and isn't in our structured scope. Prod doesn't return these headers. N/A — ask them to retest prod.
+  - after: 40m
+    by: team
+    do: state
+    state: not-applicable
+    message: Thanks for the report. The host you tested (`staging-bramble.internal-dev.example`) is a staging environment and isn't part of this program's scope — only `{{base_url}}` and its API are in scope per our policy. We confirmed production doesn't return those debug headers or version banner. If you can reproduce anything equivalent against the in-scope production target, please do open a fresh report and we'll dig in. Marking this one not-applicable as out of scope.

@@ -1,0 +1,58 @@
+id: BRM-014
+title: Server access logs exposed and directory-listed under /support/logs
+vulnerability_information: |
+  ## Summary
+  `/support/logs` serves a browsable directory index, and `/support/logs/:file` streams the raw server access logs. The access log records request lines including query strings, so it leaks tokens, reset links, and PII that passed through the URL.
+
+  ## Steps to reproduce
+  1. Browse the index:
+
+  ```
+  GET {{base_url}}/support/logs
+  ```
+
+  Returns an HTML directory listing of the log files.
+
+  2. Fetch a log directly:
+
+  ```
+  GET {{base_url}}/support/logs/access.log
+  ```
+
+  Returns the plaintext access log. Rotated files (`access.log.2026-...`) are listed and downloadable the same way.
+
+  ## Observed result
+  Full server access history is readable unauthenticated. The log contains request URLs with sensitive query parameters — password-reset tokens, auth artifacts, and customer identifiers that were ever sent in a URL.
+
+  ## Severity
+  Unauthenticated disclosure of logs containing sensitive data and live/near-live tokens. CVSS ~7.5 (high). Note the `:file` handler blocks `/` but not other traversal vectors; even without traversal the log contents alone are the finding.
+impact: |
+  Anyone can read the server's access logs, harvesting reset tokens and PII logged in request URLs — directly usable for account takeover. High.
+timeline:
+  - after: 2h
+    by: team
+    do: comment
+    message: Confirmed — the index and access.log are both reachable without auth. Pulling this behind access control now.
+  - after: 1h
+    by: team
+    do: comment
+    internal: true
+    message: Logs do contain reset tokens in URLs. Treat as disclosure + rotate anything still valid. Valid high.
+  - after: 40m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged high. We're both restricting /support/logs and reviewing what was exposed.
+  - after: 10m
+    by: team
+    do: severity
+    rating: high
+  - after: 5d
+    by: team
+    do: state
+    state: resolved
+    message: /support/logs now requires authorization and the directory index is off. We've also invalidated tokens that appeared in the exposed logs. Thanks.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500

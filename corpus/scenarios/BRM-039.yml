@@ -1,0 +1,63 @@
+id: BRM-039
+title: NoSQL injection in order tracking exfiltrates all orders
+vulnerability_information: |
+  ## Summary
+  `GET /rest/track-order/:id` interpolates the `id` path parameter directly into a MongoDB `$where` JavaScript predicate (`this.orderId === '<id>'`). The value isn't escaped, so a crafted `id` breaks out of the string and turns the predicate into one that matches every document, returning all orders — not just the caller's.
+
+  ## Steps to reproduce
+  1. Normal lookup returns a single order:
+
+  ```
+  GET {{base_url}}/rest/track-order/5267-abc
+  ```
+
+  2. Inject a predicate that always evaluates true:
+
+  ```
+  GET {{base_url}}/rest/track-order/'||'1'=='1
+  ```
+
+  URL-encoded:
+
+  ```
+  GET {{base_url}}/rest/track-order/%27%7C%7C%271%27%3D%3D%271
+  ```
+
+  ## Observed result
+  The response `data` array contains every order in the collection (multiple orders, other customers' orderIds, products, totals and delivery info), confirming the `$where` predicate was subverted to match all records.
+
+  ## Root cause
+  User input concatenated into a server-side `$where` JS expression (CWE-943, improper neutralization of data within a query). `$where` executes JS, so this is also an injection into a code context.
+
+  ## Severity
+  Unauthenticated bulk disclosure of all order records (PII: emails, addresses, purchase history). CVSS ~7.5 (high).
+impact: |
+  An unauthenticated attacker dumps every order in the system — customer emails, delivery addresses, and purchase history — via one crafted tracking id. High.
+timeline:
+  - after: 1h
+    by: team
+    do: comment
+    message: Reproduced — the injected id returns the full orders collection. Thanks. Escalating to a fix.
+  - after: 40m
+    by: team
+    do: comment
+    internal: true
+    message: $where predicate built by string concat on track-order id. Parameterise / drop $where, validate id. Valid high; this leaks PII across all customers.
+  - after: 20m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged high. We'll remove the $where concatenation and constrain the id to its expected format.
+  - after: 10m
+    by: team
+    do: severity
+    rating: high
+  - after: 7d
+    by: team
+    do: state
+    state: resolved
+    message: Order tracking no longer builds a $where predicate from input and the id is validated; the injection now returns only the matching order (or none). Verified. Thank you.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500

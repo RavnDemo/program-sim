@@ -1,0 +1,55 @@
+id: BRM-099
+title: Hardcoded valid test-account credentials shipped in the client-side JavaScript
+vulnerability_information: |
+  Hi team,
+
+  Going through your front-end bundle I found hardcoded credentials for what looks like a leftover
+  testing account. They're baked straight into the client JS that every visitor downloads, and
+  they still work.
+
+  ### Steps to reproduce
+  1. Load the site and grab the main application bundle (visible in the Network tab, something like
+     `{{base_url}}/main.js` / the hashed `main.*.js`).
+  2. Search the minified source for an `@` / `password` / `btoa` — there's a block that
+     constructs credentials for a test user, with the password present (lightly encoded, not
+     protected).
+  3. Decode it and log in at `{{base_url}}/#/login`.
+
+  ### PoC
+  ```
+  $ curl -s {{base_url}}/main.js | grep -o 'testing@bramble.example[^"]*'
+  # nearby: a base64-ish password string -> decode -> working password
+  POST /rest/user/login
+  {"email":"testing@bramble.example","password":"<decoded>"}
+  ```
+
+  ### Observed result
+  Valid token — I'm logged in as the testing account. The dev comment around it even says it was
+  "unused", but unused isn't the same as removed, and the credentials are valid. Screenshot
+  attached of the credentials in the bundle and the resulting session.
+
+  Anything secret in client-side code is, by definition, public. This should never have shipped.
+impact: |
+  Valid credentials for a real (if "test") account are exposed to every visitor in the downloadable
+  JavaScript. Any attacker can authenticate as that account with no effort. Depending on the
+  account's data and roles this is a straight account compromise. High.
+timeline:
+  - after: 1d
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed — the test credentials are in the shipped bundle and they authenticate. Thanks for pointing at the exact string. Triaged as high.
+  - after: 15m
+    by: team
+    do: severity
+    rating: high
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved — the test account has been disabled and the credentials removed from the client code, and we've added a scan to catch secrets in the bundle going forward. "Unused" was doing a lot of work in that comment; good catch.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500
+    message: Bounty for a clean credential-exposure report. Thanks!

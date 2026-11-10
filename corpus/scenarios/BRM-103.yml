@@ -1,0 +1,53 @@
+id: BRM-103
+title: Confidential internal document accessible via the static /ftp directory
+vulnerability_information: |
+  Hi team,
+
+  Hope you're well. I was doing some content discovery and found that the `/ftp` path on the
+  storefront serves a browsable directory of files, and one of them is clearly an internal
+  confidential document that shouldn't be publicly reachable.
+
+  ### Steps to reproduce
+  1. Browse to `{{base_url}}/ftp` — it returns a directory listing of files.
+  2. Among the files there's a document whose name makes clear it's internal (acquisition /
+     board-type material). Direct-download it:
+     `{{base_url}}/ftp/acquisitions.md`
+
+  ### PoC
+  ```
+  $ curl -s {{base_url}}/ftp/acquisitions.md | head
+  # -> confidential internal memo contents
+  ```
+
+  ### Observed result
+  The document downloads and renders in full — it reads like a confidential internal
+  acquisitions memo. I've attached a screenshot of the directory listing and the first lines of
+  the file (redacted).
+
+  Two things here really: the `/ftp` directory is listable at all, and a confidential file is
+  sitting in a web-served folder. Medium — it's real data exposure, though it's a static file
+  rather than live customer data.
+impact: |
+  Public exposure of a confidential internal document and a browsable server directory. Anyone can
+  read sensitive business information and enumerate whatever else is in that folder. Medium —
+  genuine confidential-data disclosure, limited to what's placed in the directory.
+timeline:
+  - after: 6h
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed — the file is reachable and the directory lists. Thanks for flagging both the file and the listing. Triaging as medium.
+  - after: 10m
+    by: team
+    do: severity
+    rating: medium
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved — the confidential document has been removed from the web root, directory listing on /ftp is disabled, and we audited the folder for anything else that shouldn't be served. Good catch.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 500
+    message: Bounty for the disclosure report. Thanks!

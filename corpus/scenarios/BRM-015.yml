@@ -1,0 +1,54 @@
+id: BRM-015
+title: IDOR in data-export lets you exfiltrate another user's stored memories/PII
+vulnerability_information: |
+  ## Summary
+  `POST /rest/user/data-export` builds the "memories" portion of the export from a client-supplied `UserId` in the request body instead of the authenticated user's id. Supply someone else's id and their stored data (uploaded memory records with captions and image URLs) comes back in your export — no injection required.
+
+  ## Root cause
+  The handler derives the caller from the bearer token for most fields, but queries memories with `where: { UserId: req.body.UserId }`, trusting the body value.
+
+  ## Steps to reproduce
+  1. Log in as the attacker; solve the on-page CAPTCHA the export requires.
+  2. Submit the export with a victim's numeric UserId:
+
+  ```
+  POST {{base_url}}/rest/user/data-export
+  Authorization: Bearer <attacker_token>
+  Content-Type: application/json
+
+  {"UserId": 2, "format": "1"}
+  ```
+
+  3. The returned export JSON contains the victim's memories (captions + image paths), not the attacker's.
+
+  ## Observed result
+  Cross-account PII disclosure via a parameter swap. Confirmed by exporting a second account's records from my own session.
+
+  ## Severity
+  Authenticated horizontal access-control failure disclosing other users' personal data. CVSS ~7.1 (high).
+impact: |
+  Any logged-in user can export arbitrary other users' stored personal data by iterating UserId — a direct GDPR/confidentiality breach. High.
+timeline:
+  - after: 3h
+    by: team
+    do: comment
+    message: Reproduced — the memories query honours the body UserId. Good catch. Triaging.
+  - after: 30m
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed high. The export must key every section off the authenticated session, not the request body.
+  - after: 10m
+    by: team
+    do: severity
+    rating: high
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: Export now ignores any client-supplied UserId and uses the session identity throughout. Verified cross-account export no longer works. Thank you.
+  - after: 2d
+    by: team
+    do: bounty
+    amount: 1500
+    message: Bounty for a clean IDOR with real PII impact.

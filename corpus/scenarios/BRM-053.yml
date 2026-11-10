@@ -1,0 +1,59 @@
+id: BRM-053
+title: Login SQL injection lets me sign in as Jim without his password
+vulnerability_information: |
+  Hi team!
+
+  Hope you're doing well. I was poking around the sign-in flow on {{base_url}} and
+  I think I found a pretty serious one — I managed to log in as another customer
+  ("Jim") without ever knowing his password. Looks like the email field isn't
+  escaped before it hits the database.
+
+  ## How I did it
+  1. I opened the login screen and turned on my intercepting proxy so I could see
+     the request.
+  2. In the email box I typed:
+
+  ```
+  jim@bramble.example'--
+  ```
+
+  and put literally anything in the password box.
+  3. I forwarded the request. The screenshot I took shows the app happily
+     returning a token, and the little account menu in the top-right now says I'm
+     Jim. His order history and addresses all loaded for me.
+
+  The raw request looked like this:
+
+  ```
+  POST {{base_url}}/rest/user/login
+  {"email":"jim@bramble.example'--","password":"whatever"}
+  ```
+
+  I'm fairly sure the `'--` is commenting out the password part of the SQL query,
+  so it only checks the email. I didn't try the admin account because I didn't
+  want to overstep, but I'd guess the same trick works there.
+
+  Thanks for running the program — happy to provide more screenshots if useful!
+impact: |
+  Any attacker who knows (or guesses) a customer's email address can sign in as
+  that person and read their orders, addresses, and saved details. If it reaches
+  the admin account it would be far worse. I'd rate this high to critical.
+timeline:
+  - after: 5h
+    by: team
+    do: comment
+    internal: true
+    message: Same login injection as {{report:BRM-050}}, jim variant. Dup. Admin case already covered there.
+  - after: 1h
+    by: team
+    do: severity
+    rating: critical
+  - after: 20m
+    by: team
+    do: state
+    state: duplicate
+    message: >-
+      Thanks, and good instinct on the comment sequence — that is exactly what is
+      happening. It is the same login SQL injection we are already tracking under
+      {{report:BRM-050}} (where it reaches admin), so we are closing this as a
+      duplicate and fixing it centrally. Appreciate the clear screenshots.

@@ -1,0 +1,46 @@
+id: BRM-018
+title: "CRITICAL: Multiple Missing Security Headers (HSTS, CSP, X-Frame-Options)"
+vulnerability_information: |
+  Dear Bramble Market Security Team,
+
+  Automated and manual testing has revealed **CRITICAL** security misconfigurations. Your application is missing multiple essential HTTP security headers.
+
+  ## Summary
+  The following headers are missing or misconfigured:
+  - `Strict-Transport-Security` (HSTS) — MISSING
+  - `Content-Security-Policy` (CSP) — MISSING
+  - `X-Frame-Options` — MISSING
+  - `X-Content-Type-Options` — MISSING
+  - `Referrer-Policy` — MISSING
+
+  ## Steps to Reproduce
+  1. `curl -I {{base_url}}`
+  2. Observe absence of the above headers.
+
+  ## Scanner Output
+  ```
+  [!] Strict-Transport-Security: Not set
+  [!] Content-Security-Policy: Not set
+  [!] X-Frame-Options: Not set
+  [!] X-Content-Type-Options: Not set
+  ```
+
+  ## Observed Result
+  Multiple CRITICAL header misconfigurations exposing the app to MITM, clickjacking, XSS, and MIME sniffing.
+
+  ## Remediation
+  Add all of the above headers immediately. Follow OWASP Secure Headers Project.
+impact: |
+  Missing headers expose users to man-in-the-middle, clickjacking, and cross-site scripting attacks. This is CRITICAL and affects every single user.
+timeline:
+  - after: 1d
+    by: team
+    do: comment
+    internal: true
+    message: Raw header scanner dump, no exploit. Standard informative close.
+  - after: 2h
+    by: team
+    do: state
+    state: informative
+    message: |
+      Thanks for the submission. A list of absent security headers from a scanner, with no accompanying exploit (e.g. an actual clickjacking PoC against a sensitive action, or an XSS that CSP would have blocked), is a best-practice/hardening finding rather than a demonstrated vulnerability. We treat header-only scanner output as informative. We may add some of these as defence-in-depth, but there's nothing to reward without demonstrated impact. For reference, our scope guidance explicitly lists "missing HTTP headers without a working exploit" as out of scope for bounties.

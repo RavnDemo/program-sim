@@ -1,0 +1,47 @@
+id: BRM-115
+title: "CRITICAL: NoSQL injection lets attacker make the server sleep / full Denial of Service"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have discovered a CRITICAL NoSQL injection vulnerability that allows a remote attacker to
+  force your server to sleep and hang, resulting in a COMPLETE DENIAL OF SERVICE of your entire
+  platform.
+
+  ### Steps to Reproduce
+  1. Target the product review endpoint.
+  2. Inject a NoSQL operator payload that causes the server to execute a long-running / sleeping
+     operation.
+
+  ### Proof of Concept
+  ```
+  POST /rest/products/reviews
+  {"id":{"$where":"sleep(10000)"},"message":"x"}
+  ```
+
+  ### Observed Result
+  The server hangs for the duration of the sleep. By sending many such requests an attacker can
+  exhaust server resources and take the whole application offline. This is a CRITICAL
+  availability vulnerability.
+
+  ### Remediation
+  - Sanitize all NoSQL inputs.
+  - Reject query operators in user input.
+  - Add rate limiting.
+  - Deploy a WAF.
+  - Conduct regular penetration testing.
+
+  Please confirm CRITICAL severity and the bounty.
+impact: |
+  CRITICAL denial of service. A remote attacker can hang the server and take the platform fully
+  offline. CVSS 9.0+.
+timeline:
+  - after: 4h
+    by: team
+    do: comment
+    internal: true
+    message: Injectable operator is worth hardening, but the only demonstrated impact is server sleep/resource exhaustion = DoS, which is out of scope. N/A per policy; we'll harden the input internally.
+  - after: 1d
+    by: team
+    do: state
+    state: not-applicable
+    message: Thanks for the report. The only impact demonstrated here is making the server sleep / consume resources — i.e. denial of service. DoS and resource-exhaustion testing is explicitly out of scope for this program per our policy, so we're marking this not-applicable. If you can show the same injection leading to data access, authentication bypass, or data modification (not just availability impact), please open a new report and we'll prioritise it. We'll tighten the operator handling internally regardless.

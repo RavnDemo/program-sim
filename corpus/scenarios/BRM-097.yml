@@ -1,0 +1,45 @@
+id: BRM-097
+title: Reflected XSS via the order-tracking id parameter
+vulnerability_information: |
+  Reflected XSS in the order-tracking result view.
+
+  The `id` query parameter on the track-result page is reflected into the DOM without encoding.
+
+  ### Repro
+  1. Load the tracking result page with a payload in `id`:
+     `{{base_url}}/#/track-result?id=<iframe src="javascript:alert(`xss`)">`
+  2. The value is reflected and the payload executes.
+
+  ### PoC
+  ```
+  {{base_url}}/#/track-result?id=%3Ciframe%20src%3D%22javascript%3Aalert%28%60xss%60%29%22%3E
+  ```
+
+  The id is taken from the query string and written into the view unescaped. Reflected, not
+  stored — requires the victim to open an attacker-supplied link.
+
+  CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N ~ 6.1. Medium.
+impact: |
+  Reflected XSS: a crafted tracking link executes script in the victim's authenticated context —
+  session token theft, actions as the victim, credential phishing. Requires the victim to follow
+  the link, hence medium rather than high.
+timeline:
+  - after: 3h
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced — id is reflected unencoded on the tracking result view. Triaged, medium.
+  - after: 10m
+    by: team
+    do: severity
+    rating: medium
+  - after: 5d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved — the id parameter is encoded on output. Thanks for the minimal PoC.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 500
+    message: Bounty sent.

@@ -1,0 +1,40 @@
+id: BRM-104
+title: Directory listing enabled on /ftp exposes server files
+vulnerability_information: |
+  Hi team,
+
+  Quick one — the `/ftp` folder on the site has directory listing turned on, so you can browse
+  the files it contains straight from the browser. That's an information-disclosure /
+  misconfiguration issue and it exposes documents that look internal.
+
+  ### Steps to reproduce
+  1. Go to `{{base_url}}/ftp`.
+  2. You get a full file listing you can click through and download from.
+
+  ### PoC
+  ```
+  $ curl -s {{base_url}}/ftp/
+  # -> HTML directory index of the folder contents
+  ```
+
+  ### Observed result
+  Browsable directory index; the files include what look like internal documents. Directory
+  listing should be disabled on a public web root.
+
+  (I realise I may have touched on the /ftp folder in an earlier report of mine, but I wanted to
+  file the directory-listing misconfiguration itself as its own thing in case it was being
+  tracked separately.)
+impact: |
+  Directory listing on a public path lets anyone enumerate and download whatever is placed there,
+  including internal documents. Medium.
+timeline:
+  - after: 5h
+    by: team
+    do: comment
+    internal: true
+    message: This is the same /ftp listing + confidential file the reporter already filed in {{report:BRM-103}}, just retitled around the listing. Dupe of their own report.
+  - after: 30m
+    by: team
+    do: state
+    state: duplicate
+    message: Thanks — this is the same /ftp directory-listing and exposed-document issue you already reported in {{report:BRM-103}}, which we're tracking there (listing being disabled and the file removed). Closing this one as a duplicate so everything stays in a single thread. No need to re-file aspects of the same finding separately — happy to track sub-parts in the original.

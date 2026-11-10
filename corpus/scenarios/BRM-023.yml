@@ -1,0 +1,26 @@
+id: BRM-023
+title: Known upstream dependency advisory inherited from the base project
+vulnerability_information: |
+  ## Summary
+  While reviewing the dependency tree at {{source_url}} I noted the app inherits a transitive dependency carrying a publicly-disclosed advisory. It's a known issue upstream in the base project this storefront is built on, and the advisory is already public with discussion/PRs attached upstream.
+
+  ## Details
+  - The affected package is pulled in transitively, pinned to the same range the upstream project ships.
+  - The advisory is already published and tracked upstream; there's no private 0-day here.
+  - I could not construct a working exploit path against the live {{base_url}} — the vulnerable code path doesn't appear to be reachable in the deployed configuration.
+
+  ## Why I'm filing
+  Mostly for your tracking. I'd rate it low; you may well have already accepted this risk given it's inherited from upstream and already public. Flagging in case you want to pull the fixed range when upstream cuts it.
+impact: |
+  Inherited transitive dependency with a public upstream advisory. No demonstrated reachable exploit on the deployed app; informational / low. Worth tracking against the upstream fix.
+timeline:
+  - after: 7h
+    by: team
+    do: comment
+    message: Thanks — and yes, you've read it right. Let us confirm it's the one we're already tracking.
+  - after: 1d
+    by: team
+    do: state
+    state: informative
+    message: |
+      Appreciated. This is a known upstream advisory inherited from the base project Bramble Market is built on; it's already public and tracked upstream, the vulnerable path isn't reachable in our deployed configuration, and we're accepting the risk until the upstream fixed version lands, at which point we'll pull it in on our normal dependency refresh. Since there's no reachable impact on our side and it's an accepted, already-public upstream item, we're marking this informative rather than a new finding. Thanks for the careful tree review — exactly the kind of signal we like to get.

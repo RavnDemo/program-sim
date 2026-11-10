@@ -1,0 +1,46 @@
+id: BRM-025
+title: "DOM-based XSS in the search field via iframe javascript: URI"
+vulnerability_information: |
+  Hi team,
+
+  Hope you're well! I was testing the product search on {{base_url}} and I think I found a DOM XSS. The search term gets reflected back into the page ("Search Results - ...") in a way that isn't sanitised, and I can get an `<iframe>` with a `javascript:` source to execute.
+
+  ## Steps to reproduce
+  1. Put this in the search box (or hit the URL directly):
+
+  ```
+  {{base_url}}/#/search?q=<iframe src="javascript:alert(`xss`)">
+  ```
+
+  2. The search results header renders the raw markup, the iframe is inserted into the DOM, and the `javascript:` URI fires — I get the `xss` alert box.
+
+  I attached a screenshot of the alert popping. It's reflected via the client-side router rather than the server, so it's DOM-based — the payload lives entirely in the `q` fragment.
+
+  ## Why medium
+  It needs the victim to open an attacker-supplied link, and the payload sits in the hash so it's not logged server-side, but it's genuine script execution in the victim's session (cookies/token theft, actions as the user). I'd call it medium.
+impact: |
+  An attacker who gets a victim to click a crafted search link executes arbitrary JavaScript in the victim's authenticated session — session/token theft or actions on their behalf. Reflected/DOM-based, so medium.
+timeline:
+  - after: 2h
+    by: team
+    do: comment
+    message: Nice — reproduced the alert from the search query. The results header is rendering the term unsanitised. Thanks for the screenshot.
+  - after: 40m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged as medium, agreeing with your rating. We'll sanitise/escape the reflected search term and strip dangerous markup.
+  - after: 15m
+    by: team
+    do: severity
+    rating: medium
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: "The search term is now escaped and iframe/javascript: payloads no longer execute. Verified against your PoC. Thank you!"
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 500
+    message: Thanks, quillfeather — clean DOM XSS with a working PoC.

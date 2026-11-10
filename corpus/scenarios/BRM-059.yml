@@ -1,0 +1,56 @@
+id: BRM-059
+title: "CRITICAL: Registration accepts mismatched password confirmation"
+vulnerability_information: |
+  Dear Security Team,
+
+  I discovered a CRITICAL input validation vulnerability in the user registration
+  of Bramble Market. The server accepts a registration where the password and the
+  repeat-password fields DO NOT MATCH, violating the DRY principle and basic input
+  validation (OWASP A04).
+
+  ## Proof of Concept
+  1. Intercept the registration request to the API.
+  2. Set `password` and `passwordRepeat` to DIFFERENT values:
+
+  ```
+  POST {{base_url}}/api/Users
+  {"email":"attacker@bramble.example","password":"AAAAAA","passwordRepeat":"BBBBBB"}
+  ```
+
+  3. OBSERVE: the account is created successfully even though the two passwords
+     differ. The server never checks that they match.
+
+  This is a CRITICAL validation flaw that could confuse users and lead to account
+  lockout or takeover.
+
+  ## Impact
+  Broken input validation leading to potential account integrity issues.
+  CRITICAL.
+
+  ## Remediation
+  - Validate password confirmation server-side.
+  - Enforce consistent input validation rules.
+  - Add automated tests.
+
+  Please confirm the reward for this finding.
+impact: |
+  Mismatched password confirmation is accepted at registration, a validation
+  defect that could cause account confusion. CRITICAL.
+timeline:
+  - after: 8h
+    by: team
+    do: comment
+    internal: true
+    message: Real but cosmetic. passwordRepeat is a client-side convenience; the account is created with the value the user controls anyway. No security impact. Informative.
+  - after: 35m
+    by: team
+    do: state
+    state: informative
+    message: >-
+      Thanks for the note. It is true the server does not re-check passwordRepeat
+      against password — but that field is a client-side convenience to catch typos,
+      and the account is always created with the password the registrant themselves
+      submitted. There is no attacker here: you can only "mismatch" your own
+      registration, and you still know the password you set. There is no account
+      takeover or integrity impact to another user, so we are closing this as
+      informative. Worth tidying up, but not a security issue.

@@ -1,0 +1,50 @@
+id: BRM-098
+title: "CRITICAL ACCOUNT TAKEOVER: Reset any user's password via Forgot Password (Bender account PoC)"
+vulnerability_information: |
+  Dear Security Team,
+
+  I am reporting a CRITICAL account takeover vulnerability in your Forgot Password feature. I was
+  able to reset the password of the user `bender@bramble.example` and take full control of the
+  account, leading to COMPLETE ACCOUNT COMPROMISE.
+
+  ### Steps to Reproduce
+  1. Go to the Forgot Password page.
+  2. Enter `bender@bramble.example`.
+  3. The security question is shown. I answered it and set a new password.
+  4. Logged in as Bender.
+
+  ### Proof of Concept
+  ```
+  POST /rest/user/reset-password
+  {"email":"bender@bramble.example","answer":"<the security answer>","new":"Hacked123!","repeat":"Hacked123!"}
+  ```
+
+  ### Observed Result
+  Full takeover of the Bender account. An attacker who knows or can find the answer to the
+  security question owns the account. This affects EVERY user and is CRITICAL.
+
+  ### Remediation
+  - Remove security questions.
+  - Use email-based reset tokens.
+  - Add MFA.
+  - Deploy a WAF and rate limiting.
+
+  Please advise the bounty for this CRITICAL account takeover.
+impact: |
+  CRITICAL. Total account takeover of any user whose security-question answer can be obtained,
+  via the password reset flow. CVSS 9.8.
+timeline:
+  - after: 7h
+    by: team
+    do: comment
+    internal: true
+    message: Security-question reset weakness — same root cause as {{report:BRM-069}}. Reporter had to know the answer; real sev is medium. Dupe.
+  - after: 1h
+    by: team
+    do: severity
+    rating: medium
+  - after: 20m
+    by: team
+    do: state
+    state: duplicate
+    message: Thanks for the report. The weakness here — password reset gated only by a guessable/discoverable security-question answer — is the one we're already tracking in {{report:BRM-069}}. It needs the answer to be known, so we've rated this class medium rather than critical. Closing as a duplicate of {{report:BRM-069}}.

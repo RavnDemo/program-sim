@@ -1,0 +1,56 @@
+id: BRM-112
+title: XML upload parser resolves external entities (XXE) — resource exhaustion variant
+vulnerability_information: |
+  Hi team,
+
+  Your file-upload endpoint parses XML with external entities enabled. I noticed you can point it
+  at a classic entity-expansion payload and make the parser do a lot of work expanding nested
+  entities — the "billion laughs" style — because the parser isn't configured to reject DTDs /
+  external entities.
+
+  ### Steps to reproduce
+  1. Authenticate.
+  2. Upload an XML file to the complaint/file-upload endpoint with a nested-entity DTD.
+
+  ### PoC
+  ```http
+  POST /file-upload HTTP/1.1
+  Host: bramble.example
+  Content-Type: multipart/form-data; boundary=----x
+  Authorization: Bearer <token>
+
+  ------x
+  Content-Disposition: form-data; name="file"; filename="x.xml"
+  Content-Type: application/xml
+
+  <?xml version="1.0"?>
+  <!DOCTYPE lolz [
+    <!ENTITY a "aaaaaaaaaa">
+    <!ENTITY b "&a;&a;&a;&a;&a;&a;&a;&a;&a;&a;">
+    <!ENTITY c "&b;&b;&b;&b;&b;&b;&b;&b;&b;&b;">
+  ]>
+  <root>&c;</root>
+  ------x--
+  ```
+
+  ### Observed
+  The parser expands the entities, confirming DTD/entity processing is on. It's the same XML
+  parser configuration problem that would also allow external entities to be resolved. Attaching
+  the request and the delayed response.
+
+  The fundamental issue is the XML parser accepting a DOCTYPE/entities at all. High.
+impact: |
+  An XML parser that resolves entities/DTDs is exposed to XXE — both the resource-expansion
+  variant shown here and external-entity resolution against the server. Same misconfiguration
+  underlies file disclosure and SSRF-via-XXE. High.
+timeline:
+  - after: 6h
+    by: team
+    do: comment
+    internal: true
+    message: Same XXE-enabled parser as {{report:BRM-028}} (the file-disclosure XXE). Entity expansion is one more thing the same config allows. Dupe, high.
+  - after: 1h
+    by: team
+    do: state
+    state: duplicate
+    message: Thanks — you've correctly identified that the root cause is the XML parser resolving DTDs/entities at all, which is exactly the misconfiguration we're tracking in {{report:BRM-028}} (there used to read server files). The fix (disabling DTD processing and external entities on the parser) resolves the expansion variant too. Closing as a duplicate of {{report:BRM-028}}. Rated high, same class.

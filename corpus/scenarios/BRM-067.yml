@@ -1,0 +1,62 @@
+id: BRM-067
+title: CSRF on profile update lets another origin change a victim's username
+vulnerability_information: |
+  Hi team,
+
+  I think the profile-update endpoint is vulnerable to Cross-Site Request Forgery.
+  It's a form POST that relies only on the session cookie — there's no CSRF token
+  and no origin enforcement — so a page on another site can change a logged-in
+  user's username without their knowledge.
+
+  ## Steps to reproduce
+  1. Log in to {{base_url}} in one tab (so the `token` cookie is set).
+  2. In another tab, open a malicious HTML page hosted elsewhere containing:
+
+  ```
+  <form action="{{base_url}}/profile" method="POST">
+    <input name="username" value="pwned-by-csrf">
+  </form>
+  <script>document.forms[0].submit()</script>
+  ```
+
+  3. The form auto-submits. Because the browser attaches the Bramble cookie, the
+     request is accepted and the profile redirects to `/profile`.
+  4. Reload the real profile page — the username is now "pwned-by-csrf".
+
+  ## Observed result
+  The username changed with no token, no confirmation, and the request originating
+  from a completely different site. I attached a screenshot of the changed
+  profile and the request in my proxy showing the foreign `Origin` header.
+
+  ## Impact
+  Any site a logged-in customer visits can silently alter their profile. On its
+  own it changes the display name, but CSRF on a state-changing endpoint with no
+  token is a real issue and could extend to other profile fields. I'd say medium.
+impact: |
+  A logged-in victim visiting an attacker page has their profile silently
+  modified cross-origin. Medium — demonstrated on the username field, but the
+  missing CSRF protection applies to the profile update generally.
+timeline:
+  - after: 1d
+    by: team
+    do: comment
+    internal: true
+    message: Repro'd with a cross-origin form post. No CSRF token on /profile. Medium.
+  - after: 2h
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed — the profile update takes a cross-origin form post with only the cookie. Triaged medium. Thanks for the clear repro page.
+  - after: 20m
+    by: team
+    do: severity
+    rating: medium
+  - after: 8d
+    by: team
+    do: state
+    state: resolved
+    message: Added CSRF-token validation and same-origin checks to the profile update (and the other state-changing form posts). Your repro page no longer succeeds. Thank you.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 500

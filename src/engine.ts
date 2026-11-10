@@ -133,6 +133,7 @@ async function runStep(s: Scenario, step: Step, e: LedgerEntry, cfg: Config, l: 
     case 'severity':
       return h1.severity(id, step.rating)
     case 'bounty':
+      if (!cfg.cadence.bounties?.enabled) return `skipped: bounties disabled in config/cadence.yml ($${step.amount})`
       return h1.bounty(id, step.amount, render(step.message, cfg, l))
   }
 }

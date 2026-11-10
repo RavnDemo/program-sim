@@ -1,0 +1,35 @@
+id: BRM-022
+title: "CRITICAL: Clickjacking Vulnerability on Bramble Market Landing Page"
+vulnerability_information: |
+  Dear Security Team,
+
+  I discovered a **CRITICAL** clickjacking vulnerability affecting Bramble Market.
+
+  ## Summary
+  The marketing landing page can be embedded in an iframe on an attacker-controlled site, enabling clickjacking / UI redress attacks.
+
+  ## Steps to Reproduce
+  1. Create an HTML page with an iframe pointing at {{base_url}}
+  2. Open it in a browser.
+  3. The Bramble Market page renders inside the iframe.
+
+  ## PoC
+  ```html
+  <iframe src="{{base_url}}" width="1200" height="800"></iframe>
+  ```
+
+  ## Observed Result
+  The page is framable (no X-Frame-Options / frame-ancestors). This is a CRITICAL clickjacking issue.
+
+  ## Remediation
+  - Add X-Frame-Options: DENY
+  - Add CSP frame-ancestors 'none'
+impact: |
+  Attackers can overlay the framed page and trick users into performing unintended actions. CRITICAL UI redress vulnerability.
+timeline:
+  - after: 1d
+    by: team
+    do: state
+    state: informative
+    message: |
+      Thanks for the report. The page you framed is the public marketing landing page — it has no authenticated, state-changing controls to redress, so framing it has no security consequence. A clickjacking finding needs a sensitive action (e.g. a one-click purchase, a settings change, a deletion) that an overlay could trick a logged-in user into triggering; a framed brochure page doesn't meet that bar. Closing as informative. If you can demonstrate clickjacking against an authenticated, state-changing action, we'd be glad to reassess.

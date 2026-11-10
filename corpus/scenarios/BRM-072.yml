@@ -1,0 +1,47 @@
+id: BRM-072
+title: Security-question password reset also covers Bjoern's internal account
+vulnerability_information: |
+  ## Summary
+  The `reset-password` flow is gated solely by the account's security-question
+  answer, with no email token. The same weakness applies to Bjoern's internal
+  account; the answer is a low-entropy string recoverable from public context.
+
+  ## Steps to reproduce
+  ```
+  POST {{base_url}}/rest/user/reset-password HTTP/1.1
+  Content-Type: application/json
+
+  {"email":"bjoern@bramble.example","answer":"West-2082","new":"newpass123!","repeat":"newpass123!"}
+  ```
+
+  ## Observed result
+  `200 OK`; the account's password is changed to the supplied value and login
+  with it succeeds. No email verification or token was involved.
+
+  ## Root cause
+  Reset authenticates on `hmac(answer) === stored.answer` alone. Security
+  questions are not a secret and carry low entropy, so this is an account-takeover
+  primitive for any account whose answer can be guessed or researched.
+impact: |
+  Account takeover of any user, including this internal account, through the
+  security-question-only reset. Medium. Same defect class as the other reset
+  reports; filing the internal-account case for completeness.
+timeline:
+  - after: 6h
+    by: team
+    do: comment
+    internal: true
+    message: Same root cause as {{report:BRM-069}}, internal-account target. Dup, medium. Fix there is the token requirement which covers all accounts.
+  - after: 50m
+    by: team
+    do: severity
+    rating: medium
+  - after: 30m
+    by: team
+    do: state
+    state: duplicate
+    message: >-
+      Thanks — concise as always. This is the same security-question-only password
+      reset reported in {{report:BRM-069}}, applied to the internal account. The
+      remediation there (mandatory emailed reset token + rate limiting) covers every
+      account, so we are closing this as a duplicate of it.

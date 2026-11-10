@@ -1,0 +1,52 @@
+id: BRM-113
+title: "CRITICAL IDOR: Unauthorized access to user objects via sequential IDs (VelociShop Commerce Suite)"
+vulnerability_information: |
+  Dear Security Team,
+
+  I am excited to responsibly disclose a CRITICAL Insecure Direct Object Reference (IDOR)
+  vulnerability affecting your platform. This vulnerability allows a malicious actor to access
+  and enumerate other users' private data by manipulating object identifiers, resulting in a
+  massive data breach.
+
+  ### Affected Component
+  The vulnerability exists in the **VelociShop Commerce Suite** customer dashboard, specifically
+  the `/api/v3/customers/{customerId}/wallet` and `/graphql` `getUserVault` resolver.
+
+  ### Steps to Reproduce
+  1. Log in to the ShopEasy Pro merchant console.
+  2. Navigate to the `MyAccountWidget` component.
+  3. Intercept the request to `/api/v3/customers/1001/wallet` and change the `customerId`.
+  4. Observe you can read any customer's wallet and the `loyaltyVaultToken`.
+
+  ### Proof of Concept
+  ```
+  GET /api/v3/customers/1002/wallet
+  Authorization: Bearer <token>
+  -> returns another customer's full wallet, PII, and saved cards
+  ```
+
+  ### Observed Result
+  Complete horizontal privilege escalation across all customer accounts via the Commerce Suite
+  API. This is a CRITICAL breach exposing all customer PII and payment data.
+
+  ### Remediation
+  - Implement object-level authorization.
+  - Use non-sequential UUIDs.
+  - Deploy a WAF.
+  - Conduct regular penetration testing per OWASP API Top 10.
+
+  Please confirm the CRITICAL severity and advise on the bounty tier.
+impact: |
+  CRITICAL horizontal privilege escalation and mass customer data breach via IDOR across the
+  entire customer base. CVSS 9.8.
+timeline:
+  - after: 5h
+    by: team
+    do: comment
+    internal: true
+    message: None of these exist — no /api/v3, no /graphql, no "VelociShop/ShopEasy", no wallet endpoint. Looks copy-pasted from another target/AI output. N/A.
+  - after: 1h
+    by: team
+    do: state
+    state: not-applicable
+    message: Thanks for the submission. None of the components referenced here exist in Bramble Market — we have no `/api/v3/customers/{id}/wallet` endpoint, no GraphQL API, no `loyaltyVaultToken`, and the product names in the report ("VelociShop Commerce Suite", "ShopEasy Pro") aren't ours. This report appears to describe a different application entirely, so there's nothing for us to reproduce. Marking not-applicable. If you find an IDOR against an actual in-scope endpoint at `{{base_url}}`, we'd be glad to look.

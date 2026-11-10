@@ -1,6 +1,6 @@
 # The HackerOne program the simulator works. Handles are not secrets; tokens are (see docs/operating.md).
 program:
-  handle: bramble_market          # HackerOne program handle (team_handle)
+  handle: bramble_market_h1b      # HackerOne program handle (team_handle); org bramble_market_demo, program id 119819
   name: Bramble Market
   base_url: https://bramble.example
   source_url: https://github.com/RavnDemo/bramble

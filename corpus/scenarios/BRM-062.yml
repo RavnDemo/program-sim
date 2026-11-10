@@ -1,0 +1,57 @@
+id: BRM-062
+title: CAPTCHA on feedback form can be reused, allowing automated bulk submissions
+vulnerability_information: |
+  Hi team,
+
+  I noticed the feedback form's CAPTCHA doesn't really stop automation. The
+  CAPTCHA id and its answer can be reused, so once I solve it once I can fire off
+  a burst of feedback entries without solving it again.
+
+  ## Steps to reproduce
+  1. Fetch a CAPTCHA:
+
+  ```
+  GET {{base_url}}/rest/captcha/
+  ```
+  which returns `{"captchaId":N,"captcha":"<expr>","answer":"<n>"}` (the answer is
+  even included in the response during testing).
+  2. Submit feedback repeatedly with the same `captchaId`/answer:
+
+  ```
+  POST {{base_url}}/api/Feedbacks
+  {"comment":"spam #1","rating":1,"captchaId":N,"captcha":"<answer>"}
+  ```
+  3. I scripted 10+ of these inside 20 seconds and they all went through.
+
+  ## Observed result
+  All submissions were accepted. There's no one-time-use enforcement tying a
+  CAPTCHA id to a single submission, so the anti-automation control is basically
+  decorative.
+
+  ## Impact
+  The feedback channel can be flooded by a bot. It's not a data-exposure issue —
+  I'd rate it low — but the CAPTCHA isn't doing its job as an anti-automation
+  measure.
+impact: |
+  Automated clients can bypass the feedback CAPTCHA and submit in bulk,
+  undermining the anti-automation control (spam, review/feedback flooding). Low —
+  no data exposure or account impact, just a defeated throttle.
+timeline:
+  - after: 1d
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced — the CAPTCHA id isn't invalidated after use, so it's replayable. Agreed this is low but worth fixing. Triaged.
+  - after: 30m
+    by: team
+    do: severity
+    rating: low
+  - after: 7d
+    by: team
+    do: state
+    state: resolved
+    message: CAPTCHA ids are now single-use and expire after one accepted submission. Replaying a solved id is rejected. Thanks.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 150

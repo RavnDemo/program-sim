@@ -1,0 +1,56 @@
+id: BRM-076
+title: Prometheus metrics endpoint is publicly accessible without authentication
+vulnerability_information: |
+  Hi team,
+
+  The Prometheus metrics endpoint is exposed to the public with no authentication.
+  It's meant for internal scraping but anyone can hit it and read operational
+  counters about the shop.
+
+  ## Steps to reproduce
+  1. Request the metrics endpoint directly:
+
+  ```
+  GET {{base_url}}/metrics
+  ```
+
+  2. It returns the full Prometheus exposition format — no login, no token, no IP
+     restriction.
+
+  ## Observed result
+  Metrics like registered user counts, total orders placed, wallet balance totals,
+  feedback/complaint counts, and version info are returned in plaintext, e.g.:
+
+  ```
+  bramble_users_registered_total 42
+  bramble_orders_placed_total 128
+  bramble_wallet_balance_total 3150
+  ```
+
+  ## Impact
+  Low — it's not customer PII, but it leaks business/operational figures (user and
+  order volumes, wallet totals, app version) that shouldn't be public and give an
+  attacker useful reconnaissance (e.g. exact version to match to CVEs). Should be
+  restricted to internal scrapers.
+impact: |
+  Unauthenticated exposure of operational metrics (user/order counts, wallet
+  totals, version) aids reconnaissance and leaks business figures. Low.
+timeline:
+  - after: 1d
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed — /metrics is reachable unauthenticated on prod. Agreed it's low but it shouldn't be public. Triaged.
+  - after: 25m
+    by: team
+    do: severity
+    rating: low
+  - after: 6d
+    by: team
+    do: state
+    state: resolved
+    message: /metrics is now restricted to the internal scrape network and requires auth from outside it; it's no longer reachable from the public internet. Thanks.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 150

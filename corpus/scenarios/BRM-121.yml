@@ -1,0 +1,52 @@
+id: BRM-121
+title: "CRITICAL: Account takeover of any user by reading their photos (Emma account PoC)"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have discovered a CRITICAL account takeover vulnerability. By visually analyzing photos that a
+  user has posted, I was able to determine the answer to their security question and completely
+  take over their account `emma@bramble.example` via the password reset feature.
+
+  ### Steps to Reproduce
+  1. Go to the Photo Wall and find a photo posted by the user Emma.
+  2. Visually inspect the photo — the location/landmark visible in the image reveals the answer to
+     her security question.
+  3. Go to Forgot Password, enter `emma@bramble.example`, and answer the security question with
+     what you deduced from the photo.
+  4. Set a new password and log in as Emma.
+
+  ### Proof of Concept
+  ```
+  POST /rest/user/reset-password
+  {"email":"emma@bramble.example","answer":"<deduced from photo>","new":"Pwned123!","repeat":"Pwned123!"}
+  ```
+
+  ### Observed Result
+  Full account takeover of Emma using nothing but her public photos. This is CRITICAL and affects
+  every user who posts photos.
+
+  ### Remediation
+  - Remove security questions.
+  - Use secure token-based password reset.
+  - Enforce MFA.
+  - Deploy a WAF.
+
+  Please confirm CRITICAL severity and advise on the bounty tier.
+impact: |
+  CRITICAL account takeover of any photo-posting user by visually deducing their security-question
+  answer and abusing the password reset. CVSS 9.8.
+timeline:
+  - after: 6h
+    by: team
+    do: comment
+    internal: true
+    message: Same recovery weakness as {{report:BRM-069}} (and the EXIF variant). Answer is just deduced visually here. Dupe, real sev medium.
+  - after: 1h
+    by: team
+    do: severity
+    rating: medium
+  - after: 20m
+    by: team
+    do: state
+    state: duplicate
+    message: Thanks for the report. The underlying issue — account recovery relying on a discoverable security-question answer — is the one we're already tracking in {{report:BRM-069}}. Deducing the answer from a photo is one way to obtain it (we've also had the EXIF-metadata variant), but it's the same root cause and the same fix. Closing as a duplicate of {{report:BRM-069}}. We've rated this class medium, not critical.

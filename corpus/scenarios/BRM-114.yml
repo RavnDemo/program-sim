@@ -1,0 +1,63 @@
+id: BRM-114
+title: Passkey registration can overwrite another user's credential, enabling account takeover
+vulnerability_information: |
+  Passkey credential overwrite leading to account takeover of `passkey-user@bramble.example`.
+
+  The passkey (WebAuthn) registration flow doesn't properly bind a new credential to the
+  authenticated session's own user — a credential can be registered/overwritten against the
+  victim's account. Once my authenticator's public key is stored as the victim's credential, I
+  log in as them with my own device.
+
+  ### Steps
+  1. Begin a passkey registration and capture the attestation/registration request the client
+     sends.
+  2. Tamper the request so the credential is associated with the target account
+     (`passkey-user@bramble.example`) rather than mine — the server accepts and overwrites the
+     stored credential for that user with my public key.
+  3. Start a normal passkey login for `passkey-user`; my authenticator now satisfies the
+     challenge because the stored public key is mine.
+
+  ### PoC
+  ```http
+  POST /rest/passkey/... (registration finish) HTTP/1.1
+  Host: bramble.example
+  Content-Type: application/json
+
+  { ...attestation..., "targetUser":"passkey-user@bramble.example" }
+  ```
+  (The key point is the server writes the credential against a user it shouldn't, rather than the
+  authenticated session's own id.)
+
+  ### Observed
+  After the overwrite, `POST /rest/passkey/login-verify` for `passkey-user` succeeds with my
+  authenticator. Full takeover without ever possessing the victim's device. Critical —
+  AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H.
+impact: |
+  An attacker can overwrite a victim's passkey with their own authenticator and then authenticate
+  as that victim — complete account takeover that bypasses the strongest login factor on the
+  site. Critical.
+timeline:
+  - after: 2h
+    by: team
+    do: comment
+    internal: true
+    message: Confirmed registration-finish doesn't bind the credential to the session user. Overwrite → takeover. Critical. Loop in whoever owns the WebAuthn flow.
+  - after: 1h
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced — a passkey credential can be written against an account other than the authenticated session's, and login then succeeds with the attacker's authenticator. Triaged critical.
+  - after: 10m
+    by: team
+    do: severity
+    rating: critical
+  - after: 13d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved — credential registration is now bound strictly to the authenticated session's user id, overwrites of an existing credential require re-authentication, and the finish step validates the user handle. Thanks for a precise WebAuthn report; those are rare and valuable.
+  - after: 2d
+    by: team
+    do: bounty
+    amount: 3000
+    message: Top-band bounty. Excellent work on the passkey flow.

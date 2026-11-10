@@ -1,0 +1,39 @@
+id: BRM-027
+title: Open redirect via /redirect?to= using a stale allowlisted address
+vulnerability_information: |
+  Hey team,
+
+  Quick one. The `/redirect` endpoint is supposed to only bounce users to approved destinations, but it still has some old cryptocurrency-address URLs in its allowlist that you've apparently stopped promoting. Because the allowlist check uses a "starts with" match, I can ride one of those stale entries to build a redirect that works.
+
+  ## Steps to reproduce
+  1. Hit the redirect endpoint with one of the deprecated allowlisted targets:
+
+  ```
+  GET {{base_url}}/redirect?to=https://explorer.dash.org/address/Xr556RzuwX6hg5EGpkybbv5RanJoZN17kW
+  ```
+
+  2. The server issues a `302` to that URL instead of rejecting it.
+
+  ## Notes
+  The destination is a crypto address page you no longer advertise, so leaving it on the allowlist just gives phishers a trusted-looking Bramble Market link to abuse (e.g. "click here to view your order" → bounce through your domain to somewhere sketchy). Since it only redirects to a fixed set of stale entries rather than anywhere attacker-controlled, I rated it low, but it's worth pruning.
+impact: |
+  A stale allowlist entry lets an attacker craft a {{base_url}}/redirect link that bounces users through the trusted domain to a deprecated crypto address — useful for phishing/brand abuse. Low, since the destination set is fixed rather than arbitrary.
+timeline:
+  - after: 6h
+    by: team
+    do: comment
+    message: Thanks — confirmed the deprecated entries are still honoured by the redirect. Agreed they should be pruned.
+  - after: 1d
+    by: team
+    do: state
+    state: triaged
+    message: Triaged low. We'll remove the stale crypto addresses from the allowlist and tighten the match.
+  - after: 3d
+    by: team
+    do: state
+    state: resolved
+    message: Deprecated addresses removed and the allowlist now does an exact-match check. Thanks for the housekeeping catch.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 150

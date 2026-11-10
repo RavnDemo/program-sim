@@ -1,0 +1,67 @@
+id: BRM-068
+title: Administrator account uses a trivially weak password and there is no password policy
+vulnerability_information: |
+  Hi team,
+
+  This one's simple but serious: the administrator account can be logged into with
+  a very weak, guessable password, and the app doesn't enforce any password
+  strength policy at all. No SQL injection or trickery — just the actual
+  credentials.
+
+  ## Steps to reproduce
+  1. Go to the login page at {{base_url}}.
+  2. Enter:
+
+  ```
+  email:    admin@bramble.example
+  password: admin123
+  ```
+
+  3. Click Login. You're in as the administrator.
+
+  I also confirmed via the registration form that the app will happily accept
+  equally weak passwords for new accounts — there's no minimum length, no
+  complexity requirement, nothing rejecting "123456" or "password".
+
+  ```
+  POST {{base_url}}/rest/user/login
+  {"email":"admin@bramble.example","password":"admin123"}
+  ```
+  returns a valid admin token.
+
+  ## Observed result
+  Full administrator access using an obvious password. The account was never
+  forced onto a stronger credential and the platform sets no password rules.
+
+  ## Impact
+  An attacker guessing or brute-forcing a short list of common passwords gets
+  full admin control. The absence of any password policy means the whole user
+  base can sit on weak credentials. I'd rate this high.
+impact: |
+  The admin account is reachable with a common weak password, and no password
+  policy protects any account. Trivial brute-force to full administrative
+  takeover. High.
+timeline:
+  - after: 1d
+    by: team
+    do: comment
+    internal: true
+    message: Confirmed admin123 works and registration enforces nothing. Two things really — weak seeded cred + no policy. High.
+  - after: 3h
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed — admin logs in with that password and we enforce no strength rules. Triaged high. Thanks.
+  - after: 20m
+    by: team
+    do: severity
+    rating: high
+  - after: 9d
+    by: team
+    do: state
+    state: resolved
+    message: Rotated the admin credential to a strong secret and added a server-side password policy (length + complexity + common-password rejection) on registration and change-password. Thank you.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500

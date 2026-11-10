@@ -1,0 +1,63 @@
+id: BRM-028
+title: XXE in the B2B XML complaint upload discloses local files (/etc/passwd)
+vulnerability_information: |
+  ## Summary
+  The B2B complaint upload accepts `.xml` files and parses them with external entity resolution enabled. A document defining an external entity pointing at a local file has that file's contents resolved and reflected back in the parser error, yielding arbitrary local file disclosure.
+
+  ## Steps to reproduce
+  1. Prepare `xxe.xml`:
+
+  ```xml
+  <?xml version="1.0"?>
+  <!DOCTYPE foo [ <!ENTITY xxe SYSTEM "file:///etc/passwd"> ]>
+  <order>&xxe;</order>
+  ```
+
+  2. Upload it:
+
+  ```
+  POST {{base_url}}/file-upload
+  Content-Type: multipart/form-data; boundary=...
+  (file field: xxe.xml)
+  ```
+
+  3. The response (a "complaints via file upload have been deprecated" error) echoes the parsed XML, which now contains the contents of `/etc/passwd`. `file:///c:/windows/system.ini` works on Windows hosts.
+
+  ## Root cause
+  The XML parser is invoked with entity expansion / external entity resolution enabled (`noent`), so `SYSTEM` entities are fetched and expanded.
+
+  ## Observed result
+  `/etc/passwd` contents returned in the upload response, confirming external entity resolution and local file read.
+
+  ## Severity
+  Unauthenticated XXE → local file disclosure (and SSRF potential via `http://` entities). CVSS ~7.5–8.6 (high).
+impact: |
+  An unauthenticated attacker reads arbitrary server-side files (config, secrets, source) and can reach internal network resources via XXE. High.
+timeline:
+  - after: 2h
+    by: team
+    do: comment
+    message: Reproduced — /etc/passwd came back in the parser error. Thanks. Disabling external entity resolution.
+  - after: 50m
+    by: team
+    do: comment
+    internal: true
+    message: XML parser configured with entity expansion on. Turn off DTD/external entities. Check for SSRF via http entities too. Valid high.
+  - after: 25m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged high. Fix disables DTD processing and external entity resolution on the upload parser.
+  - after: 10m
+    by: team
+    do: severity
+    rating: high
+  - after: 7d
+    by: team
+    do: state
+    state: resolved
+    message: External entity resolution and DTDs are now disabled for uploaded XML; the entity no longer resolves. Verified against your PoC. Thanks.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500

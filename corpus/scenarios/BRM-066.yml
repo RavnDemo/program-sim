@@ -1,0 +1,53 @@
+id: BRM-066
+title: "CRITICAL: Missing SPF and DMARC records enable email spoofing"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have discovered a CRITICAL email security misconfiguration. The domain used by
+  Bramble Market is MISSING proper SPF and DMARC DNS records, which allows any
+  attacker to spoof emails that appear to come from your domain. This enables
+  large-scale phishing against your customers.
+
+  ## Proof of Concept
+  1. Query the domain's DNS records:
+
+  ```
+  dig TXT bramble.example
+  dig TXT _dmarc.bramble.example
+  ```
+
+  2. OBSERVE: there is no enforcing SPF policy and no DMARC record (or it is set
+     to p=none).
+  3. This means I can send an email with a forged From address and it will not be
+     rejected by receiving mail servers.
+
+  ## Impact
+  Attackers can impersonate your domain in phishing campaigns targeting your
+  customers and staff. CRITICAL.
+
+  ## Remediation
+  - Publish a strict SPF record (-all).
+  - Publish a DMARC record with p=reject.
+  - Add DKIM signing.
+
+  Please confirm the bounty for this critical finding.
+impact: |
+  Missing SPF/DMARC allows domain spoofing and phishing against customers.
+  CRITICAL.
+timeline:
+  - after: 7h
+    by: team
+    do: comment
+    internal: true
+    message: Email/DNS infra isn't in the web-app scope and there's no demonstrated impact against an in-scope asset. N/A per scope.
+  - after: 45m
+    by: team
+    do: state
+    state: not-applicable
+    message: >-
+      Thanks for the report. Mail authentication records (SPF/DKIM/DMARC) for the
+      domain's email infrastructure are outside the scope of this program, which
+      covers the Bramble Market web application and its API. Missing-DMARC findings
+      with no demonstrated impact against an in-scope asset are a known out-of-scope
+      category for us, so we are marking this not applicable. We do track email
+      hardening separately on the ops side. Appreciate the heads-up.

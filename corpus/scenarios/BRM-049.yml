@@ -1,0 +1,47 @@
+id: BRM-049
+title: "CRITICAL: Insecure cryptography - weak hashing and encoding exposes all data"
+vulnerability_information: |
+  Dear Security Team,
+
+  I am writing to report a CRITICAL cryptographic vulnerability in Bramble Market.
+  Your application uses broken and inappropriate cryptographic primitives,
+  including MD5 hashing and Base85/z85 encoding being treated as if it provided
+  confidentiality. This is a CRITICAL Cryptographic Failure (OWASP A02:2021).
+
+  ## Proof of Concept
+  1. I analyzed the client-side code and server responses of {{base_url}}.
+  2. I observed that user password hashes use the MD5 algorithm, which is
+     cryptographically broken and reversible via rainbow tables.
+  3. I further observed that certain tokens use z85 / Base85 encoding, which is
+     merely an ENCODING and not ENCRYPTION, meaning anyone can decode it.
+
+  I am reporting this via your contact form as due diligence: the shop should
+  definitely not use md5 or z85/base85 the way it currently does.
+
+  ## Impact
+  All passwords can be cracked and all "encrypted" values can be trivially
+  decoded. This is a CRITICAL compromise of all user credentials.
+
+  ## Remediation
+  - Replace MD5 with bcrypt/scrypt/Argon2.
+  - Never use encoding as a security control.
+  - Perform a full cryptographic review.
+
+  Please advise on the bounty for this critical cryptographic finding.
+impact: |
+  Complete compromise of credential confidentiality and any value protected by
+  encoding-masquerading-as-encryption. CRITICAL.
+timeline:
+  - after: 7h
+    by: team
+    do: state
+    state: informative
+    message: >-
+      Thank you for the crypto review. You are right on the fundamentals — MD5 is
+      not a password hash and z85 is an encoding, not encryption — and we have this
+      on our hardening backlog. However, this submission is a best-practice
+      observation: you have not demonstrated an exploit or a concrete loss against
+      production (no cracked credential, no decoded secret with impact shown). Per
+      program policy we close generic best-practice crypto findings without a
+      demonstrated impact as informative. A working PoC that turns one of these into
+      access or data would be very welcome as a new report.

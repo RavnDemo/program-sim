@@ -1,0 +1,24 @@
+id: BRM-077
+title: "Double your crypto with the BrambleCoin presale - guaranteed 10x returns!!"
+vulnerability_information: |
+  Dear Investor,
+
+  Are you tired of low returns? The BRAMBLECOIN PRESALE is now LIVE and early
+  backers are already seeing GUARANTEED 10x RETURNS!!! Our blockchain-powered
+  DeFi protocol uses AI and quantum technology to deliver risk-free profits.
+
+  >>> Send ETH or USDT to the wallet below and receive DOUBLE back instantly <<<
+  >>> Limited time offer - only 500 slots remaining! <<<
+
+  Join our Telegram and DM the admin for your exclusive allocation. Don't miss
+  this once-in-a-lifetime opportunity to get rich with the next 1000x gem!
+
+  This is financial freedom. Act now before it's too late. To the moon!
+impact: |
+  Guaranteed returns. Financial freedom. Don't miss out.
+timeline:
+  - after: 2h
+    by: team
+    do: state
+    state: spam
+    message: Spam — unrelated promotional content, no security report. Closing.

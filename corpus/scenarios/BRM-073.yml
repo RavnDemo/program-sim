@@ -1,0 +1,47 @@
+id: BRM-073
+title: "CRITICAL: Confidential product data leaked on public paste site"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have found a CRITICAL data leak affecting Bramble Market. Confidential
+  information about a product that was removed from your shop — including the
+  dangerous ingredients that got it pulled — is sitting on a public paste site for
+  anyone to read. This is a CRITICAL Sensitive Data Exposure.
+
+  ## Proof of Concept
+  1. Searching public paste sites for your brand, I found a paste containing an
+     internal product record for a discontinued item and a list of its unsafe
+     ingredients.
+  2. The data clearly originates from your internal product catalogue.
+  3. I am informing you of the dangerous ingredients as due diligence.
+
+  ## Impact
+  CRITICAL exposure of confidential internal product data and safety information
+  to the public internet.
+
+  ## Remediation
+  - Request takedown of the paste immediately.
+  - Rotate any exposed internal identifiers.
+  - Investigate how the data leaked.
+
+  Please advise on the bounty for this critical data exposure.
+impact: |
+  Confidential internal product data exposed publicly. CRITICAL.
+timeline:
+  - after: 6h
+    by: team
+    do: comment
+    internal: true
+    message: Content lives on a third-party paste host we don't own or control. Nothing demonstrated against our assets. Out of scope → N/A. We'll note the takedown internally.
+  - after: 50m
+    by: team
+    do: state
+    state: not-applicable
+    message: >-
+      Thanks for the heads-up. The content you describe is hosted on a third-party
+      paste website that Bramble Market does not own or operate, and your report does
+      not demonstrate a vulnerability in an in-scope asset (our web app or API) —
+      only that data exists on an external site. Findings on third-party hosts we do
+      not control are out of scope for this program, so we are marking this not
+      applicable. We will handle any takedown through the appropriate channel
+      separately.

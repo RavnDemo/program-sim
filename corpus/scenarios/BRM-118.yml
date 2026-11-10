@@ -1,0 +1,59 @@
+id: BRM-118
+title: Compromised npm dependency in the build puts developer credentials at risk
+vulnerability_information: |
+  Hi team,
+
+  I want to flag a software-supply-chain risk rather than a bug in your own code. One of the npm
+  packages pulled in by your build (visible in the committed lockfile at {{source_url}}) is a
+  version that has been publicly reported as compromised — a malicious release that exfiltrates
+  environment variables and credentials from the machine that installs/builds it. If that version
+  is what runs in CI or on a developer's machine, your tokens could already be exposed.
+
+  ### Steps to reproduce / evidence
+  1. Clone the source: `git clone {{source_url}}`.
+  2. Inspect the lockfile for the affected package and pinned version:
+  ```
+  $ grep -n "<affected-package>" package-lock.json
+  # -> resolves to the known-bad version
+  ```
+  3. The advisory for that version (I'm sending you the public report URL / the assigned
+     identifier for the vulnerability as proof) describes an install-time script that reads env
+     vars and posts them to an external host.
+
+  ### Observed
+  Your dependency tree pins a version flagged as malicious. Anyone running `npm install` on this
+  tree — CI, or a dev laptop — would execute the compromised install script, risking exposure of
+  any credentials present in the environment at build time.
+
+  This is a "danger to your credentials" heads-up more than an exploit I ran against you; the
+  right action is to pin off the bad version and rotate anything that may have been exposed.
+  Medium, because it's a real and current exposure of your build/credential surface.
+impact: |
+  A known-compromised dependency in the build tree can exfiltrate credentials from CI or developer
+  machines at install time. Potential leakage of build secrets and tokens, and a foothold into the
+  pipeline. Medium — supply-chain exposure requiring dependency pinning and credential rotation.
+timeline:
+  - after: 8h
+    by: team
+    do: comment
+    internal: true
+    message: Verified the pinned version matches the advisory. Pin off it, rebuild lockfile, rotate CI tokens as precaution. Legit supply-chain heads-up.
+  - after: 1h
+    by: team
+    do: state
+    state: triaged
+    message: Thanks for the heads-up and the advisory link — confirmed our lockfile pins the flagged version. Triaging as medium; we're treating any secrets that touched CI as potentially exposed and rotating them.
+  - after: 10m
+    by: team
+    do: severity
+    rating: medium
+  - after: 5d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved — dependency repinned to a clean version, lockfile rebuilt, CI tokens rotated as a precaution, and we've added install-script auditing to the pipeline. Really appreciate you flagging this proactively rather than waiting for it to bite.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 500
+    message: Bounty for a valuable supply-chain report. Thank you.

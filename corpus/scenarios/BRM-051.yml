@@ -1,0 +1,54 @@
+id: BRM-051
+title: "CRITICAL: SQL Injection login bypass - I logged in as Bender!!"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have found a CRITICAL SQL Injection vulnerability in the login page of
+  Bramble Market that allows me to log in as ANY user without a password. I
+  successfully logged in as the user "Bender".
+
+  ## Proof of Concept
+  1. Go to the login page at {{base_url}}.
+  2. In the email field, enter the following payload:
+
+  ```
+  bender@bramble.example'--
+  ```
+
+  3. Enter any password (e.g. "test").
+  4. Click Login.
+  5. OBSERVE: I am now logged in as Bender without knowing his password. The
+     comment sequence makes the password check disappear.
+
+  ## Impact
+  Complete authentication bypass. An attacker can take over ANY account on the
+  platform. This is CRITICAL (CVSS 9.8).
+
+  ## Remediation
+  - Use parameterized queries / prepared statements.
+  - Implement a Web Application Firewall.
+  - Validate and sanitize all user input.
+
+  Please let me know the bounty amount for this critical finding.
+impact: |
+  Full authentication bypass allowing takeover of any account on Bramble Market,
+  including administrators. CRITICAL.
+timeline:
+  - after: 4h
+    by: team
+    do: comment
+    internal: true
+    message: Same login SQLi as {{report:BRM-050}}, just targeting bender instead of admin. Dup.
+  - after: 30m
+    by: team
+    do: severity
+    rating: critical
+  - after: 25m
+    by: team
+    do: state
+    state: duplicate
+    message: >-
+      Thanks for the report. This is the same login-query SQL injection already
+      reported in {{report:BRM-050}} — picking the bender row instead of admin uses
+      the identical sink, so we are tracking the fix there and closing this as a
+      duplicate.

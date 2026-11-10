@@ -1,0 +1,60 @@
+id: BRM-019
+title: Poison null byte in /ftp bypasses extension filter to read restricted files
+vulnerability_information: |
+  ## Summary
+  The `/ftp` static file route restricts downloads to a whitelist of extensions (`.md`, `.pdf`, …). The check can be defeated with a URL-encoded poison null byte (`%2500` → `%00`), which truncates the filename after the null in the filesystem call while the extension check sees the trailing `.md`. This grants read access to files that should be blocked.
+
+  ## Steps to reproduce
+  1. A normal, allowed download works:
+
+  ```
+  GET {{base_url}}/ftp/legal.md            -> 200
+  ```
+
+  2. A disallowed file is refused:
+
+  ```
+  GET {{base_url}}/ftp/package.json.bak     -> 403 (Only .md and .pdf files are allowed!)
+  ```
+
+  3. Append a poison null byte and a fake allowed extension:
+
+  ```
+  GET {{base_url}}/ftp/package.json.bak%2500.md   -> 200, returns package.json.bak
+  ```
+
+  ## Observed result
+  The extension filter passes (sees `.md`), but the file actually read and returned is `package.json.bak`. Any otherwise-blocked file under `/ftp` is retrievable this way.
+
+  ## Severity
+  Unauthenticated access-control bypass disclosing restricted server files. CVSS ~7.5 (high).
+impact: |
+  An unauthenticated attacker can read files under /ftp that the extension whitelist is meant to protect — including backups and other sensitive artifacts — by appending a poison null byte. High.
+timeline:
+  - after: 1h
+    by: team
+    do: comment
+    message: Reproduced — the %2500 truncation bypasses the extension check cleanly. Thanks, triaging.
+  - after: 45m
+    by: team
+    do: comment
+    internal: true
+    message: Root cause is null-byte truncation before the sendFile. Need to reject null bytes and canonicalise before the whitelist check. Valid high.
+  - after: 20m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged high. Fix will strip/deny null bytes and re-check the real resolved path.
+  - after: 10m
+    by: team
+    do: severity
+    rating: high
+  - after: 7d
+    by: team
+    do: state
+    state: resolved
+    message: Null bytes are now rejected and the extension check runs against the canonical path. Verified the bypass no longer returns restricted files. Thanks.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500

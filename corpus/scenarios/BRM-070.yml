@@ -1,0 +1,49 @@
+id: BRM-070
+title: "CRITICAL: Account takeover via Forgot Password - reset Uvogin's account!"
+vulnerability_information: |
+  Dear Security Team,
+
+  I have discovered a CRITICAL Account Takeover vulnerability in the Forgot
+  Password functionality of Bramble Market. I was able to reset the password of
+  the user "Uvogin" and take full control of the account.
+
+  ## Proof of Concept
+  1. Navigate to {{base_url}}/#/forgot-password.
+  2. Enter the victim's email (uvogin@bramble.example).
+  3. The security question is displayed.
+  4. Provide the answer (which I found through open-source research) and set a new
+     password.
+  5. OBSERVE: the password is reset and I log in as Uvogin.
+
+  ## Impact
+  CRITICAL account takeover of any user. An attacker can reset passwords and
+  hijack accounts.
+
+  ## Remediation
+  - Require email-based verification tokens for password reset.
+  - Remove security questions entirely.
+  - Add multi-factor authentication.
+
+  Please confirm the bounty for this CRITICAL account takeover.
+impact: |
+  Full account takeover of any user via the password reset flow. CRITICAL.
+timeline:
+  - after: 5h
+    by: team
+    do: comment
+    internal: true
+    message: Same security-question-only reset as {{report:BRM-069}}, different victim. Dup. Not critical — medium, same as the root.
+  - after: 1h
+    by: team
+    do: severity
+    rating: medium
+  - after: 30m
+    by: team
+    do: state
+    state: duplicate
+    message: >-
+      Thanks for the report. This is the same password-reset weakness (reset gated
+      only by a guessable security-question answer, no email verification) already
+      reported in {{report:BRM-069}}; using it against the Uvogin account is the same
+      flaw with a different target, so we are closing this as a duplicate. Note we
+      rate the underlying issue medium, not critical.

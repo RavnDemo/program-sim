@@ -1,0 +1,56 @@
+id: BRM-064
+title: Forged RSA-signed JWT accepted via algorithm-confusion (HS256 with public key)
+vulnerability_information: |
+  Hi team,
+
+  Following on from the general JWT weakness, I wanted to show a second way to
+  forge a token that still looks "signed" — an algorithm-confusion attack. The
+  verifier can be tricked into treating the RSA public key as an HMAC secret, so I
+  can sign a token with HS256 using the public key and it validates as if it were
+  a legitimate RS256 token.
+
+  ## Steps to reproduce
+  1. Grab the app's RSA public key (it's shipped client-side / served publicly).
+  2. Craft a token with header `{"alg":"HS256"}` and payload
+     `{"data":{"email":"rsa_lord@bramble.example"}}`.
+  3. HMAC-sign it using the PEM public key bytes as the HMAC secret.
+  4. Send it:
+
+  ```
+  GET {{base_url}}/rest/user/whoami
+  Authorization: Bearer <HS256 token signed with the public key>
+  ```
+
+  ## Observed result
+  The token is accepted and I'm authenticated as the (non-existent)
+  `rsa_lord@bramble.example`. The server verified an HS256 signature using key
+  material that is meant only for RSA verification, so knowing the public key is
+  enough to forge.
+
+  ## Impact
+  Same end result as a plain unsigned-token forgery — full impersonation of any
+  identity — but it defeats a fix that only blocks `alg:none`. I'd rate it
+  critical.
+impact: |
+  Token forgery via RSA/HMAC algorithm confusion yields full authentication
+  bypass and impersonation of any account, including privileged ones. Critical.
+timeline:
+  - after: 6h
+    by: team
+    do: comment
+    internal: true
+    message: Same root cause as {{report:BRM-063}} — verifier doesn't pin the algorithm. The alg-pinning fix there closes both none and HS/RS confusion. Dup.
+  - after: 1h
+    by: team
+    do: severity
+    rating: critical
+  - after: 30m
+    by: team
+    do: state
+    state: duplicate
+    message: >-
+      Strong report, and thank you for showing the confusion variant explicitly. The
+      underlying defect is the same one in {{report:BRM-063}}: the verifier does not
+      pin the expected algorithm. Our fix there (enforce the expected alg, reject
+      everything else) closes both the none case and this HS/RS confusion, so we are
+      closing this as a duplicate of it.

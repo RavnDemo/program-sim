@@ -1,0 +1,44 @@
+id: BRM-026
+title: "CRITICAL: YAML Billion-Laughs Memory Bomb Crashes the Server (DoS)"
+vulnerability_information: |
+  Dear Bramble Market Security Team,
+
+  I am reporting a **CRITICAL** Denial of Service vulnerability via a YAML "billion laughs" memory bomb.
+
+  ## Summary
+  The file-handling endpoint parses uploaded YAML without limits. A small recursive-alias ("billion laughs") document expands to gigabytes in memory, exhausting RAM and crashing the server.
+
+  ## Steps to Reproduce
+  1. Craft a malicious YAML bomb with nested aliases.
+  2. Upload it to the file-handling endpoint.
+  3. The server consumes all memory and becomes unresponsive.
+
+  ## PoC
+  ```yaml
+  a: &a ["lol","lol","lol","lol","lol","lol","lol","lol","lol"]
+  b: &b [*a,*a,*a,*a,*a,*a,*a,*a,*a]
+  c: &c [*b,*b,*b,*b,*b,*b,*b,*b,*b]
+  d: &d [*c,*c,*c,*c,*c,*c,*c,*c,*c]
+  ```
+  (upload via {{base_url}}/file-upload)
+
+  ## Observed Result
+  The server hangs and stops responding to all users. CRITICAL DoS (CVSS 9.0+).
+
+  ## Remediation
+  - Limit YAML parser recursion/size
+  - Add rate limiting
+impact: |
+  A single small upload can take the entire store offline for all customers. CRITICAL availability impact.
+timeline:
+  - after: 10h
+    by: team
+    do: comment
+    internal: true
+    message: Availability/DoS, explicitly out of scope. Close N/A, don't encourage load testing on prod.
+  - after: 2h
+    by: team
+    do: state
+    state: not-applicable
+    message: |
+      Thanks for the submission. Denial-of-service and resource-exhaustion testing — including memory/CPU bombs like this — is **explicitly out of scope** for this program, and we ask researchers not to run availability-impacting tests against the live environment. Because the only demonstrated effect here is availability (no data access, no code execution shown), we're closing this as not applicable per the DoS scope exclusion. We do harden parsers as a matter of course, but it won't be tracked or rewarded as a bounty finding.

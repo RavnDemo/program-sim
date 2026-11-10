@@ -1,0 +1,63 @@
+id: BRM-036
+title: OAuth user password is a deterministic transform of the email, enabling takeover
+vulnerability_information: |
+  ## Summary
+  Accounts provisioned through the Google/OAuth sign-in flow are given a password derived deterministically from the user's email address (base64 of the reversed email). Because the transform is known and reversible, anyone who knows an OAuth user's email can compute their password and log in directly via the normal login form — no access to the user's Google account, no SQLi, no password change.
+
+  ## Steps to reproduce
+  For target `bjoern@bramble.example` (an OAuth-provisioned account):
+
+  1. Reverse the email string, then base64-encode it to derive the stored password:
+
+  ```
+  echo -n "bjoern@bramble.example" | rev | base64
+  ```
+
+  2. Log in with the derived password:
+
+  ```
+  POST {{base_url}}/rest/user/login
+  {"email":"bjoern@bramble.example","password":"<derived>"}
+  ```
+
+  Login succeeds.
+
+  ## Root cause
+  The OAuth onboarding sets a predictable password from a public identifier (CWE-287, improper authentication). The "secret" is a pure function of the email.
+
+  ## Observed result
+  Full account takeover of any OAuth user from their email alone.
+
+  ## Severity
+  Predictable credential → unauthenticated takeover of any OAuth account. CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N ≈ 9.1 (critical).
+impact: |
+  Any OAuth-provisioned account can be taken over knowing only the email, because the password is a reversible transform of it. Critical.
+timeline:
+  - after: 50m
+    by: team
+    do: comment
+    message: Reproduced against the bjoern account — the derived password logs straight in. This is bad. Escalating.
+  - after: 25m
+    by: team
+    do: comment
+    internal: true
+    message: OAuth onboarding sets password = base64(reverse(email)). Predictable secret. Critical. Force resets on all OAuth-provisioned accounts; stop setting a derivable password.
+  - after: 15m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged critical. We'll stop setting a derivable password for OAuth accounts and invalidate the existing ones.
+  - after: 5m
+    by: team
+    do: severity
+    rating: critical
+  - after: 9d
+    by: team
+    do: state
+    state: resolved
+    message: OAuth accounts no longer get a password derived from the email; affected accounts were reset and must re-auth. Verified the derived credential no longer works. Excellent find.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 3000
+    message: Critical bounty. Thank you.

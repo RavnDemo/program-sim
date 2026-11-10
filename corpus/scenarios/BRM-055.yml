@@ -1,0 +1,62 @@
+id: BRM-055
+title: "GDPR-erased accounts remain loginable: soft-delete isn't enforced at auth"
+vulnerability_information: |
+  Hi team,
+
+  I was looking at how account deletion works on {{base_url}} and I noticed
+  something concerning about the "right to be forgotten" flow. When an account is
+  erased it doesn't actually get removed — it just gets a `deletedAt` timestamp —
+  and the login path can be made to ignore that flag, so a supposedly-deleted
+  user can still be authenticated.
+
+  ## Steps to reproduce
+  1. The login query filters on `AND deletedAt IS NULL`, so normally a
+     soft-deleted account can't sign in.
+  2. But the same email field is injectable, so I can comment that clause out and
+     log straight into an erased account. I used Chris's old account:
+
+  ```
+  POST {{base_url}}/rest/user/login
+  {"email":"chris@bramble.example'--","password":"x"}
+  ```
+
+  3. The response returns a valid token for that account and its data loads, even
+     though the user requested erasure.
+
+  ## Observed result
+  A valid session for an account that is supposed to no longer exist. The
+  erasure never deletes the row or its personal data; it only sets a flag that
+  the auth layer can be tricked into skipping.
+
+  ## Why this matters
+  This is both a broken-auth issue and a privacy/GDPR compliance problem: data
+  that a user asked to have erased is still present and still reachable.
+impact: |
+  "Erased" users and their personal data persist and can be logged into,
+  defeating the data-erasure guarantee. Combined with the injectable email field
+  the deletedAt guard is meaningless. Medium — it leans on the login injection to
+  reach, and the real harm is the retained/reachable PII.
+timeline:
+  - after: 1d
+    by: team
+    do: comment
+    internal: true
+    message: Valid as a distinct issue — erasure is a soft-delete only, and auth relies on a clause the injection skips. Login SQLi tracked separately; this is the data-retention/erasure angle. Medium.
+  - after: 2h
+    by: team
+    do: state
+    state: triaged
+    message: Confirmed — erasure only stamps deletedAt and the account is still reachable. Treating this as the erasure/retention defect. Triaged medium.
+  - after: 20m
+    by: team
+    do: severity
+    rating: medium
+  - after: 10d
+    by: team
+    do: state
+    state: resolved
+    message: Erasure now hard-deletes the user record and associated personal data, and auth no longer depends solely on the deletedAt clause. Thanks for separating this from the injection itself.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 500

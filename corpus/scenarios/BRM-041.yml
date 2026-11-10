@@ -1,0 +1,58 @@
+id: BRM-041
+title: whoami REST endpoint leaks the current user's password hash
+vulnerability_information: |
+  ## Summary
+  `GET /rest/user/whoami` returns the authenticated user's profile including the `password` field (the stored hash). The password hash should never leave the server; exposing it over an API enables offline cracking and supports credential attacks.
+
+  ## Steps to reproduce
+  1. Log in and call the endpoint with your session:
+
+  ```
+  GET {{base_url}}/rest/user/whoami
+  Authorization: Bearer <token>
+  ```
+
+  2. The JSON response under `user` includes a `password` property containing the stored hash, alongside id/email.
+
+  ```json
+  {"user":{"id":1,"email":"admin@bramble.example","password":"0192023a7bbd73250516f069df18b500", ...}}
+  ```
+
+  ## Root cause
+  The handler serialises the full user record without stripping sensitive attributes (CWE-200, exposure of sensitive information). The password field is included in the response object.
+
+  ## Observed result
+  The current user's password hash is returned directly from a REST endpoint.
+
+  ## Severity
+  Discloses the account's password hash to the account holder's session (and anything that can read that response), enabling offline cracking; weak/unsalted hashing amplifies it. CVSS ~6.5–7.5 (high).
+impact: |
+  The password hash is retrievable from a REST endpoint, exposing it to offline cracking and to any XSS/log/proxy that captures the response — a direct path toward credential compromise. High.
+timeline:
+  - after: 1h
+    by: team
+    do: comment
+    message: Confirmed — whoami is serialising the password field. That shouldn't be there. Thanks, triaging.
+  - after: 30m
+    by: team
+    do: comment
+    internal: true
+    message: Strip password (and other sensitive attrs) from the whoami/user serializer. Also revisit the hash algorithm. Valid high.
+  - after: 20m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged high. We'll remove the password field from the serialized user and audit other endpoints for the same leak.
+  - after: 10m
+    by: team
+    do: severity
+    rating: high
+  - after: 5d
+    by: team
+    do: state
+    state: resolved
+    message: The password field is now stripped from whoami and the shared user serializer; verified it no longer appears in any user response. Thanks for the catch.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500

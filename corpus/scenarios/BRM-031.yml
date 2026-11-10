@@ -1,0 +1,58 @@
+id: BRM-031
+title: 2FA TOTP secret stored in plaintext and retrievable, enabling 2FA takeover
+vulnerability_information: |
+  ## Summary
+  The TOTP shared secret for accounts with 2FA enabled is stored in plaintext and is retrievable through the application rather than kept server-side only. With the raw secret, an attacker can generate valid 6-digit codes at will and defeat the second factor for the targeted user (`wurstbrot@bramble.example`).
+
+  ## Steps to reproduce
+  1. Obtain the stored TOTP secret for the target account (it is persisted in cleartext and exposed via the user/data surface rather than being write-only).
+  2. Seed any authenticator / `oathtool` with the recovered base32 secret:
+
+  ```
+  oathtool --totp -b <recovered_secret>
+  ```
+
+  3. Complete the 2FA step for wurstbrot with the generated code:
+
+  ```
+  POST {{base_url}}/rest/2fa/verify
+  {"tmpToken":"<from password step>","totpToken":"<generated>"}
+  ```
+
+  Verification succeeds; full login as the 2FA-protected account.
+
+  ## Root cause
+  The TOTP secret is stored unencrypted (CWE-312, cleartext storage of sensitive information) and is reachable, so the "something you have" factor is effectively known to anyone who can read it.
+
+  ## Severity
+  Defeats 2FA for any affected account; the secret should never be retrievable once provisioned. CVSS ~7.4 (high).
+impact: |
+  The second authentication factor is bypassable because its secret is stored in cleartext and retrievable — an attacker who reads it can mint valid codes and take over 2FA-protected accounts. High.
+timeline:
+  - after: 3h
+    by: team
+    do: comment
+    message: Confirmed — we were able to recover the secret and generate a passing code for the account. Thanks, triaging.
+  - after: 1h
+    by: team
+    do: comment
+    internal: true
+    message: TOTP secrets persisted in cleartext and readable. Encrypt at rest and make write-only post-provision. Re-provision affected users. Valid high.
+  - after: 40m
+    by: team
+    do: state
+    state: triaged
+    message: Triaged high. We'll encrypt the secrets at rest, stop exposing them, and re-provision affected accounts.
+  - after: 15m
+    by: team
+    do: severity
+    rating: high
+  - after: 8d
+    by: team
+    do: state
+    state: resolved
+    message: TOTP secrets are now encrypted at rest and no longer retrievable through the app; affected users re-enrolled. Verified the secret is no longer recoverable. Thank you.
+  - after: 1d
+    by: team
+    do: bounty
+    amount: 1500

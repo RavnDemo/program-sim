@@ -1,0 +1,54 @@
+id: BRM-124
+title: File upload accepts files larger than the stated 100 kB limit
+vulnerability_information: |
+  Hi team,
+
+  The complaint/file-upload feature says it limits uploads to 100 kB, but the limit isn't actually
+  enforced for every path — I was able to upload a file comfortably over 100 kB and have it
+  accepted.
+
+  ### Steps to reproduce
+  1. Log in and go to the complaint page with the file attachment.
+  2. Attach (or POST directly to the endpoint) a file larger than 100 kB.
+  3. The upload is accepted rather than rejected.
+
+  ### PoC
+  ```bash
+  # make a ~200 kB file
+  head -c 200000 /dev/urandom > big.pdf
+  curl -s -X POST {{base_url}}/file-upload \
+    -H "Authorization: Bearer <token>" \
+    -F "file=@big.pdf;type=application/pdf"
+  # -> accepted
+  ```
+
+  ### Observed result
+  A 200 kB file is accepted even though the UI advertises a 100 kB cap. The size check is either
+  missing or applied inconsistently on the server. Screenshot of the successful oversized upload
+  attached.
+
+  Low severity — it's a limit-enforcement gap rather than a direct compromise — but combined with
+  weak type checks it could matter, and unbounded uploads are a storage/abuse concern.
+impact: |
+  The advertised upload size limit isn't enforced, allowing oversized files. On its own low, but
+  it enables storage abuse and compounds with any file-type handling weaknesses. Low.
+timeline:
+  - after: 9h
+    by: team
+    do: state
+    state: triaged
+    message: Reproduced — an over-limit file is accepted. The size check isn't applied on that path. Triaging as low.
+  - after: 15m
+    by: team
+    do: severity
+    rating: low
+  - after: 7d
+    by: team
+    do: state
+    state: resolved
+    message: Resolved — the size limit is now enforced server-side on the upload path and oversized files are rejected with a clear error. Thanks for the clean PoC.
+  - after: 2d
+    by: team
+    do: bounty
+    amount: 150
+    message: Bounty sent. Thanks!

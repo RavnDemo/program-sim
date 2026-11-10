@@ -1,0 +1,49 @@
+id: BRM-042
+title: "CRITICAL XSS: Malicious iframe Payload Executes in Search (Bonus Payload)"
+vulnerability_information: |
+  Dear Security Team,
+
+  I found a **CRITICAL** Cross-Site Scripting (XSS) vulnerability on Bramble Market. This allows execution of arbitrary HTML/JavaScript and full compromise of user sessions.
+
+  ## Summary
+  The search feature renders attacker-controlled input unsafely, allowing an `<iframe>` payload to be injected and executed.
+
+  ## Steps to Reproduce
+  1. Navigate to the search feature on {{base_url}}.
+  2. Submit the following bonus payload:
+
+  ```html
+  <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/771984076&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
+  ```
+
+  3. The iframe is injected into the page and the embedded player loads/auto-plays.
+
+  ## Observed Result
+  Arbitrary iframe/HTML injection in the search results. This is a CRITICAL XSS (CWE-79) and can be used to hijack sessions, steal data, and fully take over accounts.
+
+  ## Remediation
+  - Sanitize all user input
+  - Implement Content-Security-Policy
+  - Encode output
+impact: |
+  CRITICAL. Arbitrary script/HTML execution in victims' browsers enables full session hijacking and account takeover across all users. CVSS 9.0+.
+timeline:
+  - after: 6h
+    by: team
+    do: comment
+    internal: true
+    message: Same DOM XSS sink in search as {{report:BRM-025}} — just the soundcloud iframe variant. Duplicate. Real sev is medium, not critical.
+  - after: 3h
+    by: team
+    do: comment
+    message: Thanks for the report. This is the same underlying search-reflection issue we already have on file, and we rate that class as medium rather than critical.
+  - after: 20m
+    by: team
+    do: severity
+    rating: medium
+  - after: 1d
+    by: team
+    do: state
+    state: duplicate
+    message: |
+      This is the same DOM-based XSS in the product search as a previously reported finding — the iframe "bonus payload" exercises the exact same unsanitised reflection sink, just with a different iframe body. We're closing it as a duplicate of {{report:BRM-025}}, which is already triaged and being fixed; that fix resolves this variant too. For accuracy, we've rated this class as medium, not critical — an iframe that embeds a media player isn't session takeover on its own. Thanks for submitting.
