@@ -177,16 +177,23 @@ export class LiveH1 implements H1 {
       out.team = { ok: true, program_id: await this.teamProgram() }
     } catch (e) { out.team = { ok: false, error: (e as Error).message } }
     for (const persona of Object.keys(this.cfg.personas.hackers)) {
+      const r: Record<string, unknown> = {}
       try {
-        const me = await this.call(this.hackerAuth(persona), 'GET', '/hackers/me/reports?page[size]=1')
-        out[persona] = { ok: true, reports_seen: me.data?.length ?? 0 }
-        if (!this.scopes) {
-          await this.resolveProgram(persona)
-          out.program = { weaknesses: this.weaknesses!.size, scopes: [...this.scopes!.keys()] }
-          const missing = Object.entries(this.cfg.program.assets).filter(([, a]) => !this.scopes!.has(a)).map(([k]) => k)
-          if (missing.length) out.missing_assets = missing
-        }
-      } catch (e) { out[persona] = { ok: false, error: (e as Error).message } }
+        await this.call(this.hackerAuth(persona), 'GET', '/hackers/me/reports?page[size]=1')
+        r.token = 'ok'
+      } catch (e) { r.token = (e as Error).message }
+      try {
+        // Each persona must see the program itself (it's private: they need an accepted invitation).
+        this.weaknesses = undefined; this.scopes = undefined
+        await this.resolveProgram(persona)
+        r.program = 'visible'
+        out.program = { weaknesses: this.weaknesses!.size, scopes: [...this.scopes!.keys()] }
+        const missing = Object.entries(this.cfg.program.assets).filter(([, a]) => !this.scopes!.has(a)).map(([k]) => k)
+        if (missing.length) out.missing_assets = missing
+      } catch (e) {
+        r.program = /404/.test((e as Error).message) ? 'not visible — invite this hacker to the program and accept the invitation' : (e as Error).message
+      }
+      out[persona] = r
     }
     return out
   }
