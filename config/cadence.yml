@@ -1,7 +1,7 @@
 # How fast the program moves. Everything here is deterministic: jitter is derived from scenario ids, not Math.random.
 arrivals:
   enabled: true
-  per_week: 6              # average new reports per week once live
+  per_week: 10             # average new reports per week once live (125 − backfill ≈ 7–8 weeks of arrivals)
   jitter: 0.5              # each gap is per_week-average × [1-jitter, 1+jitter]
   max_per_tick: 1
 steps:
@@ -10,9 +10,9 @@ steps:
   max_per_tick: 25
 # Backfill: file the first N scenarios quickly with compressed timelines, to give the program a history.
 backfill:
-  count: 40
-  speed: 0.1               # timelines run at 10% of real time during backfill (a 5d resolve takes ~12h)
-  gap: 2h                  # between backfill arrivals (40 reports ≈ 3.3 days)
+  count: 50
+  speed: 0.25              # backfill timelines run at 25% of real time (a 5d resolve takes ~30h)
+  gap: 3h                  # between backfill arrivals (50 reports ≈ 6 days)
 # Bounty steps. OFF by default: once a HackerOne program has a credit card on file, HackerOne charges it for every
 # reward paid — sandbox or not, unconfirmed. While off, bounty steps are recorded as skipped and the timeline moves on.
 bounties:

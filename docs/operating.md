@@ -39,16 +39,21 @@ so the hourly run is a dry run against `dry-run.json` on the `ledger` branch).
 2. `check` (live) — every token says `ok` and every persona says `program: visible`.
 3. Reset the dry-run ledger if you like (delete `dry-run.json` on `ledger`), then `file BRM-001` (live) — one real
    report end to end; look at it in HackerOne and in Ravn.
-4. `backfill 40` (live), then set `SIM_LIVE=true`. Backfill files every 2h with timelines at 10% speed, then steady
-   state takes over (6 a week).
+4. `backfill 50` (live), then set `SIM_LIVE=true`. Backfill files every 3h with timelines at 25% speed, then steady
+   state takes over (10 a week): about 8 weeks to use the corpus.
 5. Bounties stay off (`config/cadence.yml` → `bounties.enabled`) until you've decided about the card.
 
 ## Known limits
 
+0. **Invitations need a Bounty program with a payment method.** A Response (VDP) program has no hacker invitations at
+   all, so the VDP fallback doesn't help (a second sandbox org, `bramble_market_demo_hspb2_demo` with
+   `bramble_market_h1r`, was created to check this and is unused). Signal requirements are off on `bramble_market_h1b`,
+   so new demo hackers aren't held to trial reports.
+
 1. **Hackers can't comment through the API.** HackerOne's Hacker API has no comment endpoint, so `by: reporter`
    comment steps are recorded as *skipped* in the ledger. Needs-more-info rounds still happen (the team's side is
-   real); the reporter's reply isn't posted. Options if it matters: HackerOne GraphQL with the hacker's token, or a
-   browser step.
+   real); the reporter's reply isn't posted. HackerOne GraphQL rejects API tokens (checked 2026-11-10: 401). The
+   remaining route is a browser step that signs in as the hacker (password + TOTP from 1Password) and posts the reply.
 2. **No backdating.** HackerOne stamps everything when it happens. "History" is built by the backfill running fast.
 3. **Bounties in a sandbox** may be refused (403). A failing step retries three times, then parks; `retry <id>`
    un-parks it after a fix. Set `bounty` to 0 in the index if the sandbox can't pay.
