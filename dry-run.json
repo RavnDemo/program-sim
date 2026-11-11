@@ -15,8 +15,17 @@
       "report_id": "9000001",
       "filed_at": "2026-11-11T00:50:31.250Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-11T00:50:31.250Z"
+      "next_step": 2,
+      "last_at": "2026-11-11T08:20:31.250Z",
+      "failures": 0
+    },
+    "BRM-003": {
+      "report_id": "9000001",
+      "filed_at": "2026-11-11T03:50:31.250Z",
+      "speed": 0.25,
+      "next_step": 3,
+      "last_at": "2026-11-11T06:05:31.250Z",
+      "failures": 0
     }
   },
   "log": [
@@ -49,10 +58,53 @@
       "action": "team state → not-applicable",
       "ok": true,
       "dry_run": true
+    },
+    {
+      "at": "2026-11-11T09:27:15.631Z",
+      "id": "BRM-003",
+      "action": "file",
+      "ok": true,
+      "detail": "#9000001 as quillfeather",
+      "dry_run": true
+    },
+    {
+      "at": "2026-11-11T09:27:15.631Z",
+      "id": "BRM-002",
+      "action": "team comment",
+      "ok": true,
+      "dry_run": true
+    },
+    {
+      "at": "2026-11-11T09:27:15.631Z",
+      "id": "BRM-003",
+      "action": "team comment",
+      "ok": true,
+      "dry_run": true
+    },
+    {
+      "at": "2026-11-11T09:27:15.631Z",
+      "id": "BRM-003",
+      "action": "team comment",
+      "ok": true,
+      "dry_run": true
+    },
+    {
+      "at": "2026-11-11T09:27:15.631Z",
+      "id": "BRM-003",
+      "action": "team state → triaged",
+      "ok": true,
+      "dry_run": true
+    },
+    {
+      "at": "2026-11-11T09:27:15.631Z",
+      "id": "BRM-002",
+      "action": "team state → triaged",
+      "ok": true,
+      "dry_run": true
     }
   ],
   "backfill": {
-    "remaining": 38
+    "remaining": 37
   },
-  "last_arrival_at": "2026-11-11T00:50:31.250Z"
+  "last_arrival_at": "2026-11-11T03:50:31.250Z"
 }
