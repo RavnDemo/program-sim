@@ -15,16 +15,17 @@
       "report_id": "9000001",
       "filed_at": "2026-11-11T00:50:31.250Z",
       "speed": 0.25,
-      "next_step": 3,
-      "last_at": "2026-11-12T08:20:31.250Z",
-      "failures": 0
+      "next_step": 4,
+      "last_at": "2026-11-12T14:20:31.250Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-003": {
       "report_id": "9000001",
       "filed_at": "2026-11-11T03:50:31.250Z",
       "speed": 0.25,
-      "next_step": 3,
-      "last_at": "2026-11-11T06:05:31.250Z",
+      "next_step": 4,
+      "last_at": "2026-11-12T12:05:31.250Z",
       "failures": 0
     },
     "BRM-004": {
@@ -49,8 +50,17 @@
       "report_id": "9000001",
       "filed_at": "2026-11-12T02:21:11.164Z",
       "speed": 0.25,
-      "next_step": 2,
-      "last_at": "2026-11-12T03:56:11.164Z",
+      "next_step": 3,
+      "last_at": "2026-11-12T09:56:11.164Z",
+      "failures": 0,
+      "done": true
+    },
+    "BRM-007": {
+      "report_id": "9000001",
+      "filed_at": "2026-11-12T11:36:39.103Z",
+      "speed": 0.25,
+      "next_step": 3,
+      "last_at": "2026-11-12T11:55:24.103Z",
       "failures": 0
     }
   },
@@ -200,10 +210,61 @@
       "action": "team state → resolved",
       "ok": true,
       "dry_run": true
+    },
+    {
+      "at": "2026-11-12T17:36:39.103Z",
+      "id": "BRM-007",
+      "action": "file",
+      "ok": true,
+      "detail": "#9000001 as nightjar",
+      "dry_run": true
+    },
+    {
+      "at": "2026-11-12T17:36:39.103Z",
+      "id": "BRM-006",
+      "action": "team state → not-applicable",
+      "ok": true,
+      "dry_run": true
+    },
+    {
+      "at": "2026-11-12T17:36:39.103Z",
+      "id": "BRM-007",
+      "action": "team comment",
+      "ok": true,
+      "dry_run": true
+    },
+    {
+      "at": "2026-11-12T17:36:39.103Z",
+      "id": "BRM-007",
+      "action": "team state → triaged",
+      "ok": true,
+      "dry_run": true
+    },
+    {
+      "at": "2026-11-12T17:36:39.103Z",
+      "id": "BRM-007",
+      "action": "team severity → medium",
+      "ok": true,
+      "dry_run": true
+    },
+    {
+      "at": "2026-11-12T17:36:39.103Z",
+      "id": "BRM-003",
+      "action": "team state → resolved",
+      "ok": true,
+      "dry_run": true
+    },
+    {
+      "at": "2026-11-12T17:36:39.103Z",
+      "id": "BRM-002",
+      "action": "team bounty $150",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($150)",
+      "dry_run": true
     }
   ],
   "backfill": {
-    "remaining": 34
+    "remaining": 33
   },
-  "last_arrival_at": "2026-11-12T02:21:11.164Z"
+  "last_arrival_at": "2026-11-12T11:36:39.103Z"
 }
