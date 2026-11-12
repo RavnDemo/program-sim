@@ -35,6 +35,14 @@
       "last_at": "2026-11-11T13:14:21.887Z",
       "failures": 0,
       "done": true
+    },
+    "BRM-005": {
+      "report_id": "9000001",
+      "filed_at": "2026-11-11T18:45:27.291Z",
+      "speed": 0.25,
+      "next_step": 1,
+      "last_at": "2026-11-11T20:45:27.291Z",
+      "failures": 0
     }
   },
   "log": [
@@ -132,10 +140,25 @@
       "action": "team state → informative",
       "ok": true,
       "dry_run": true
+    },
+    {
+      "at": "2026-11-12T00:45:27.291Z",
+      "id": "BRM-005",
+      "action": "file",
+      "ok": true,
+      "detail": "#9000001 as slopstorm",
+      "dry_run": true
+    },
+    {
+      "at": "2026-11-12T00:45:27.291Z",
+      "id": "BRM-005",
+      "action": "team comment",
+      "ok": true,
+      "dry_run": true
     }
   ],
   "backfill": {
-    "remaining": 36
+    "remaining": 35
   },
-  "last_arrival_at": "2026-11-11T11:54:21.887Z"
+  "last_arrival_at": "2026-11-11T18:45:27.291Z"
 }
