@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "program": "bramble_market_h1b",
+  "scenarios": {
+    "BRM-001": {
+      "report_id": "4197588",
+      "filed_at": "2026-11-12T20:50:53.926Z",
+      "speed": 1,
+      "next_step": 0,
+      "last_at": "2026-11-12T20:50:53.926Z"
+    }
+  },
+  "log": [
+    {
+      "at": "2026-11-12T20:50:53.926Z",
+      "id": "BRM-001",
+      "action": "file (manual)",
+      "ok": true,
+      "detail": "#4197588"
+    }
+  ]
+}
