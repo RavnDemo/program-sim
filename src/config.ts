@@ -12,7 +12,7 @@ export interface Personas { hackers: Record<string, Persona>; team: Record<strin
 export interface Cadence {
   arrivals: { enabled: boolean; per_week: number; jitter: number; max_per_tick: number }
   steps: { enabled: boolean; speed: number; max_per_tick: number }
-  backfill: { count: number; speed: number; gap: string }
+  backfill: { count: number; speed: number; gap: string; max_per_tick?: number }
   bounties?: { enabled: boolean }
 }
 export interface Config { root: string; program: ProgramConfig; personas: Personas; cadence: Cadence }

@@ -1,10 +1,11 @@
 name: sim
-# Works the HackerOne program. Hourly on a schedule; any command by hand (Actions → sim → Run workflow).
+# Works the HackerOne program. Every 15 minutes on a schedule (GitHub drops most scheduled runs on quiet repos —
+# observed ~3/day at hourly — so we ask often and the engine catches up on whatever is due); any command by hand (Actions → sim → Run workflow).
 # Scheduled runs do nothing until the repo variable SIM_ENABLED is "true", and act on HackerOne only when
 # SIM_LIVE is "true" (otherwise they dry-run against a separate dry-run ledger).
 on:
   schedule:
-    - cron: '17 * * * *'
+    - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
     inputs:
       command:

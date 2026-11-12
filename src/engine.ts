@@ -41,7 +41,7 @@ export async function tick(now: number, c: Corpus, cfg: Config, l: Ledger, h1: H
   // 1. Arrivals.
   let filed = 0
   const backfilling = () => (l.backfill?.remaining ?? 0) > 0
-  const maxFiles = backfilling() ? Math.max(1, Math.ceil(3_600_000 / parseDuration(cfg.cadence.backfill.gap))) : cfg.cadence.arrivals.max_per_tick
+  const maxFiles = backfilling() ? (cfg.cadence.backfill.max_per_tick ?? 3) : cfg.cadence.arrivals.max_per_tick
   while (filed < maxFiles && (backfilling() || cfg.cadence.arrivals.enabled)) {
     const id = nextUnfiled(c, l)
     if (!id) break
