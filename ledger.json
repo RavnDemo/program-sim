@@ -6,8 +6,8 @@
       "report_id": "4197588",
       "filed_at": "2026-11-12T20:50:53.926Z",
       "speed": 1,
-      "next_step": 0,
-      "last_at": "2026-11-12T20:50:53.926Z"
+      "next_step": 1,
+      "last_at": "2026-11-12T20:54:53.293Z"
     }
   },
   "log": [
@@ -17,6 +17,13 @@
       "action": "file (manual)",
       "ok": true,
       "detail": "#4197588"
+    },
+    {
+      "at": "2026-11-12T20:54:53.293Z",
+      "id": "BRM-001",
+      "action": "team comment (manual)",
+      "ok": true,
+      "detail": "activity 46417584"
     }
   ]
 }
