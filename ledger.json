@@ -8,6 +8,13 @@
       "speed": 1,
       "next_step": 1,
       "last_at": "2026-11-12T20:54:53.293Z"
+    },
+    "BRM-002": {
+      "report_id": "4197599",
+      "filed_at": "2026-11-12T20:56:53.927Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-12T20:56:53.927Z"
     }
   },
   "log": [
@@ -24,9 +31,17 @@
       "action": "team comment (manual)",
       "ok": true,
       "detail": "activity 46417584"
+    },
+    {
+      "at": "2026-11-12T20:56:53.927Z",
+      "id": "BRM-002",
+      "action": "file",
+      "ok": true,
+      "detail": "#4197599 as quillfeather"
     }
   ],
   "backfill": {
-    "remaining": 50
-  }
+    "remaining": 49
+  },
+  "last_arrival_at": "2026-11-12T20:56:53.927Z"
 }
