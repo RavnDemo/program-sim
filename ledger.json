@@ -28,6 +28,31 @@
       "last_at": "2026-11-12T23:56:53.927Z",
       "failures": 3,
       "last_error": "POST /reports/4198167/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    "BRM-004": {
+      "report_id": "4198849",
+      "filed_at": "2026-11-13T03:35:48.597Z",
+      "speed": 0.25,
+      "next_step": 1,
+      "last_at": "2026-11-13T04:50:48.597Z",
+      "failures": 3,
+      "last_error": "POST /reports/4198849/state_changes → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    "BRM-005": {
+      "report_id": "4198850",
+      "filed_at": "2026-11-13T06:35:48.597Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-13T06:35:48.597Z",
+      "failures": 3,
+      "last_error": "POST /reports/4198850/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    "BRM-006": {
+      "report_id": "4198851",
+      "filed_at": "2026-11-13T09:35:48.597Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-13T09:35:48.597Z"
     }
   },
   "log": [
@@ -121,10 +146,80 @@
       "action": "team comment",
       "ok": false,
       "detail": "POST /reports/4198167/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-13T09:35:48.597Z",
+      "id": "BRM-004",
+      "action": "file",
+      "ok": true,
+      "detail": "#4198849 as slopstorm"
+    },
+    {
+      "at": "2026-11-13T09:35:48.597Z",
+      "id": "BRM-005",
+      "action": "file",
+      "ok": true,
+      "detail": "#4198850 as slopstorm"
+    },
+    {
+      "at": "2026-11-13T09:35:48.597Z",
+      "id": "BRM-006",
+      "action": "file",
+      "ok": true,
+      "detail": "#4198851 as slopstorm"
+    },
+    {
+      "at": "2026-11-13T09:35:48.597Z",
+      "id": "BRM-004",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46432611"
+    },
+    {
+      "at": "2026-11-13T09:35:48.597Z",
+      "id": "BRM-004",
+      "action": "team state → informative",
+      "ok": false,
+      "detail": "POST /reports/4198849/state_changes → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-13T09:35:48.597Z",
+      "id": "BRM-004",
+      "action": "team state → informative",
+      "ok": false,
+      "detail": "POST /reports/4198849/state_changes → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-13T09:35:48.597Z",
+      "id": "BRM-004",
+      "action": "team state → informative",
+      "ok": false,
+      "detail": "POST /reports/4198849/state_changes → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-13T09:35:48.597Z",
+      "id": "BRM-005",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4198850/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-13T09:35:48.597Z",
+      "id": "BRM-005",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4198850/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-13T09:35:48.597Z",
+      "id": "BRM-005",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4198850/activities → 403 {\"errors\":[{\"status\":403}]}"
     }
   ],
   "backfill": {
-    "remaining": 48
+    "remaining": 45
   },
-  "last_arrival_at": "2026-11-12T23:56:53.927Z"
+  "last_arrival_at": "2026-11-13T09:35:48.597Z"
 }
