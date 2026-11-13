@@ -51,8 +51,26 @@
       "report_id": "4198851",
       "filed_at": "2026-11-13T09:35:48.597Z",
       "speed": 0.25,
+      "next_step": 1,
+      "last_at": "2026-11-13T11:05:48.597Z",
+      "failures": 3,
+      "last_error": "POST /reports/4198851/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    "BRM-007": {
+      "report_id": "4200193",
+      "filed_at": "2026-11-13T12:35:48.597Z",
+      "speed": 0.25,
       "next_step": 0,
-      "last_at": "2026-11-13T09:35:48.597Z"
+      "last_at": "2026-11-13T12:35:48.597Z",
+      "failures": 3,
+      "last_error": "POST /reports/4200193/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    "BRM-008": {
+      "report_id": "4200194",
+      "filed_at": "2026-11-13T15:35:48.597Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-13T15:35:48.597Z"
     }
   },
   "log": [
@@ -216,10 +234,73 @@
       "action": "team comment",
       "ok": false,
       "detail": "POST /reports/4198850/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-13T17:21:43.267Z",
+      "id": "BRM-007",
+      "action": "file",
+      "ok": true,
+      "detail": "#4200193 as nightjar"
+    },
+    {
+      "at": "2026-11-13T17:21:43.267Z",
+      "id": "BRM-008",
+      "action": "file",
+      "ok": true,
+      "detail": "#4200194 as slopstorm"
+    },
+    {
+      "at": "2026-11-13T17:21:43.267Z",
+      "id": "BRM-006",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46446900"
+    },
+    {
+      "at": "2026-11-13T17:21:43.267Z",
+      "id": "BRM-006",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4198851/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-13T17:21:43.267Z",
+      "id": "BRM-006",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4198851/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-13T17:21:43.267Z",
+      "id": "BRM-006",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4198851/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-13T17:21:43.267Z",
+      "id": "BRM-007",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4200193/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-13T17:21:43.267Z",
+      "id": "BRM-007",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4200193/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-13T17:21:43.267Z",
+      "id": "BRM-007",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4200193/activities → 403 {\"errors\":[{\"status\":403}]}"
     }
   ],
   "backfill": {
-    "remaining": 45
+    "remaining": 43
   },
-  "last_arrival_at": "2026-11-13T09:35:48.597Z"
+  "last_arrival_at": "2026-11-13T15:35:48.597Z"
 }
