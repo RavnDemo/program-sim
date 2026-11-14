@@ -7,7 +7,7 @@ arrivals:
 steps:
   enabled: true
   speed: 1.0               # multiplies every timeline `after` (0.5 = team works twice as fast)
-  max_per_tick: 40
+  max_per_tick: 8           # spread team actions out: no bursts in anyone's inbox or HackerOne's logs
 # Backfill: file the first N scenarios quickly with compressed timelines, to give the program a history.
 backfill:
   count: 50

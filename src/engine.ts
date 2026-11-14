@@ -101,6 +101,7 @@ export async function tick(now: number, c: Corpus, cfg: Config, l: Ledger, h1: H
       record(id, label, true, detail)
       say(`${id} #${e.report_id}: ${label}${detail ? ` (${detail})` : ''}`)
       opts.save?.()
+      if (!opts.dryRun) await new Promise((r) => setTimeout(r, 1500)) // pace writes; HackerOne allows 25 per 20s, we stay far below
     } catch (err) {
       e.failures = (e.failures ?? 0) + 1
       e.last_error = (err as Error).message
