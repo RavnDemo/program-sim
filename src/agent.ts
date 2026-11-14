@@ -124,7 +124,7 @@ export async function runAgent(now: number, cfg: Config, l: Ledger & { agent?: R
       const env = (kase.packets ?? []).find((p: any) => p.stageRunId === d.stageRunId) ?? (kase.packets ?? []).find((p: any) => p.stage === d.stage)
       rec.externalRef = String(env?.externalRef ?? kase.externalRef ?? '')
       if (d.stage === 'assess') rec.route = env?.packet?.route
-      if (!rec.externalRef) throw new Error('no externalRef in the case')
+      if (!rec.externalRef) throw new Error(`no externalRef in the case; case shape: ${JSON.stringify(kase).replace(/"[0-9a-f-]{36}"/g, '"<uuid>"').slice(0, 1500)}`)
       let j = cache.get(rec.externalRef)
       if (!j) {
         const report = await h1.getReport(rec.externalRef)
@@ -147,7 +147,7 @@ export async function runAgent(now: number, cfg: Config, l: Ledger & { agent?: R
       rec.code = r.status < 300 ? 'accepted' : `${r.code}${r.paths ? ' ' + r.paths.join(',') : ''}`
       say(`agent: ${d.stage} #${rec.externalRef} → ${d.stage === 'classify' ? `${j.isSecurityRelevant ? 'relevant' : 'not relevant'} ${j.severity}` : j.proposed} (${rec.code})`)
     } catch (e) {
-      rec.code = `error: ${(e as Error).message.slice(0, 200)}`
+      rec.code = `error: ${(e as Error).message.slice(0, 1600)}`
       say(`agent: ${d.stage} ${d.reportId} FAILED ${rec.code}`)
     }
     // A refused-for-good answer is recorded so it isn't retried; a transient error is not.
