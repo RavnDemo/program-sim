@@ -1,31 +1,29 @@
-/** One structured call to Claude through the Messages API, forced through a tool so the answer is JSON. */
-const API = 'https://api.anthropic.com/v1/messages'
-export const MODEL = process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-5-5'
+/**
+ * One structured judgement from Claude: the official SDK, structured outputs (`output_config.format` from a Zod
+ * schema), parsed and validated by the SDK. Forced `tool_choice` isn't available on current models, so no tool here.
+ *
+ * Refusal fallbacks are on (`fallbacks: "default"`): these are vulnerability reports, and a safety classifier may
+ * decline one; the API then re-runs it on a fallback model inside the same call.
+ */
+import Anthropic from '@anthropic-ai/sdk'
+import { betaZodOutputFormat } from '@anthropic-ai/sdk/helpers/beta/zod'
+import { z } from 'zod'
 
-export async function decide<T>(system: string, user: string, tool: { name: string; description: string; input_schema: object }): Promise<T> {
-  const key = process.env.ANTHROPIC_API_KEY
-  if (!key) throw new Error('ANTHROPIC_API_KEY is not set')
-  for (let attempt = 0; ; attempt++) {
-    const res = await fetch(API, {
-      method: 'POST',
-      headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
-      body: JSON.stringify({
-        model: MODEL,
-        max_tokens: 1024,
-        system,
-        tools: [tool],
-        tool_choice: { type: 'tool', name: tool.name },
-        messages: [{ role: 'user', content: user }],
-      }),
-    })
-    if ((res.status === 429 || res.status >= 500) && attempt < 3) {
-      await new Promise((r) => setTimeout(r, 3000 * 2 ** attempt))
-      continue
-    }
-    const j: any = await res.json()
-    if (!res.ok) throw new Error(`anthropic ${res.status}: ${JSON.stringify(j).slice(0, 300)}`)
-    const use = j.content?.find((c: any) => c.type === 'tool_use')
-    if (!use) throw new Error('anthropic: no tool_use in response')
-    return use.input as T
-  }
+export const MODEL = process.env.ANTHROPIC_MODEL ?? 'claude-opus-5-5'
+
+const client = new Anthropic({ maxRetries: 4 })
+
+export async function decide<S extends z.ZodType>(system: string, user: string, schema: S): Promise<z.infer<S> & { _model: string }> {
+  const res = await client.beta.messages.parse({
+    model: MODEL,
+    max_tokens: 16000,
+    betas: ['server-side-fallback-2026-07-01'],
+    fallbacks: 'default',
+    output_config: { format: betaZodOutputFormat(schema) },
+    system,
+    messages: [{ role: 'user', content: user }],
+  })
+  if (res.stop_reason === 'refusal') throw new Error(`model refused (${res.stop_details?.category ?? 'no category'})`)
+  if (!res.parsed_output) throw new Error(`no parsed output (stop_reason ${res.stop_reason})`)
+  return { ...(res.parsed_output as z.infer<S>), _model: res.model }
 }

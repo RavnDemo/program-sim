@@ -12,6 +12,7 @@ import type { Config } from './config.ts'
 import type { Ledger } from './ledger.ts'
 import type { LiveH1 } from './h1.ts'
 import type { RavnIsa } from './ravn.ts'
+import { z } from 'zod'
 import { decide, MODEL } from './llm.ts'
 import { iso } from './util.ts'
 
@@ -40,37 +41,18 @@ Valid reports get triaged and resolved; severity is the team's own rating, not t
 
 const SEVERITIES = ['none', 'low', 'medium', 'high', 'critical']
 
-const CLASSIFY_TOOL = {
-  name: 'classify',
-  description: 'Classify a bug bounty report for triage. Enums and numbers only; no prose.',
-  input_schema: {
-    type: 'object',
-    properties: {
-      isSecurityRelevant: { type: 'boolean', description: 'A real, in-scope security issue (even if a duplicate).' },
-      severity: { type: 'string', enum: SEVERITIES, description: "The team's rating if valid, else none." },
-      category: { type: 'string', description: 'lower-case slug, e.g. injection, xss, idor, auth-bypass, info-disclosure, ssrf, path-traversal, deserialization, csrf, business-logic, misconfiguration, vulnerable-component, spam, out-of-scope, best-practice' },
-      isLikelyAiSlop: { type: 'boolean' },
-      hasPoc: { type: 'boolean', description: 'Gives concrete reproduction steps or a working request/payload.' },
-      confidence: { type: 'number', minimum: 0, maximum: 1 },
-      cwe: { type: 'string', description: 'Best CWE id like CWE-89, or empty.' },
-      duplicateOf: { type: 'string', description: 'HackerOne id of an EARLIER report in this program with the same root cause, or empty.' },
-      proposed: { type: 'string', enum: ['accept', 'reject', 'needs-info', 'duplicate'], description: 'What the team should decide.' },
-    },
-    required: ['isSecurityRelevant', 'severity', 'category', 'isLikelyAiSlop', 'hasPoc', 'confidence', 'cwe', 'duplicateOf', 'proposed'],
-  },
-}
-
-interface Judgement {
-  isSecurityRelevant: boolean
-  severity: string
-  category: string
-  isLikelyAiSlop: boolean
-  hasPoc: boolean
-  confidence: number
-  cwe: string
-  duplicateOf: string
-  proposed: 'accept' | 'reject' | 'needs-info' | 'duplicate'
-}
+const JUDGEMENT = z.object({
+  isSecurityRelevant: z.boolean().describe('A real, in-scope security issue (even if a duplicate).'),
+  severity: z.enum(['none', 'low', 'medium', 'high', 'critical']).describe("The team's rating if valid, else none."),
+  category: z.string().describe('lower-case slug: injection, xss, idor, auth-bypass, info-disclosure, ssrf, path-traversal, deserialization, csrf, business-logic, misconfiguration, vulnerable-component, spam, out-of-scope, best-practice'),
+  isLikelyAiSlop: z.boolean(),
+  hasPoc: z.boolean().describe('Gives concrete reproduction steps or a working request/payload.'),
+  confidence: z.number().describe('0 to 1.'),
+  cwe: z.string().describe('Best CWE id like CWE-89, or empty.'),
+  duplicateOf: z.string().describe('HackerOne id of an EARLIER report in this program with the same root cause, or empty.'),
+  proposed: z.enum(['accept', 'reject', 'needs-info', 'duplicate']).describe('What the team should decide.'),
+})
+type Judgement = z.infer<typeof JUDGEMENT> & { _model?: string }
 
 const slug = (s: string) => (s || 'unknown').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'unknown'
 
@@ -90,7 +72,7 @@ function classifyOut(j: Judgement, earlier: Set<string>) {
       duplicateOf: dup && earlier.has(dup) ? { value: dup } : { value: null, reason: 'not-observed' },
     },
     answers: { value: null, reason: 'not-declared' },
-    ranBy: { model: { value: MODEL }, version: 'bramble-agent/1' },
+    ranBy: { model: { value: j._model ?? MODEL }, version: 'bramble-agent/1' },
   }
 }
 
@@ -140,7 +122,7 @@ export async function runAgent(now: number, cfg: Config, l: Ledger & { agent?: R
           '## Earlier reports in this program (id · state · weakness · title)',
           ...earlier.map((o) => `${o.id} · ${o.state} · ${o.weakness ?? '-'} · ${o.title.slice(0, 140)}`),
         ].join('\n')
-        j = await decide<Judgement>(`You triage reports for the Bramble Market bug bounty program, as the security team would.\n\n${POLICY}\n\nJudge the report on its merits against the policy and the code it describes. Be skeptical of claimed severity.`, user, CLASSIFY_TOOL)
+        j = await decide(`You triage reports for the Bramble Market bug bounty program, as the security team would.\n\n${POLICY}\n\nJudge the report on its merits against the policy and the code it describes. Be skeptical of claimed severity.`, user, JUDGEMENT)
         cache.set(rec.externalRef, j)
       }
       const earlierIds = new Set((others ?? []).map((o) => o.id))
