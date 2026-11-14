@@ -91,6 +91,15 @@
       "last_at": "2026-11-13T21:48:18.597Z",
       "failures": 3,
       "last_error": "POST /reports/4201147/state_changes → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    "BRM-011": {
+      "report_id": "4201703",
+      "filed_at": "2026-11-14T00:35:48.597Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-14T00:35:48.597Z",
+      "failures": 3,
+      "last_error": "POST /reports/4201703/activities → 403 {\"errors\":[{\"status\":403}]}"
     }
   },
   "log": [
@@ -401,10 +410,38 @@
       "action": "team state → triaged",
       "ok": false,
       "detail": "POST /reports/4201147/state_changes → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T02:42:35.481Z",
+      "id": "BRM-011",
+      "action": "file",
+      "ok": true,
+      "detail": "#4201703 as nightjar"
+    },
+    {
+      "at": "2026-11-14T02:42:35.481Z",
+      "id": "BRM-011",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4201703/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T02:42:35.481Z",
+      "id": "BRM-011",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4201703/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T02:42:35.481Z",
+      "id": "BRM-011",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4201703/activities → 403 {\"errors\":[{\"status\":403}]}"
     }
   ],
   "backfill": {
-    "remaining": 41
+    "remaining": 40
   },
-  "last_arrival_at": "2026-11-13T21:35:48.597Z"
+  "last_arrival_at": "2026-11-14T00:35:48.597Z"
 }
