@@ -1080,5 +1080,59 @@
     "remaining": 35
   },
   "last_arrival_at": "2026-11-14T15:59:01.102Z",
-  "agent": {}
+  "agent": {
+    "e580a077-c551-4834-9ede-1870e8e7bec1": {
+      "stage": "classify",
+      "stageRunId": "e580a077-c551-4834-9ede-1870e8e7bec1",
+      "attempt": 1,
+      "reportId": "981b1e6c-d639-4f4f-9843-a108bcaea2f8",
+      "externalRef": "4203407",
+      "at": "2026-11-14T18:15:44.155Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": false
+          },
+          "severity": {
+            "value": "none"
+          },
+          "category": {
+            "value": "out-of-scope"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.9
+          },
+          "weaknesses": {
+            "value": null,
+            "reason": "not-observed"
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-4-8"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
+    }
+  }
 }
