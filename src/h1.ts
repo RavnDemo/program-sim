@@ -42,6 +42,7 @@ export class DryRunH1 implements H1 {
 }
 
 const API = process.env.H1_API_BASE ?? 'https://api.hackerone.com/v1'
+const USER_AGENT = 'program-sim/1.0 (+https://github.com/RavnDemo/program-sim)'
 
 /** Talks to api.hackerone.com. Hackers use the Hacker API with their own token; the team uses a Customer API token. */
 export class LiveH1 implements H1 {
@@ -72,7 +73,8 @@ export class LiveH1 implements H1 {
     for (let attempt = 0; ; attempt++) {
       const res = await fetch(`${API}${path}`, {
         method,
-        headers: { Authorization: auth, Accept: 'application/json', ...(body ? { 'Content-Type': 'application/json' } : {}) },
+        // A real User-Agent: from GitHub Actions, HackerOne's edge answers 403 to Node's default one on team writes.
+        headers: { Authorization: auth, Accept: 'application/json', 'User-Agent': USER_AGENT, ...(body ? { 'Content-Type': 'application/json' } : {}) },
         body: body ? JSON.stringify(body) : undefined,
       })
       if (res.status === 429 && attempt < 3) {
