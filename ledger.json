@@ -6,120 +6,128 @@
       "report_id": "4197588",
       "filed_at": "2026-11-12T20:50:53.926Z",
       "speed": 1,
-      "next_step": 1,
-      "last_at": "2026-11-12T20:54:53.293Z",
-      "failures": 0
+      "next_step": 2,
+      "last_at": "2026-11-12T20:59:53.293Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-002": {
       "report_id": "4197599",
       "filed_at": "2026-11-12T20:56:53.927Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-12T20:56:53.927Z",
-      "failures": 0
+      "next_step": 4,
+      "last_at": "2026-11-14T10:26:53.927Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-003": {
       "report_id": "4198167",
       "filed_at": "2026-11-12T23:56:53.927Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-12T23:56:53.927Z",
-      "failures": 0
+      "next_step": 5,
+      "last_at": "2026-11-14T14:11:53.927Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-004": {
       "report_id": "4198849",
       "filed_at": "2026-11-13T03:35:48.597Z",
       "speed": 0.25,
-      "next_step": 1,
-      "last_at": "2026-11-13T04:50:48.597Z",
-      "failures": 0
+      "next_step": 2,
+      "last_at": "2026-11-13T04:55:48.597Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-005": {
       "report_id": "4198850",
       "filed_at": "2026-11-13T06:35:48.597Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-13T06:35:48.597Z",
-      "failures": 0
+      "next_step": 2,
+      "last_at": "2026-11-13T14:35:48.597Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-006": {
       "report_id": "4198851",
       "filed_at": "2026-11-13T09:35:48.597Z",
       "speed": 0.25,
-      "next_step": 1,
-      "last_at": "2026-11-13T11:05:48.597Z",
-      "failures": 0
+      "next_step": 3,
+      "last_at": "2026-11-13T17:10:48.597Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-007": {
       "report_id": "4200193",
       "filed_at": "2026-11-13T12:35:48.597Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-13T12:35:48.597Z",
+      "next_step": 3,
+      "last_at": "2026-11-13T12:54:33.597Z",
       "failures": 0
     },
     "BRM-008": {
       "report_id": "4200194",
       "filed_at": "2026-11-13T15:35:48.597Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-13T15:35:48.597Z",
-      "failures": 0
+      "next_step": 1,
+      "last_at": "2026-11-13T21:35:48.597Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-009": {
       "report_id": "4201145",
       "filed_at": "2026-11-13T18:35:48.597Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-13T18:35:48.597Z",
+      "next_step": 6,
+      "last_at": "2026-11-14T03:25:48.597Z",
       "failures": 0
     },
     "BRM-010": {
       "report_id": "4201147",
       "filed_at": "2026-11-13T21:35:48.597Z",
       "speed": 0.25,
-      "next_step": 1,
-      "last_at": "2026-11-13T21:48:18.597Z",
+      "next_step": 3,
+      "last_at": "2026-11-13T21:59:33.597Z",
       "failures": 0
     },
     "BRM-011": {
       "report_id": "4201703",
       "filed_at": "2026-11-14T00:35:48.597Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-14T00:35:48.597Z",
+      "next_step": 4,
+      "last_at": "2026-11-14T00:54:33.597Z",
       "failures": 0
     },
     "BRM-012": {
       "report_id": "4202302",
       "filed_at": "2026-11-14T03:35:48.597Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-14T03:35:48.597Z",
-      "failures": 0
+      "next_step": 1,
+      "last_at": "2026-11-14T09:35:48.597Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-013": {
       "report_id": "4202303",
       "filed_at": "2026-11-14T06:35:48.597Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-14T06:35:48.597Z",
+      "next_step": 1,
+      "last_at": "2026-11-14T09:05:48.597Z",
       "failures": 0
     },
     "BRM-014": {
       "report_id": "4203067",
       "filed_at": "2026-11-14T09:59:01.102Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-14T09:59:01.102Z",
+      "next_step": 4,
+      "last_at": "2026-11-14T10:56:31.102Z",
       "failures": 0
     },
     "BRM-015": {
       "report_id": "4203068",
       "filed_at": "2026-11-14T12:59:01.102Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-14T12:59:01.102Z",
+      "next_step": 3,
+      "last_at": "2026-11-14T13:54:01.102Z",
       "failures": 0
     },
     "BRM-016": {
@@ -795,6 +803,263 @@
       "action": "team comment",
       "ok": false,
       "detail": "POST /reports/4203068/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-001",
+      "action": "team state → not-applicable",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-002",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46472955"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-003",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46472957"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-003",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46472958"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-003",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-002",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-004",
+      "action": "team state → informative",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-005",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46472969"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-006",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46472971"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-007",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46472974"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-007",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-007",
+      "action": "team severity → medium",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-005",
+      "action": "team state → informative",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-006",
+      "action": "team state → not-applicable",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-009",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46472980"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-009",
+      "action": "team state → needs-more-info",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-008",
+      "action": "team state → informative",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-010",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-010",
+      "action": "team severity → high",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-011",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46472990"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-011",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46472992"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-011",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-011",
+      "action": "team severity → critical",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-009",
+      "action": "reporter comment",
+      "ok": true,
+      "detail": "skipped: Hacker API cannot comment"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-009",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46472996"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-009",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-009",
+      "action": "team severity → low",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-002",
+      "action": "team state → resolved",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-003",
+      "action": "team state → resolved",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-013",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46473008"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-012",
+      "action": "team state → spam",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-002",
+      "action": "team bounty $150",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($150)"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-014",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46473010"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-014",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46473011"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-014",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-014",
+      "action": "team severity → high",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-015",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46473015"
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-015",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-015",
+      "action": "team severity → high",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T16:30:28.674Z",
+      "id": "BRM-003",
+      "action": "team bounty $1500",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($1500)"
     }
   ],
   "backfill": {
