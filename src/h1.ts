@@ -173,6 +173,37 @@ export class LiveH1 implements H1 {
     return undefined
   }
 
+  /** The full report, as the team sees it (Customer API). For the agent, which is the team's own tool. */
+  async getReport(id: string): Promise<{ title: string; body: string; impact: string; weakness?: string; severity?: string; asset?: string; state: string; createdAt: string; reporter?: string }> {
+    const r = await this.call(this.teamAuth(), 'GET', `/reports/${id}`)
+    const a = r.data?.attributes ?? {}
+    const rel = r.data?.relationships ?? {}
+    return {
+      title: a.title ?? '',
+      body: a.vulnerability_information ?? '',
+      impact: a.impact ?? '',
+      weakness: rel.weakness?.data?.attributes?.external_id,
+      severity: rel.severity?.data?.attributes?.rating,
+      asset: rel.structured_scope?.data?.attributes?.asset_identifier,
+      state: a.state,
+      createdAt: a.created_at,
+      reporter: rel.reporter?.data?.attributes?.username,
+    }
+  }
+
+  /** Every report in the program, newest first: id, title, state, weakness. For duplicate spotting. */
+  async listReports(): Promise<{ id: string; title: string; state: string; createdAt: string; weakness?: string }[]> {
+    const handle = this.cfg.program.program.handle
+    const rows = await this.paged(this.teamAuth(), `/reports?filter[program][]=${encodeURIComponent(handle)}&sort=-reports.created_at`)
+    return rows.map((r) => ({
+      id: String(r.id),
+      title: r.attributes?.title ?? '',
+      state: r.attributes?.state ?? '',
+      createdAt: r.attributes?.created_at ?? '',
+      weakness: r.relationships?.weakness?.data?.attributes?.external_id,
+    }))
+  }
+
   async check() {
     const out: Record<string, unknown> = {}
     try {

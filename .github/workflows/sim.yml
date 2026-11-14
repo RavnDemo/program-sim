@@ -12,7 +12,7 @@ on:
         description: What to run
         type: choice
         default: tick
-        options: [tick, status, check, probe, file, step, backfill, retry, validate]
+        options: [tick, status, check, probe, agent, calibrate, file, step, backfill, retry, validate]
       arg:
         description: Scenario id (file/step/retry) or count (backfill)
         type: string
@@ -60,6 +60,9 @@ jobs:
           H1_NIGHTJAR_TOKEN: ${{ secrets.H1_NIGHTJAR_TOKEN }}
           H1_QUILLFEATHER_TOKEN: ${{ secrets.H1_QUILLFEATHER_TOKEN }}
           H1_SLOPSTORM_TOKEN: ${{ secrets.H1_SLOPSTORM_TOKEN }}
+          RAVN_ISA_KEY: ${{ secrets.RAVN_ISA_KEY }}
+          RAVN_UNWRAP_TOKEN: ${{ secrets.RAVN_UNWRAP_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           # Scheduled runs stay up ~5h45m and tick every 15 minutes (GitHub only fires the schedule a few times a day).
           LOOP_MINUTES: ${{ github.event_name == 'schedule' && '345' || '' }}
           TICK_EVERY_MINUTES: '15'

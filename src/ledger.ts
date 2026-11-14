@@ -12,6 +12,8 @@ export interface Ledger {
   scenarios: Record<string, LedgerEntry>
   /** Append-only action log, newest last. */
   log: LogLine[]
+  /** bramble-agent's answers to Ravn, keyed by stage run. */
+  agent?: Record<string, import('./agent.ts').AgentRecord>
 }
 
 export interface LedgerEntry {

@@ -19,6 +19,8 @@ save() {
 
 once() {
   node src/cli.ts "$COMMAND" ${ARG:+"$ARG"} "${flags[@]}" | tee -a run.log
+  # Keep the calibration page current on the ledger branch (cheap: reads the ledger only).
+  [ "$COMMAND" = tick ] && node src/cli.ts calibrate "${flags[@]}" > /dev/null || true
   save
 }
 

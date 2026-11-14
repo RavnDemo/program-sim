@@ -22,6 +22,10 @@ import { readLedger, writeLedger, emptyLedger } from './ledger.ts'
 import { tick, status, fileNow, stepNow } from './engine.ts'
 import { DryRunH1, LiveH1, type H1 } from './h1.ts'
 import { iso, parseDuration } from './util.ts'
+import { RavnIsa } from './ravn.ts'
+import { runAgent } from './agent.ts'
+import { calibrate } from './calibrate.ts'
+import { writeFileSync } from 'node:fs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const argv = process.argv.slice(2)
@@ -37,6 +41,7 @@ const handle = cfg.program.program.handle
 const ledgerPath = opt('ledger') ?? join(root, '.ledger', live ? 'ledger.json' : 'dry-run.json')
 const now = opt('now') ? Date.parse(opt('now')!) : process.env.SIM_NOW ? Date.parse(process.env.SIM_NOW) : Date.now()
 const log = (s: string) => console.log(s)
+const isaFile = join(dirname(opt('ledger') ?? join(root, '.ledger', 'x')), 'isa.enc')
 
 function h1(): H1 {
   return live ? new LiveH1(cfg) : new DryRunH1(log)
@@ -61,6 +66,25 @@ async function main() {
       console.log(`tick ${iso(now)} ${live ? 'LIVE' : 'dry run'} · ledger ${ledgerPath}`)
       await tick(now, corpus, cfg, l, h1(), { dryRun: !live, log, save })
       save()
+      // The team's own agent, when it's set up: answers whatever Ravn has waiting for it.
+      if (live && process.env.RAVN_ISA_KEY && process.env.ANTHROPIC_API_KEY) {
+        try { await runAgent(now, cfg, l, new RavnIsa(isaFile), h1() as LiveH1, log, { max: 20 }) } catch (e) { log(`agent: ${(e as Error).message}`) }
+        save()
+      }
+      return
+    }
+    case 'agent': {
+      if (!live) throw new Error('agent needs --live (it answers Ravn for real)')
+      const l = readLedger(ledgerPath, handle)
+      await runAgent(now, cfg, l, new RavnIsa(isaFile), h1() as LiveH1, log, { max: Number(arg) || 20 })
+      writeLedger(ledgerPath, l)
+      return
+    }
+    case 'calibrate': {
+      const l = readLedger(ledgerPath, handle)
+      const { md } = calibrate(corpus, l)
+      console.log(md)
+      writeFileSync(join(dirname(ledgerPath), 'calibration.md'), md + '\n')
       return
     }
     case 'backfill': {
@@ -126,7 +150,16 @@ async function main() {
     }
     case 'check': {
       const client = h1()
-      console.log(JSON.stringify(await client.check(), null, 2))
+      const out: Record<string, unknown> = await client.check()
+      if (live && process.env.RAVN_ISA_KEY) {
+        try {
+          const ravn = new RavnIsa(isaFile)
+          const { dispatches = [] } = await ravn.mcp<{ dispatches: any[] }>('list_dispatches', { asOf: iso(now) })
+          out.ravn = { ok: true, dispatches: dispatches.length, byStage: dispatches.reduce((m: Record<string, number>, d: any) => ((m[d.stage] = (m[d.stage] ?? 0) + 1), m), {}) }
+        } catch (e) { out.ravn = { ok: false, error: (e as Error).message } }
+        out.anthropic = process.env.ANTHROPIC_API_KEY ? 'key set' : 'ANTHROPIC_API_KEY not set'
+      }
+      console.log(JSON.stringify(out, null, 2))
       return
     }
     default:
