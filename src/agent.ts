@@ -121,8 +121,10 @@ export async function runAgent(now: number, cfg: Config, l: Ledger & { agent?: R
     const rec: AgentRecord = { stage: d.stage, stageRunId: d.stageRunId, attempt: d.attempt, reportId: d.reportId, externalRef: '', at: iso(Date.now()), code: 'pending' }
     try {
       const kase = await ravn.mcp<any>('get_case', { asOf, case: d.reportId })
-      const env = (kase.packets ?? []).find((p: any) => p.stageRunId === d.stageRunId) ?? (kase.packets ?? []).find((p: any) => p.stage === d.stage)
-      rec.externalRef = String(env?.externalRef ?? kase.externalRef ?? '')
+      // get_case: { case: { externalRef, … }, packets: [{ stageRunId, stage, packet: <envelope { externalRef, packet: <stage In> }> }] }
+      const row = (kase.packets ?? []).find((p: any) => p.stageRunId === d.stageRunId) ?? (kase.packets ?? []).find((p: any) => p.stage === d.stage)
+      const env = row?.packet
+      rec.externalRef = String(kase.case?.externalRef ?? env?.externalRef ?? '')
       if (d.stage === 'assess') rec.route = env?.packet?.route
       if (!rec.externalRef) throw new Error(`no externalRef in the case; case shape: ${JSON.stringify(kase).replace(/"[0-9a-f-]{36}"/g, '"<uuid>"').slice(0, 1500)}`)
       let j = cache.get(rec.externalRef)
