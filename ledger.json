@@ -8,9 +8,7 @@
       "speed": 1,
       "next_step": 1,
       "last_at": "2026-11-12T20:54:53.293Z",
-      "failures": 1,
-      "last_error": "POST /reports/4197588/state_changes → 403 {\"errors\":[{\"status\":403}]}",
-      "retry_after": "2026-11-14T16:27:12.283Z"
+      "failures": 0
     },
     "BRM-002": {
       "report_id": "4197599",
@@ -18,9 +16,7 @@
       "speed": 0.25,
       "next_step": 0,
       "last_at": "2026-11-12T20:56:53.927Z",
-      "failures": 1,
-      "last_error": "POST /reports/4197599/activities → 403 {\"errors\":[{\"status\":403}]}",
-      "retry_after": "2026-11-14T16:27:12.283Z"
+      "failures": 0
     },
     "BRM-003": {
       "report_id": "4198167",
@@ -28,9 +24,7 @@
       "speed": 0.25,
       "next_step": 0,
       "last_at": "2026-11-12T23:56:53.927Z",
-      "failures": 1,
-      "last_error": "POST /reports/4198167/activities → 403 {\"errors\":[{\"status\":403}]}",
-      "retry_after": "2026-11-14T16:27:12.283Z"
+      "failures": 0
     },
     "BRM-004": {
       "report_id": "4198849",
@@ -38,9 +32,7 @@
       "speed": 0.25,
       "next_step": 1,
       "last_at": "2026-11-13T04:50:48.597Z",
-      "failures": 1,
-      "last_error": "POST /reports/4198849/state_changes → 403 {\"errors\":[{\"status\":403}]}",
-      "retry_after": "2026-11-14T16:27:12.283Z"
+      "failures": 0
     },
     "BRM-005": {
       "report_id": "4198850",
@@ -48,9 +40,7 @@
       "speed": 0.25,
       "next_step": 0,
       "last_at": "2026-11-13T06:35:48.597Z",
-      "failures": 1,
-      "last_error": "POST /reports/4198850/activities → 403 {\"errors\":[{\"status\":403}]}",
-      "retry_after": "2026-11-14T16:27:12.283Z"
+      "failures": 0
     },
     "BRM-006": {
       "report_id": "4198851",
@@ -58,9 +48,7 @@
       "speed": 0.25,
       "next_step": 1,
       "last_at": "2026-11-13T11:05:48.597Z",
-      "failures": 1,
-      "last_error": "POST /reports/4198851/activities → 403 {\"errors\":[{\"status\":403}]}",
-      "retry_after": "2026-11-14T16:27:12.283Z"
+      "failures": 0
     },
     "BRM-007": {
       "report_id": "4200193",
@@ -68,9 +56,7 @@
       "speed": 0.25,
       "next_step": 0,
       "last_at": "2026-11-13T12:35:48.597Z",
-      "failures": 1,
-      "last_error": "POST /reports/4200193/activities → 403 {\"errors\":[{\"status\":403}]}",
-      "retry_after": "2026-11-14T16:27:12.283Z"
+      "failures": 0
     },
     "BRM-008": {
       "report_id": "4200194",
@@ -78,9 +64,7 @@
       "speed": 0.25,
       "next_step": 0,
       "last_at": "2026-11-13T15:35:48.597Z",
-      "failures": 1,
-      "last_error": "POST /reports/4200194/state_changes → 403 {\"errors\":[{\"status\":403}]}",
-      "retry_after": "2026-11-14T16:27:12.283Z"
+      "failures": 0
     },
     "BRM-009": {
       "report_id": "4201145",
@@ -88,9 +72,7 @@
       "speed": 0.25,
       "next_step": 0,
       "last_at": "2026-11-13T18:35:48.597Z",
-      "failures": 1,
-      "last_error": "POST /reports/4201145/activities → 403 {\"errors\":[{\"status\":403}]}",
-      "retry_after": "2026-11-14T16:27:12.283Z"
+      "failures": 0
     },
     "BRM-010": {
       "report_id": "4201147",
@@ -98,9 +80,7 @@
       "speed": 0.25,
       "next_step": 1,
       "last_at": "2026-11-13T21:48:18.597Z",
-      "failures": 1,
-      "last_error": "POST /reports/4201147/state_changes → 403 {\"errors\":[{\"status\":403}]}",
-      "retry_after": "2026-11-14T16:27:12.283Z"
+      "failures": 0
     },
     "BRM-011": {
       "report_id": "4201703",
@@ -108,9 +88,7 @@
       "speed": 0.25,
       "next_step": 0,
       "last_at": "2026-11-14T00:35:48.597Z",
-      "failures": 1,
-      "last_error": "POST /reports/4201703/activities → 403 {\"errors\":[{\"status\":403}]}",
-      "retry_after": "2026-11-14T16:27:12.283Z"
+      "failures": 0
     },
     "BRM-012": {
       "report_id": "4202302",
@@ -118,9 +96,7 @@
       "speed": 0.25,
       "next_step": 0,
       "last_at": "2026-11-14T03:35:48.597Z",
-      "failures": 1,
-      "last_error": "POST /reports/4202302/state_changes → 403 {\"errors\":[{\"status\":403}]}",
-      "retry_after": "2026-11-14T16:27:12.283Z"
+      "failures": 0
     },
     "BRM-013": {
       "report_id": "4202303",
@@ -128,9 +104,7 @@
       "speed": 0.25,
       "next_step": 0,
       "last_at": "2026-11-14T06:35:48.597Z",
-      "failures": 1,
-      "last_error": "POST /reports/4202303/activities → 403 {\"errors\":[{\"status\":403}]}",
-      "retry_after": "2026-11-14T16:27:12.283Z"
+      "failures": 0
     },
     "BRM-014": {
       "report_id": "4203067",
@@ -138,9 +112,7 @@
       "speed": 0.25,
       "next_step": 0,
       "last_at": "2026-11-14T09:59:01.102Z",
-      "failures": 1,
-      "last_error": "POST /reports/4203067/activities → 403 {\"errors\":[{\"status\":403}]}",
-      "retry_after": "2026-11-14T16:27:12.283Z"
+      "failures": 0
     },
     "BRM-015": {
       "report_id": "4203068",
@@ -148,9 +120,7 @@
       "speed": 0.25,
       "next_step": 0,
       "last_at": "2026-11-14T12:59:01.102Z",
-      "failures": 1,
-      "last_error": "POST /reports/4203068/activities → 403 {\"errors\":[{\"status\":403}]}",
-      "retry_after": "2026-11-14T16:27:12.283Z"
+      "failures": 0
     },
     "BRM-016": {
       "report_id": "4203069",
