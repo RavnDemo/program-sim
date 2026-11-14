@@ -7,6 +7,10 @@ import { render } from './render.ts'
 import { parseDuration, unit, iso } from './util.ts'
 
 const WEEK = 7 * 86_400_000
+/** A step that keeps failing is parked after this many tries (backed off over ~2 days). */
+export const PARK_AFTER = 10
+/** 15m, 30m, 1h, 2h, 4h, then 6h. */
+export const backoff = (failures: number) => Math.min(15 * 60_000 * 2 ** Math.max(0, failures - 1), 6 * 3_600_000)
 
 export type Action =
   | { kind: 'file'; id: string; at: number; backfill: boolean }
@@ -75,7 +79,8 @@ export async function tick(now: number, c: Corpus, cfg: Config, l: Ledger, h1: H
   for (;;) {
     let best: { id: string; e: LedgerEntry; s: Scenario; step: Step; due: number } | undefined
     for (const [id, e] of Object.entries(l.scenarios)) {
-      if (e.done || (e.failures ?? 0) >= 3) continue
+      if (e.done || (e.failures ?? 0) >= PARK_AFTER) continue
+      if (e.retry_after && Date.parse(e.retry_after) > now) continue
       const s = c.scenarios.get(id)
       const step = s?.timeline[e.next_step]
       if (!s || !step) continue
@@ -91,6 +96,7 @@ export async function tick(now: number, c: Corpus, cfg: Config, l: Ledger, h1: H
       e.last_at = iso(Math.min(due, now))
       e.failures = 0
       delete e.last_error
+      delete e.retry_after
       if (e.next_step >= s.timeline.length) e.done = true
       record(id, label, true, detail)
       say(`${id} #${e.report_id}: ${label}${detail ? ` (${detail})` : ''}`)
@@ -98,8 +104,9 @@ export async function tick(now: number, c: Corpus, cfg: Config, l: Ledger, h1: H
     } catch (err) {
       e.failures = (e.failures ?? 0) + 1
       e.last_error = (err as Error).message
+      e.retry_after = iso(now + backoff(e.failures))
       record(id, label, false, e.last_error)
-      say(`FAILED ${id} ${label}: ${e.last_error}${e.failures >= 3 ? ' — parked after 3 failures (sim retry)' : ''}`)
+      say(`FAILED ${id} ${label}: ${e.last_error}${e.failures >= PARK_AFTER ? ` — parked after ${PARK_AFTER} failures (sim retry)` : ` — retry after ${e.retry_after}`}`)
       opts.save?.()
     }
     ran++
@@ -142,7 +149,8 @@ async function runStep(s: Scenario, step: Step, e: LedgerEntry, cfg: Config, l: 
 export function status(now: number, c: Corpus, cfg: Config, l: Ledger) {
   const entries = Object.entries(l.scenarios)
   const open = entries.filter(([, e]) => !e.done)
-  const stuck = entries.filter(([, e]) => (e.failures ?? 0) >= 3)
+  const stuck = entries.filter(([, e]) => (e.failures ?? 0) >= PARK_AFTER)
+  const retrying = entries.filter(([, e]) => (e.failures ?? 0) > 0 && (e.failures ?? 0) < PARK_AFTER)
   const next = nextUnfiled(c, l)
   const nextDue = next && l.last_arrival_at ? Date.parse(l.last_arrival_at) + ((l.backfill?.remaining ?? 0) > 0 ? parseDuration(cfg.cadence.backfill.gap) : arrivalGap(cfg, next)) : undefined
   return {
@@ -151,6 +159,7 @@ export function status(now: number, c: Corpus, cfg: Config, l: Ledger) {
     of: c.order.length,
     timelines_running: open.length,
     stuck: stuck.map(([id, e]) => `${id}: ${e.last_error}`),
+    retrying: retrying.map(([id, e]) => `${id} (${e.failures}× until ${e.retry_after}): ${e.last_error?.slice(0, 80)}`),
     backfill_remaining: l.backfill?.remaining ?? 0,
     next_arrival: next ? { id: next, due: nextDue ? iso(nextDue) : 'next tick' } : 'corpus used up',
     closed_by_outcome: Object.fromEntries(

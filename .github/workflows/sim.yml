@@ -5,7 +5,7 @@ name: sim
 # SIM_LIVE is "true" (otherwise they dry-run against a separate dry-run ledger).
 on:
   schedule:
-    - cron: '7,22,37,52 * * * *'
+    - cron: '7 */2 * * *'   # every 2h; each run keeps ticking for ~5h45m, overlapping runs queue behind the concurrency group
   workflow_dispatch:
     inputs:
       command:
@@ -24,7 +24,7 @@ on:
 
 concurrency:
   group: sim
-  cancel-in-progress: false
+  cancel-in-progress: false   # a scheduled run that arrives while one is looping waits its turn
 
 permissions:
   contents: write
@@ -33,7 +33,7 @@ jobs:
   run:
     if: github.event_name == 'workflow_dispatch' || vars.SIM_ENABLED == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 355
     env:
       LIVE: ${{ github.event_name == 'workflow_dispatch' && inputs.live || vars.SIM_LIVE == 'true' }}
       COMMAND: ${{ inputs.command || 'tick' }}
@@ -60,17 +60,18 @@ jobs:
           H1_NIGHTJAR_TOKEN: ${{ secrets.H1_NIGHTJAR_TOKEN }}
           H1_QUILLFEATHER_TOKEN: ${{ secrets.H1_QUILLFEATHER_TOKEN }}
           H1_SLOPSTORM_TOKEN: ${{ secrets.H1_SLOPSTORM_TOKEN }}
+          # Scheduled runs stay up ~5h45m and tick every 15 minutes (GitHub only fires the schedule a few times a day).
+          LOOP_MINUTES: ${{ github.event_name == 'schedule' && '345' || '' }}
+          TICK_EVERY_MINUTES: '15'
         run: |
-          set -o pipefail
+          git -C .ledger config user.name 'program-sim[bot]'
+          tools/run.sh
           ledger=".ledger/$([ "$LIVE" = true ] && echo ledger.json || echo dry-run.json)"
-          flags=(--ledger "$ledger")
-          [ "$LIVE" = true ] && flags+=(--live)
-          node src/cli.ts "$COMMAND" ${ARG:+"$ARG"} "${flags[@]}" | tee run.log
           {
             echo "### sim $COMMAND ${ARG} ($([ "$LIVE" = true ] && echo live || echo dry run))"
             echo '```'; tail -n 200 run.log; echo '```'
             echo '#### status'
-            echo '```json'; node src/cli.ts status "${flags[@]}"; echo '```'
+            echo '```json'; node src/cli.ts status --ledger "$ledger"; echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
       - name: Save the ledger
         if: always()

@@ -26,6 +26,8 @@ export interface LedgerEntry {
   done?: boolean
   failures?: number
   last_error?: string
+  /** After a failure, don't retry before this (exponential backoff). */
+  retry_after?: string
 }
 
 export interface LogLine { at: string; id: string; action: string; ok: boolean; detail?: string; dry_run?: boolean }

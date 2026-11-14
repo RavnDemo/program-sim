@@ -8,7 +8,7 @@
  *   node src/cli.ts backfill <n> [--live]       start a fast backfill of the next n reports (runs on following ticks)
  *   node src/cli.ts file <id> [--live]          file one scenario now, out of turn
  *   node src/cli.ts step <id> [--live]          run one scenario's next timeline step now
- *   node src/cli.ts retry <id>                  clear a parked scenario's failures
+ *   node src/cli.ts retry <id|all>              clear a parked scenario's failures (all: every failing one)
  *   node src/cli.ts simulate <duration>         dry-run the program forward in virtual time (e.g. 60d) and summarise
  *   node src/cli.ts check [--live]              resolve scopes/weaknesses and check every token (no writes)
  *
@@ -84,12 +84,16 @@ async function main() {
     }
     case 'retry': {
       const l = readLedger(ledgerPath, handle)
-      const e = l.scenarios[arg]
-      if (!e) throw new Error(`${arg} is not filed`)
-      e.failures = 0
-      delete e.last_error
+      const ids = arg === 'all' || !arg ? Object.keys(l.scenarios).filter((id) => l.scenarios[id].failures) : [arg]
+      for (const id of ids) {
+        const e = l.scenarios[id]
+        if (!e) throw new Error(`${id} is not filed`)
+        e.failures = 0
+        delete e.last_error
+        delete e.retry_after
+      }
       writeLedger(ledgerPath, l)
-      console.log(`${arg} unparked`)
+      console.log(`unparked: ${ids.join(', ') || 'nothing'}`)
       return
     }
     case 'simulate': {

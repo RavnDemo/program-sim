@@ -4,7 +4,7 @@ import type { Config } from '../src/config.ts'
 import type { Corpus, IndexRow, Scenario } from '../src/corpus.ts'
 import { validate } from '../src/corpus.ts'
 import { emptyLedger } from '../src/ledger.ts'
-import { tick, arrivalGap } from '../src/engine.ts'
+import { tick, arrivalGap, PARK_AFTER } from '../src/engine.ts'
 import type { H1 } from '../src/h1.ts'
 import { parseDuration, unit } from '../src/util.ts'
 
@@ -84,15 +84,32 @@ test('a program runs: arrival, steps in order, duplicate points at its original'
   assert.equal(Date.parse(l.scenarios['T-002'].filed_at) - Date.parse(l.scenarios['T-001'].filed_at), arrivalGap(cfg, 'T-002'))
 })
 
-test('a failing step is retried, then parked after three failures', async () => {
+test('a failing step backs off (one try per tick at most), then parks', async () => {
   const c = corpus()
   const l = emptyLedger('p')
   const { h1 } = recorder()
-  h1.state = async () => { throw new Error('boom') }
+  let tries = 0
+  h1.state = async () => { tries++; throw new Error('boom') }
   const t0 = Date.parse('2026-11-10T00:00:00Z')
-  for (let t = t0; t <= t0 + 10 * H; t += H) await tick(t, c, cfg, l, h1, { dryRun: true })
-  assert.equal(l.scenarios['T-001'].failures, 3)
+  await tick(t0, c, cfg, l, h1, { dryRun: true })
+  await tick(t0 + H + 1, c, cfg, l, h1, { dryRun: true })
+  assert.equal(tries, 1, 'one try in the first tick that reaches the step; none while backing off')
+  for (let t = t0 + 2 * H; t <= t0 + 4 * 24 * H; t += H) await tick(t, c, cfg, l, h1, { dryRun: true })
+  assert.equal(l.scenarios['T-001'].failures, PARK_AFTER)
   assert.equal(l.scenarios['T-001'].next_step, 0)
+})
+
+test('a step that fails, then succeeds, carries on', async () => {
+  const c = corpus()
+  const l = emptyLedger('p')
+  const { h1, calls } = recorder()
+  const ok = h1.state
+  let n = 0
+  h1.state = async (...a) => { if (n++ < 2) throw new Error('403'); return ok(...a) }
+  const t0 = Date.parse('2026-11-10T00:00:00Z')
+  for (let t = t0; t <= t0 + 3 * 24 * H; t += H) await tick(t, c, cfg, l, h1, { dryRun: true })
+  assert.ok(l.scenarios['T-001'].done, JSON.stringify(l.scenarios['T-001']))
+  assert.ok(calls.includes('bounty 101 100'))
 })
 
 test('backfill files on the backfill gap and runs timelines faster', async () => {
