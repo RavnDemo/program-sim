@@ -12,7 +12,7 @@ on:
         description: What to run
         type: choice
         default: tick
-        options: [tick, status, check, file, step, backfill, retry, validate]
+        options: [tick, status, check, probe, file, step, backfill, retry, validate]
       arg:
         description: Scenario id (file/step/retry) or count (backfill)
         type: string

@@ -104,6 +104,22 @@ async function main() {
       console.log(JSON.stringify(status(t, corpus, cfg, l), null, 2))
       return
     }
+    case 'probe': {
+      // Diagnose a team write from wherever this runs: GET the report, then POST an internal note. Prints status + headers.
+      const reportId = arg ?? '4197599'
+      const ident = process.env.H1_TEAM_API_IDENTIFIER ?? cfg.program.team.api_identifier
+      const auth = 'Basic ' + Buffer.from(`${ident}:${process.env.H1_TEAM_TOKEN ?? ''}`).toString('base64')
+      const base = process.env.H1_API_BASE ?? 'https://api.hackerone.com/v1'
+      for (const [method, path, body] of [
+        ['GET', `/reports/${reportId}`, undefined],
+        ['POST', `/reports/${reportId}/activities`, { data: { type: 'activity-comment', attributes: { message: '(sim probe from ' + (process.env.GITHUB_ACTIONS ? 'GitHub Actions' : 'local') + ' — please ignore)', internal: true } } }],
+      ] as const) {
+        const res = await fetch(base + path, { method, headers: { Authorization: auth, Accept: 'application/json', 'Content-Type': 'application/json', 'User-Agent': 'program-sim' }, body: body ? JSON.stringify(body) : undefined })
+        const text = await res.text()
+        console.log(method, path, res.status, JSON.stringify(Object.fromEntries([...res.headers].filter(([k]) => /^(server|cf-|x-request|retry|x-rate|www-auth)/i.test(k)))), text.slice(0, 200))
+      }
+      return
+    }
     case 'check': {
       const client = h1()
       console.log(JSON.stringify(await client.check(), null, 2))
