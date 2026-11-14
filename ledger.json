@@ -100,6 +100,22 @@
       "last_at": "2026-11-14T00:35:48.597Z",
       "failures": 3,
       "last_error": "POST /reports/4201703/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    "BRM-012": {
+      "report_id": "4202302",
+      "filed_at": "2026-11-14T03:35:48.597Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-14T03:35:48.597Z"
+    },
+    "BRM-013": {
+      "report_id": "4202303",
+      "filed_at": "2026-11-14T06:35:48.597Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-14T06:35:48.597Z",
+      "failures": 3,
+      "last_error": "POST /reports/4202303/activities → 403 {\"errors\":[{\"status\":403}]}"
     }
   },
   "log": [
@@ -438,10 +454,45 @@
       "action": "team comment",
       "ok": false,
       "detail": "POST /reports/4201703/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T09:28:17.226Z",
+      "id": "BRM-012",
+      "action": "file",
+      "ok": true,
+      "detail": "#4202302 as slopstorm"
+    },
+    {
+      "at": "2026-11-14T09:28:17.226Z",
+      "id": "BRM-013",
+      "action": "file",
+      "ok": true,
+      "detail": "#4202303 as slopstorm"
+    },
+    {
+      "at": "2026-11-14T09:28:17.226Z",
+      "id": "BRM-013",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4202303/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T09:28:17.226Z",
+      "id": "BRM-013",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4202303/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T09:28:17.226Z",
+      "id": "BRM-013",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4202303/activities → 403 {\"errors\":[{\"status\":403}]}"
     }
   ],
   "backfill": {
-    "remaining": 40
+    "remaining": 38
   },
-  "last_arrival_at": "2026-11-14T00:35:48.597Z"
+  "last_arrival_at": "2026-11-14T06:35:48.597Z"
 }
