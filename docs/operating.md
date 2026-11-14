@@ -22,7 +22,7 @@ are on its 1Password item, so `op item get "H1 ravndemo_<who>" --otp` gives a co
 | quillfeather | `ravndemo_quillfeather` | hacker | `H1_QUILLFEATHER_TOKEN` |
 | slopstorm | `ravndemo_slopstorm` | hacker | `H1_SLOPSTORM_TOKEN` |
 | triager | `ravndemo_triage` | org admin (created the org) | — |
-| team API | token `bramble-triage`, group *Program admins* | Customer API, works the program | `H1_TEAM_TOKEN` |
+| team API | token `bramble-triage`, groups *Program admins* **and *Report managers*** | Customer API, works the program | `H1_TEAM_TOKEN` |
 | Ravn | token `ravn-bramble`, group *Program viewers* | what Ravn reads with | (in Ravn) |
 
 Hacker tokens: hackerone.com/settings/api_token/edit (one per account; regenerating revokes the old one).
@@ -44,6 +44,9 @@ so the hourly run is a dry run against `dry-run.json` on the `ledger` branch).
 5. Bounties stay off (`config/cadence.yml` → `bounties.enabled`) until you've decided about the card.
 
 ## Known limits
+
+- **The team token needs *Report managers*.** With only *Program admins* it can post internal notes, but every public
+  comment and state change is a bare 403 (`{"errors":[{"status":403}]}`). Found 2026-11-14; `probe` reproduces it.
 
 0. **Invitations need a Bounty program with a payment method.** A Response (VDP) program has no hacker invitations at
    all, so the VDP fallback doesn't help (a second sandbox org, `bramble_market_demo_hspb2_demo` with
