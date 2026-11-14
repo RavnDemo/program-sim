@@ -1079,5 +1079,6 @@
   "backfill": {
     "remaining": 35
   },
-  "last_arrival_at": "2026-11-14T15:59:01.102Z"
+  "last_arrival_at": "2026-11-14T15:59:01.102Z",
+  "agent": {}
 }
