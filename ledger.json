@@ -110,9 +110,10 @@
       "report_id": "4202303",
       "filed_at": "2026-11-14T06:35:48.597Z",
       "speed": 0.25,
-      "next_step": 1,
-      "last_at": "2026-11-14T09:05:48.597Z",
-      "failures": 0
+      "next_step": 2,
+      "last_at": "2026-11-14T15:05:48.597Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-014": {
       "report_id": "4203067",
@@ -134,8 +135,10 @@
       "report_id": "4203069",
       "filed_at": "2026-11-14T15:59:01.102Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-14T15:59:01.102Z"
+      "next_step": 1,
+      "last_at": "2026-11-14T16:44:01.102Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-017": {
       "report_id": "4203407",
@@ -143,6 +146,21 @@
       "speed": 1,
       "next_step": 0,
       "last_at": "2026-11-14T18:08:09.298Z"
+    },
+    "BRM-018": {
+      "report_id": "4203941",
+      "filed_at": "2026-11-14T18:59:01.102Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-14T18:59:01.102Z"
+    },
+    "BRM-019": {
+      "report_id": "4203942",
+      "filed_at": "2026-11-14T21:59:01.102Z",
+      "speed": 0.25,
+      "next_step": 1,
+      "last_at": "2026-11-14T22:14:01.102Z",
+      "failures": 0
     }
   },
   "log": [
@@ -1074,12 +1092,45 @@
       "action": "file (manual)",
       "ok": true,
       "detail": "#4203407"
+    },
+    {
+      "at": "2026-11-14T22:17:02.240Z",
+      "id": "BRM-018",
+      "action": "file",
+      "ok": true,
+      "detail": "#4203941 as slopstorm"
+    },
+    {
+      "at": "2026-11-14T22:17:02.240Z",
+      "id": "BRM-019",
+      "action": "file",
+      "ok": true,
+      "detail": "#4203942 as nightjar"
+    },
+    {
+      "at": "2026-11-14T22:17:02.240Z",
+      "id": "BRM-013",
+      "action": "team state → informative",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T22:17:02.240Z",
+      "id": "BRM-016",
+      "action": "team state → spam",
+      "ok": true
+    },
+    {
+      "at": "2026-11-14T22:17:02.240Z",
+      "id": "BRM-019",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46479828"
     }
   ],
   "backfill": {
-    "remaining": 35
+    "remaining": 33
   },
-  "last_arrival_at": "2026-11-14T15:59:01.102Z",
+  "last_arrival_at": "2026-11-14T21:59:01.102Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
