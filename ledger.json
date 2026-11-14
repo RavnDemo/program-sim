@@ -158,8 +158,8 @@
       "report_id": "4203942",
       "filed_at": "2026-11-14T21:59:01.102Z",
       "speed": 0.25,
-      "next_step": 3,
-      "last_at": "2026-11-14T22:30:16.102Z",
+      "next_step": 4,
+      "last_at": "2026-11-14T22:32:46.102Z",
       "failures": 0
     }
   },
@@ -1138,6 +1138,12 @@
       "id": "BRM-019",
       "action": "team state → triaged",
       "ok": true
+    },
+    {
+      "at": "2026-11-14T22:47:40.381Z",
+      "id": "BRM-019",
+      "action": "team severity → high",
+      "ok": true
     }
   ],
   "backfill": {
@@ -1345,6 +1351,82 @@
             "value": "claude-opus-5-5"
           },
           "version": "bramble-agent/1"
+        }
+      }
+    },
+    "bc88bd0d-ad79-4f1c-bfaf-23f4b77695ba": {
+      "stage": "assess",
+      "stageRunId": "bc88bd0d-ad79-4f1c-bfaf-23f4b77695ba",
+      "attempt": 1,
+      "reportId": "1eabc8c7-3a04-427c-ad4c-54c6a155e5aa",
+      "externalRef": "4203941",
+      "at": "2026-11-14T22:47:44.029Z",
+      "code": "accepted",
+      "route": {
+        "value": {
+          "track": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "action": "auto-close",
+          "reasons": {
+            "value": [
+              "slop"
+            ]
+          }
+        }
+      },
+      "out": {
+        "proposed": {
+          "value": "reject"
+        },
+        "severity": {
+          "value": "none"
+        },
+        "ranBy": {
+          "tool": "bramble-agent",
+          "version": "1"
+        },
+        "card": {
+          "value": "https://hackerone.com/reports/4203941"
+        }
+      }
+    },
+    "089a370d-38d5-48b3-b583-953173804a99": {
+      "stage": "assess",
+      "stageRunId": "089a370d-38d5-48b3-b583-953173804a99",
+      "attempt": 1,
+      "reportId": "46bafc54-9ad8-4871-9982-7f2eed06d8cd",
+      "externalRef": "4203942",
+      "at": "2026-11-14T22:47:47.797Z",
+      "code": "accepted",
+      "route": {
+        "value": {
+          "track": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "action": "escalate",
+          "reasons": {
+            "value": [
+              "escalate"
+            ]
+          }
+        }
+      },
+      "out": {
+        "proposed": {
+          "value": "accept"
+        },
+        "severity": {
+          "value": "medium"
+        },
+        "ranBy": {
+          "tool": "bramble-agent",
+          "version": "1"
+        },
+        "card": {
+          "value": "https://hackerone.com/reports/4203942"
         }
       }
     }
