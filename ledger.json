@@ -106,7 +106,9 @@
       "filed_at": "2026-11-14T03:35:48.597Z",
       "speed": 0.25,
       "next_step": 0,
-      "last_at": "2026-11-14T03:35:48.597Z"
+      "last_at": "2026-11-14T03:35:48.597Z",
+      "failures": 3,
+      "last_error": "POST /reports/4202302/state_changes → 403 {\"errors\":[{\"status\":403}]}"
     },
     "BRM-013": {
       "report_id": "4202303",
@@ -116,6 +118,31 @@
       "last_at": "2026-11-14T06:35:48.597Z",
       "failures": 3,
       "last_error": "POST /reports/4202303/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    "BRM-014": {
+      "report_id": "4203067",
+      "filed_at": "2026-11-14T09:59:01.102Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-14T09:59:01.102Z",
+      "failures": 3,
+      "last_error": "POST /reports/4203067/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    "BRM-015": {
+      "report_id": "4203068",
+      "filed_at": "2026-11-14T12:59:01.102Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-14T12:59:01.102Z",
+      "failures": 3,
+      "last_error": "POST /reports/4203068/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    "BRM-016": {
+      "report_id": "4203069",
+      "filed_at": "2026-11-14T15:59:01.102Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-14T15:59:01.102Z"
     }
   },
   "log": [
@@ -489,10 +516,94 @@
       "action": "team comment",
       "ok": false,
       "detail": "POST /reports/4202303/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T15:59:01.102Z",
+      "id": "BRM-014",
+      "action": "file",
+      "ok": true,
+      "detail": "#4203067 as nightjar"
+    },
+    {
+      "at": "2026-11-14T15:59:01.102Z",
+      "id": "BRM-015",
+      "action": "file",
+      "ok": true,
+      "detail": "#4203068 as nightjar"
+    },
+    {
+      "at": "2026-11-14T15:59:01.102Z",
+      "id": "BRM-016",
+      "action": "file",
+      "ok": true,
+      "detail": "#4203069 as slopstorm"
+    },
+    {
+      "at": "2026-11-14T15:59:01.102Z",
+      "id": "BRM-012",
+      "action": "team state → spam",
+      "ok": false,
+      "detail": "POST /reports/4202302/state_changes → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T15:59:01.102Z",
+      "id": "BRM-012",
+      "action": "team state → spam",
+      "ok": false,
+      "detail": "POST /reports/4202302/state_changes → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T15:59:01.102Z",
+      "id": "BRM-012",
+      "action": "team state → spam",
+      "ok": false,
+      "detail": "POST /reports/4202302/state_changes → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T15:59:01.102Z",
+      "id": "BRM-014",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4203067/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T15:59:01.102Z",
+      "id": "BRM-014",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4203067/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T15:59:01.102Z",
+      "id": "BRM-014",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4203067/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T15:59:01.102Z",
+      "id": "BRM-015",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4203068/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T15:59:01.102Z",
+      "id": "BRM-015",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4203068/activities → 403 {\"errors\":[{\"status\":403}]}"
+    },
+    {
+      "at": "2026-11-14T15:59:01.102Z",
+      "id": "BRM-015",
+      "action": "team comment",
+      "ok": false,
+      "detail": "POST /reports/4203068/activities → 403 {\"errors\":[{\"status\":403}]}"
     }
   ],
   "backfill": {
-    "remaining": 38
+    "remaining": 35
   },
-  "last_arrival_at": "2026-11-14T06:35:48.597Z"
+  "last_arrival_at": "2026-11-14T15:59:01.102Z"
 }
