@@ -172,6 +172,14 @@
       "next_step": 2,
       "last_at": "2026-11-15T02:44:01.102Z",
       "failures": 0
+    },
+    "BRM-021": {
+      "report_id": "4204575",
+      "filed_at": "2026-11-15T03:59:01.102Z",
+      "speed": 0.25,
+      "next_step": 4,
+      "last_at": "2026-11-15T05:24:01.102Z",
+      "failures": 0
     }
   },
   "log": [
@@ -1196,12 +1204,45 @@
       "action": "team comment",
       "ok": true,
       "detail": "activity 46482564"
+    },
+    {
+      "at": "2026-11-15T06:14:29.770Z",
+      "id": "BRM-021",
+      "action": "file",
+      "ok": true,
+      "detail": "#4204575 as nightjar"
+    },
+    {
+      "at": "2026-11-15T06:14:29.770Z",
+      "id": "BRM-021",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46484981"
+    },
+    {
+      "at": "2026-11-15T06:14:29.770Z",
+      "id": "BRM-021",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46484982"
+    },
+    {
+      "at": "2026-11-15T06:14:29.770Z",
+      "id": "BRM-021",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-15T06:14:29.770Z",
+      "id": "BRM-021",
+      "action": "team severity → high",
+      "ok": true
     }
   ],
   "backfill": {
-    "remaining": 32
+    "remaining": 31
   },
-  "last_arrival_at": "2026-11-15T00:59:01.102Z",
+  "last_arrival_at": "2026-11-15T03:59:01.102Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
