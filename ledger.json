@@ -78,9 +78,10 @@
       "report_id": "4201145",
       "filed_at": "2026-11-13T18:35:48.597Z",
       "speed": 0.25,
-      "next_step": 7,
-      "last_at": "2026-11-15T15:25:48.597Z",
-      "failures": 0
+      "next_step": 8,
+      "last_at": "2026-11-15T21:25:48.597Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-010": {
       "report_id": "4201147",
@@ -221,8 +222,9 @@
       "report_id": "4205861",
       "filed_at": "2026-11-15T18:59:01.102Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-15T18:59:01.102Z"
+      "next_step": 1,
+      "last_at": "2026-11-15T21:29:01.102Z",
+      "failures": 0
     }
   },
   "log": [
@@ -1410,6 +1412,20 @@
       "action": "file",
       "ok": true,
       "detail": "#4205861 as slopstorm"
+    },
+    {
+      "at": "2026-11-15T21:39:51.128Z",
+      "id": "BRM-009",
+      "action": "team bounty $150",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($150)"
+    },
+    {
+      "at": "2026-11-15T21:39:51.128Z",
+      "id": "BRM-026",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46499705"
     }
   ],
   "backfill": {
