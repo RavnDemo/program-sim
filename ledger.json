@@ -169,8 +169,8 @@
       "report_id": "4204161",
       "filed_at": "2026-11-15T00:59:01.102Z",
       "speed": 0.25,
-      "next_step": 1,
-      "last_at": "2026-11-15T02:14:01.102Z",
+      "next_step": 2,
+      "last_at": "2026-11-15T02:44:01.102Z",
       "failures": 0
     }
   },
@@ -1189,6 +1189,13 @@
       "action": "team comment",
       "ok": true,
       "detail": "activity 46482198"
+    },
+    {
+      "at": "2026-11-15T02:49:01.528Z",
+      "id": "BRM-020",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46482564"
     }
   ],
   "backfill": {
