@@ -60,9 +60,10 @@
       "report_id": "4200193",
       "filed_at": "2026-11-13T12:35:48.597Z",
       "speed": 0.25,
-      "next_step": 4,
-      "last_at": "2026-11-15T06:54:33.597Z",
-      "failures": 0
+      "next_step": 5,
+      "last_at": "2026-11-15T12:54:33.597Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-008": {
       "report_id": "4200194",
@@ -77,8 +78,8 @@
       "report_id": "4201145",
       "filed_at": "2026-11-13T18:35:48.597Z",
       "speed": 0.25,
-      "next_step": 6,
-      "last_at": "2026-11-14T03:25:48.597Z",
+      "next_step": 7,
+      "last_at": "2026-11-15T15:25:48.597Z",
       "failures": 0
     },
     "BRM-010": {
@@ -186,8 +187,10 @@
       "report_id": "4204638",
       "filed_at": "2026-11-15T06:59:01.102Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-15T06:59:01.102Z"
+      "next_step": 1,
+      "last_at": "2026-11-15T12:59:01.102Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-023": {
       "report_id": "4204865",
@@ -195,6 +198,14 @@
       "speed": 0.25,
       "next_step": 1,
       "last_at": "2026-11-15T11:44:01.102Z",
+      "failures": 0
+    },
+    "BRM-024": {
+      "report_id": "4205495",
+      "filed_at": "2026-11-15T12:59:01.102Z",
+      "speed": 0.25,
+      "next_step": 4,
+      "last_at": "2026-11-15T13:27:46.102Z",
       "failures": 0
     }
   },
@@ -1286,12 +1297,64 @@
       "action": "team comment",
       "ok": true,
       "detail": "activity 46489264"
+    },
+    {
+      "at": "2026-11-15T15:36:28.109Z",
+      "id": "BRM-024",
+      "action": "file",
+      "ok": true,
+      "detail": "#4205495 as nightjar"
+    },
+    {
+      "at": "2026-11-15T15:36:28.109Z",
+      "id": "BRM-007",
+      "action": "team bounty $500",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($500)"
+    },
+    {
+      "at": "2026-11-15T15:36:28.109Z",
+      "id": "BRM-022",
+      "action": "team state → informative",
+      "ok": true
+    },
+    {
+      "at": "2026-11-15T15:36:28.109Z",
+      "id": "BRM-024",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46493734"
+    },
+    {
+      "at": "2026-11-15T15:36:28.109Z",
+      "id": "BRM-024",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46493737"
+    },
+    {
+      "at": "2026-11-15T15:36:28.109Z",
+      "id": "BRM-024",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-15T15:36:28.109Z",
+      "id": "BRM-024",
+      "action": "team severity → critical",
+      "ok": true
+    },
+    {
+      "at": "2026-11-15T15:36:28.109Z",
+      "id": "BRM-009",
+      "action": "team state → resolved",
+      "ok": true
     }
   ],
   "backfill": {
-    "remaining": 29
+    "remaining": 28
   },
-  "last_arrival_at": "2026-11-15T09:59:01.102Z",
+  "last_arrival_at": "2026-11-15T12:59:01.102Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
