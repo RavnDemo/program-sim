@@ -212,8 +212,8 @@
       "report_id": "4205544",
       "filed_at": "2026-11-15T15:59:01.102Z",
       "speed": 0.25,
-      "next_step": 1,
-      "last_at": "2026-11-15T16:29:01.102Z",
+      "next_step": 3,
+      "last_at": "2026-11-15T16:42:46.102Z",
       "failures": 0
     }
   },
@@ -1371,6 +1371,18 @@
       "action": "team comment",
       "ok": true,
       "detail": "activity 46494989"
+    },
+    {
+      "at": "2026-11-15T16:52:54.144Z",
+      "id": "BRM-025",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-15T16:52:54.144Z",
+      "id": "BRM-025",
+      "action": "team severity → medium",
+      "ok": true
     }
   ],
   "backfill": {
