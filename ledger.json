@@ -152,9 +152,10 @@
       "report_id": "4203941",
       "filed_at": "2026-11-14T18:59:01.102Z",
       "speed": 0.25,
-      "next_step": 1,
-      "last_at": "2026-11-15T00:59:01.102Z",
-      "failures": 0
+      "next_step": 2,
+      "last_at": "2026-11-15T01:29:01.102Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-019": {
       "report_id": "4203942",
@@ -1174,6 +1175,12 @@
       "action": "team comment",
       "ok": true,
       "detail": "activity 46481493"
+    },
+    {
+      "at": "2026-11-15T01:33:38.596Z",
+      "id": "BRM-018",
+      "action": "team state → informative",
+      "ok": true
     }
   ],
   "backfill": {
@@ -1512,6 +1519,44 @@
             "value": "claude-opus-5-5"
           },
           "version": "bramble-agent/1"
+        }
+      }
+    },
+    "ca0f2610-bd7d-43ef-aeef-5b2137ffff97": {
+      "stage": "assess",
+      "stageRunId": "ca0f2610-bd7d-43ef-aeef-5b2137ffff97",
+      "attempt": 1,
+      "reportId": "55a94d7d-17d0-4c61-8efc-52d58c170456",
+      "externalRef": "4204161",
+      "at": "2026-11-15T01:33:41.947Z",
+      "code": "accepted",
+      "route": {
+        "value": {
+          "track": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "action": "escalate",
+          "reasons": {
+            "value": [
+              "escalate"
+            ]
+          }
+        }
+      },
+      "out": {
+        "proposed": {
+          "value": "duplicate"
+        },
+        "severity": {
+          "value": "medium"
+        },
+        "ranBy": {
+          "tool": "bramble-agent",
+          "version": "1"
+        },
+        "card": {
+          "value": "https://hackerone.com/reports/4204161"
         }
       }
     }
