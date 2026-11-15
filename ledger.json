@@ -212,8 +212,9 @@
       "report_id": "4205544",
       "filed_at": "2026-11-15T15:59:01.102Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-15T15:59:01.102Z"
+      "next_step": 1,
+      "last_at": "2026-11-15T16:29:01.102Z",
+      "failures": 0
     }
   },
   "log": [
@@ -1363,6 +1364,13 @@
       "action": "file",
       "ok": true,
       "detail": "#4205544 as quillfeather"
+    },
+    {
+      "at": "2026-11-15T16:37:41.456Z",
+      "id": "BRM-025",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46494989"
     }
   ],
   "backfill": {
@@ -2170,6 +2178,44 @@
             "value": "claude-opus-5-5"
           },
           "version": "bramble-agent/1"
+        }
+      }
+    },
+    "9f519e25-fa34-44bb-ab61-b76f7774d9d8": {
+      "stage": "assess",
+      "stageRunId": "9f519e25-fa34-44bb-ab61-b76f7774d9d8",
+      "attempt": 1,
+      "reportId": "fcce3b3b-fed9-42fa-a131-d5f978234b52",
+      "externalRef": "4205544",
+      "at": "2026-11-15T16:37:45.369Z",
+      "code": "accepted",
+      "route": {
+        "value": {
+          "track": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "action": "escalate",
+          "reasons": {
+            "value": [
+              "escalate"
+            ]
+          }
+        }
+      },
+      "out": {
+        "proposed": {
+          "value": "accept"
+        },
+        "severity": {
+          "value": "medium"
+        },
+        "ranBy": {
+          "tool": "bramble-agent",
+          "version": "1"
+        },
+        "card": {
+          "value": "https://hackerone.com/reports/4205544"
         }
       }
     }
