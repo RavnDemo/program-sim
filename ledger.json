@@ -196,9 +196,10 @@
       "report_id": "4204865",
       "filed_at": "2026-11-15T09:59:01.102Z",
       "speed": 0.25,
-      "next_step": 1,
-      "last_at": "2026-11-15T11:44:01.102Z",
-      "failures": 0
+      "next_step": 2,
+      "last_at": "2026-11-15T17:44:01.102Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-024": {
       "report_id": "4205495",
@@ -1388,6 +1389,12 @@
       "at": "2026-11-15T17:08:02.675Z",
       "id": "BRM-014",
       "action": "team state → resolved",
+      "ok": true
+    },
+    {
+      "at": "2026-11-15T17:53:15.670Z",
+      "id": "BRM-023",
+      "action": "team state → informative",
       "ok": true
     }
   ],
