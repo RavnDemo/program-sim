@@ -120,8 +120,8 @@
       "report_id": "4203067",
       "filed_at": "2026-11-14T09:59:01.102Z",
       "speed": 0.25,
-      "next_step": 4,
-      "last_at": "2026-11-14T10:56:31.102Z",
+      "next_step": 5,
+      "last_at": "2026-11-15T16:56:31.102Z",
       "failures": 0
     },
     "BRM-015": {
@@ -1382,6 +1382,12 @@
       "at": "2026-11-15T16:52:54.144Z",
       "id": "BRM-025",
       "action": "team severity → medium",
+      "ok": true
+    },
+    {
+      "at": "2026-11-15T17:08:02.675Z",
+      "id": "BRM-014",
+      "action": "team state → resolved",
       "ok": true
     }
   ],
