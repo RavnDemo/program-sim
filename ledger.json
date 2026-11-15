@@ -193,8 +193,9 @@
       "report_id": "4204865",
       "filed_at": "2026-11-15T09:59:01.102Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-15T09:59:01.102Z"
+      "next_step": 1,
+      "last_at": "2026-11-15T11:44:01.102Z",
+      "failures": 0
     }
   },
   "log": [
@@ -1278,6 +1279,13 @@
       "action": "file",
       "ok": true,
       "detail": "#4204865 as nightjar"
+    },
+    {
+      "at": "2026-11-15T11:47:07.595Z",
+      "id": "BRM-023",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46489264"
     }
   ],
   "backfill": {
