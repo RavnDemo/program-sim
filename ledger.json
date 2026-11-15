@@ -87,8 +87,8 @@
       "report_id": "4201147",
       "filed_at": "2026-11-13T21:35:48.597Z",
       "speed": 0.25,
-      "next_step": 3,
-      "last_at": "2026-11-13T21:59:33.597Z",
+      "next_step": 4,
+      "last_at": "2026-11-15T21:59:33.597Z",
       "failures": 0
     },
     "BRM-011": {
@@ -222,9 +222,17 @@
       "report_id": "4205861",
       "filed_at": "2026-11-15T18:59:01.102Z",
       "speed": 0.25,
-      "next_step": 1,
-      "last_at": "2026-11-15T21:29:01.102Z",
-      "failures": 0
+      "next_step": 2,
+      "last_at": "2026-11-15T21:59:01.102Z",
+      "failures": 0,
+      "done": true
+    },
+    "BRM-027": {
+      "report_id": "4206205",
+      "filed_at": "2026-11-15T21:59:01.102Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-15T21:59:01.102Z"
     }
   },
   "log": [
@@ -1426,12 +1434,31 @@
       "action": "team comment",
       "ok": true,
       "detail": "activity 46499705"
+    },
+    {
+      "at": "2026-11-15T22:09:59.951Z",
+      "id": "BRM-027",
+      "action": "file",
+      "ok": true,
+      "detail": "#4206205 as quillfeather"
+    },
+    {
+      "at": "2026-11-15T22:09:59.951Z",
+      "id": "BRM-026",
+      "action": "team state → not-applicable",
+      "ok": true
+    },
+    {
+      "at": "2026-11-15T22:09:59.951Z",
+      "id": "BRM-010",
+      "action": "team state → resolved",
+      "ok": true
     }
   ],
   "backfill": {
-    "remaining": 26
+    "remaining": 25
   },
-  "last_arrival_at": "2026-11-15T18:59:01.102Z",
+  "last_arrival_at": "2026-11-15T21:59:01.102Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",

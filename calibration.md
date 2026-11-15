@@ -1,6 +1,6 @@
 ## Calibration — Ravn with bramble-agent vs the team
 
-Reports judged: **10** of 26 filed.
+Reports judged: **10** of 27 filed.
 
 | measure | match |
 | --- | --- |
