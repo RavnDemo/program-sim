@@ -131,8 +131,8 @@
       "report_id": "4203068",
       "filed_at": "2026-11-14T12:59:01.102Z",
       "speed": 0.25,
-      "next_step": 3,
-      "last_at": "2026-11-14T13:54:01.102Z",
+      "next_step": 4,
+      "last_at": "2026-11-16T01:54:01.102Z",
       "failures": 0
     },
     "BRM-016": {
@@ -242,8 +242,8 @@
       "report_id": "4206483",
       "filed_at": "2026-11-16T00:59:01.102Z",
       "speed": 0.25,
-      "next_step": 2,
-      "last_at": "2026-11-16T01:41:31.102Z",
+      "next_step": 4,
+      "last_at": "2026-11-16T01:50:16.102Z",
       "failures": 0
     }
   },
@@ -1513,6 +1513,24 @@
       "action": "team comment",
       "ok": true,
       "detail": "activity 46502883"
+    },
+    {
+      "at": "2026-11-16T01:56:56.929Z",
+      "id": "BRM-028",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-16T01:56:56.929Z",
+      "id": "BRM-028",
+      "action": "team severity → high",
+      "ok": true
+    },
+    {
+      "at": "2026-11-16T01:56:56.929Z",
+      "id": "BRM-015",
+      "action": "team state → resolved",
+      "ok": true
     }
   ],
   "backfill": {
