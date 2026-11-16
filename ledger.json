@@ -234,8 +234,8 @@
       "report_id": "4206205",
       "filed_at": "2026-11-15T21:59:01.102Z",
       "speed": 0.25,
-      "next_step": 1,
-      "last_at": "2026-11-15T23:29:01.102Z",
+      "next_step": 2,
+      "last_at": "2026-11-16T05:29:01.102Z",
       "failures": 0
     },
     "BRM-028": {
@@ -1571,6 +1571,12 @@
       "at": "2026-11-16T04:28:02.458Z",
       "id": "BRM-029",
       "action": "team severity → critical",
+      "ok": true
+    },
+    {
+      "at": "2026-11-16T05:43:41.657Z",
+      "id": "BRM-027",
+      "action": "team state → triaged",
       "ok": true
     }
   ],
