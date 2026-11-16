@@ -3260,6 +3260,118 @@
           "value": "https://hackerone.com/reports/4207662"
         }
       }
+    },
+    "cc9cbae3-3b56-459d-b981-762e3a840aac": {
+      "stage": "classify",
+      "stageRunId": "cc9cbae3-3b56-459d-b981-762e3a840aac",
+      "attempt": 1,
+      "reportId": "4af5ea6c-7eb5-4020-9bc5-ea916d5581d9",
+      "externalRef": "4209311",
+      "at": "2026-11-16T20:35:38.754Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "medium"
+          },
+          "category": {
+            "value": "auth-bypass"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.85
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-285"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
+    },
+    "bc6138aa-0ffc-43dc-8b8a-668617b52290": {
+      "stage": "classify",
+      "stageRunId": "bc6138aa-0ffc-43dc-8b8a-668617b52290",
+      "attempt": 1,
+      "reportId": "b2c5640a-580a-4d30-aa42-04e575082ff0",
+      "externalRef": "4209312",
+      "at": "2026-11-16T20:35:46.439Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": false
+          },
+          "severity": {
+            "value": "none"
+          },
+          "category": {
+            "value": "out-of-scope"
+          },
+          "isLikelyAiSlop": {
+            "value": true
+          },
+          "hasPoc": {
+            "value": false
+          },
+          "confidence": {
+            "value": 0.72
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-200"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
     }
   }
 }
