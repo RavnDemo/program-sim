@@ -148,9 +148,10 @@
       "report_id": "4203407",
       "filed_at": "2026-11-14T18:08:09.298Z",
       "speed": 1,
-      "next_step": 1,
-      "last_at": "2026-11-15T00:08:09.298Z",
-      "failures": 0
+      "next_step": 2,
+      "last_at": "2026-11-16T00:08:09.298Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-018": {
       "report_id": "4203941",
@@ -1477,6 +1478,12 @@
       "action": "team comment",
       "ok": true,
       "detail": "activity 46501339"
+    },
+    {
+      "at": "2026-11-16T00:11:06.957Z",
+      "id": "BRM-017",
+      "action": "team state → not-applicable",
+      "ok": true
     }
   ],
   "backfill": {
