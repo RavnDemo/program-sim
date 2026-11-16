@@ -4,13 +4,13 @@ Reports judged: **18** of 34 filed.
 
 | measure | match |
 | --- | --- |
-| Agent's proposal = team's decision (accept / reject / duplicate) | 81% (13/16) |
-| Agent's proposal, valid vs not | 88% (14/16) |
+| Agent's proposal = team's decision (accept / reject / duplicate) | 83% (15/18) |
+| Agent's proposal, valid vs not | 89% (16/18) |
 | Classify: security-relevant = team found it valid | 94% (17/18) |
-| Ravn's Route (escalate = valid, close = not) | 88% (14/16) |
-| Severity on resolved reports | 33% (3/9) |
+| Ravn's Route (escalate = valid, close = not) | 83% (15/18) |
+| Severity on resolved reports | 30% (3/10) |
 
-### Mismatches (5)
+### Mismatches (6)
 
 | scenario | report | team | agent | route | title |
 | --- | --- | --- | --- | --- | --- |
@@ -19,3 +19,4 @@ Reports judged: **18** of 34 filed.
 | BRM-023 | [#4204865](https://hackerone.com/reports/4204865) | reject | reject | ESCALATE | Known upstream dependency advisory inherited from the base project |
 | BRM-027 | [#4206205](https://hackerone.com/reports/4206205) | accept (low) | reject | ESCALATE | Open redirect via /redirect?to= using a stale allowlisted address |
 | BRM-031 | [#4207230](https://hackerone.com/reports/4207230) | accept (high) | needs-info | ESCALATE | 2FA TOTP secret stored in plaintext and retrievable, enabling 2FA take |
+| BRM-034 | [#4209312](https://hackerone.com/reports/4209312) | reject | reject | ESCALATE | CRITICAL: User Password Exposed in Publicly Posted Media (MC SafeSearc |
