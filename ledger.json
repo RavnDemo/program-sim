@@ -237,6 +237,13 @@
       "next_step": 1,
       "last_at": "2026-11-15T23:29:01.102Z",
       "failures": 0
+    },
+    "BRM-028": {
+      "report_id": "4206483",
+      "filed_at": "2026-11-16T00:59:01.102Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-16T00:59:01.102Z"
     }
   },
   "log": [
@@ -1484,12 +1491,19 @@
       "id": "BRM-017",
       "action": "team state → not-applicable",
       "ok": true
+    },
+    {
+      "at": "2026-11-16T01:11:21.581Z",
+      "id": "BRM-028",
+      "action": "file",
+      "ok": true,
+      "detail": "#4206483 as nightjar"
     }
   ],
   "backfill": {
-    "remaining": 25
+    "remaining": 24
   },
-  "last_arrival_at": "2026-11-15T21:59:01.102Z",
+  "last_arrival_at": "2026-11-16T00:59:01.102Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
