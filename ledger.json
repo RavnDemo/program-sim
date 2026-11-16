@@ -276,8 +276,8 @@
       "report_id": "4207662",
       "filed_at": "2026-11-16T12:59:01.102Z",
       "speed": 0.25,
-      "next_step": 1,
-      "last_at": "2026-11-16T14:14:01.102Z",
+      "next_step": 2,
+      "last_at": "2026-11-16T14:29:01.102Z",
       "failures": 0
     }
   },
@@ -1692,6 +1692,12 @@
       "action": "team comment",
       "ok": true,
       "detail": "activity 46519856"
+    },
+    {
+      "at": "2026-11-16T14:31:19.985Z",
+      "id": "BRM-032",
+      "action": "team state → needs-more-info",
+      "ok": true
     }
   ],
   "backfill": {
