@@ -250,8 +250,8 @@
       "report_id": "4206714",
       "filed_at": "2026-11-16T03:59:01.102Z",
       "speed": 0.25,
-      "next_step": 1,
-      "last_at": "2026-11-16T04:10:16.102Z",
+      "next_step": 4,
+      "last_at": "2026-11-16T04:20:16.102Z",
       "failures": 0
     }
   },
@@ -1553,6 +1553,25 @@
       "action": "team comment",
       "ok": true,
       "detail": "activity 46505096"
+    },
+    {
+      "at": "2026-11-16T04:28:02.458Z",
+      "id": "BRM-029",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46505239"
+    },
+    {
+      "at": "2026-11-16T04:28:02.458Z",
+      "id": "BRM-029",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-16T04:28:02.458Z",
+      "id": "BRM-029",
+      "action": "team severity → critical",
+      "ok": true
     }
   ],
   "backfill": {
@@ -2680,6 +2699,62 @@
         },
         "card": {
           "value": "https://hackerone.com/reports/4206483"
+        }
+      }
+    },
+    "b32fc36f-4b54-4251-97e2-4167af62d50b": {
+      "stage": "classify",
+      "stageRunId": "b32fc36f-4b54-4251-97e2-4167af62d50b",
+      "attempt": 1,
+      "reportId": "1f9be8a6-6bfd-4e5a-bf45-82d860db0855",
+      "externalRef": "4206714",
+      "at": "2026-11-16T04:28:11.482Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "high"
+          },
+          "category": {
+            "value": "business-logic"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.85
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-915"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
         }
       }
     }
