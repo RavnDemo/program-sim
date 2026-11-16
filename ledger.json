@@ -260,8 +260,8 @@
       "report_id": "4206934",
       "filed_at": "2026-11-16T06:59:01.102Z",
       "speed": 0.25,
-      "next_step": 2,
-      "last_at": "2026-11-16T14:14:01.102Z",
+      "next_step": 3,
+      "last_at": "2026-11-16T14:59:01.102Z",
       "failures": 0
     },
     "BRM-031": {
@@ -1697,6 +1697,12 @@
       "at": "2026-11-16T14:31:19.985Z",
       "id": "BRM-032",
       "action": "team state → needs-more-info",
+      "ok": true
+    },
+    {
+      "at": "2026-11-16T15:01:28.908Z",
+      "id": "BRM-030",
+      "action": "team state → triaged",
       "ok": true
     }
   ],
