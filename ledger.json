@@ -237,8 +237,8 @@
       "report_id": "4206205",
       "filed_at": "2026-11-15T21:59:01.102Z",
       "speed": 0.25,
-      "next_step": 2,
-      "last_at": "2026-11-16T05:29:01.102Z",
+      "next_step": 3,
+      "last_at": "2026-11-16T23:29:01.102Z",
       "failures": 0
     },
     "BRM-028": {
@@ -1788,6 +1788,12 @@
       "action": "team bounty $1500",
       "ok": true,
       "detail": "skipped: bounties disabled in config/cadence.yml ($1500)"
+    },
+    {
+      "at": "2026-11-16T23:37:16.119Z",
+      "id": "BRM-027",
+      "action": "team state → resolved",
+      "ok": true
     }
   ],
   "backfill": {
