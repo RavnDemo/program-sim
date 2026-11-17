@@ -293,9 +293,10 @@
       "report_id": "4209312",
       "filed_at": "2026-11-16T18:59:01.102Z",
       "speed": 0.25,
-      "next_step": 1,
-      "last_at": "2026-11-16T20:59:01.102Z",
-      "failures": 0
+      "next_step": 2,
+      "last_at": "2026-11-17T02:59:01.102Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-035": {
       "report_id": "4209565",
@@ -312,6 +313,13 @@
       "next_step": 4,
       "last_at": "2026-11-17T01:22:46.102Z",
       "failures": 0
+    },
+    "BRM-037": {
+      "report_id": "4210181",
+      "filed_at": "2026-11-17T03:59:01.102Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-17T03:59:01.102Z"
     }
   },
   "log": [
@@ -1843,12 +1851,25 @@
       "id": "BRM-036",
       "action": "team severity → critical",
       "ok": true
+    },
+    {
+      "at": "2026-11-17T04:26:40.085Z",
+      "id": "BRM-037",
+      "action": "file",
+      "ok": true,
+      "detail": "#4210181 as slopstorm"
+    },
+    {
+      "at": "2026-11-17T04:26:40.085Z",
+      "id": "BRM-034",
+      "action": "team state → informative",
+      "ok": true
     }
   ],
   "backfill": {
-    "remaining": 16
+    "remaining": 15
   },
-  "last_arrival_at": "2026-11-17T00:59:01.102Z",
+  "last_arrival_at": "2026-11-17T03:59:01.102Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
