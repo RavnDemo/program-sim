@@ -3891,6 +3891,62 @@
           "value": "https://hackerone.com/reports/4210181"
         }
       }
+    },
+    "0a6fe43b-29a2-4b16-a1e2-277e0e2dbcf8": {
+      "stage": "classify",
+      "stageRunId": "0a6fe43b-29a2-4b16-a1e2-277e0e2dbcf8",
+      "attempt": 1,
+      "reportId": "13ac8b3d-c3c5-498b-a84f-74d935f34216",
+      "externalRef": "4210408",
+      "at": "2026-11-17T07:28:04.712Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "low"
+          },
+          "category": {
+            "value": "best-practice"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.7
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-307"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-4-8"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
     }
   }
 }
