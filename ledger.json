@@ -304,6 +304,13 @@
       "next_step": 1,
       "last_at": "2026-11-16T23:44:01.102Z",
       "failures": 0
+    },
+    "BRM-036": {
+      "report_id": "4209839",
+      "filed_at": "2026-11-17T00:59:01.102Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-17T00:59:01.102Z"
     }
   },
   "log": [
@@ -1802,12 +1809,19 @@
       "action": "team comment",
       "ok": true,
       "detail": "activity 46538779"
+    },
+    {
+      "at": "2026-11-17T01:07:39.424Z",
+      "id": "BRM-036",
+      "action": "file",
+      "ok": true,
+      "detail": "#4209839 as nightjar"
     }
   ],
   "backfill": {
-    "remaining": 17
+    "remaining": 16
   },
-  "last_arrival_at": "2026-11-16T21:59:01.102Z",
+  "last_arrival_at": "2026-11-17T00:59:01.102Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
