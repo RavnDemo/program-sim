@@ -353,8 +353,9 @@
       "report_id": "4212004",
       "filed_at": "2026-11-17T15:59:01.102Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-17T15:59:01.102Z"
+      "next_step": 2,
+      "last_at": "2026-11-17T16:21:31.102Z",
+      "failures": 0
     }
   },
   "log": [
@@ -2043,6 +2044,20 @@
       "action": "file",
       "ok": true,
       "detail": "#4212004 as nightjar"
+    },
+    {
+      "at": "2026-11-17T16:24:04.659Z",
+      "id": "BRM-041",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46564178"
+    },
+    {
+      "at": "2026-11-17T16:24:04.659Z",
+      "id": "BRM-041",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46564181"
     }
   ],
   "backfill": {
@@ -4219,6 +4234,138 @@
             "value": "claude-opus-5-5"
           },
           "version": "bramble-agent/1"
+        }
+      }
+    },
+    "9dbc42ae-f77d-4d9b-b87c-1215f06747da": {
+      "stage": "classify",
+      "stageRunId": "9dbc42ae-f77d-4d9b-b87c-1215f06747da",
+      "attempt": 1,
+      "reportId": "c69f4608-36cc-4d5d-a11d-23a53baefbc5",
+      "externalRef": "4212004",
+      "at": "2026-11-17T16:24:12.389Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "low"
+          },
+          "category": {
+            "value": "info-disclosure"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.5
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-200"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
+    },
+    "ebcbe7d6-9ad6-45fb-b8e7-b73b4070fa5d": {
+      "stage": "assess",
+      "stageRunId": "ebcbe7d6-9ad6-45fb-b8e7-b73b4070fa5d",
+      "attempt": 1,
+      "reportId": "4f0c62e6-f95c-4fad-bf09-da1631a7d904",
+      "externalRef": "4211935",
+      "at": "2026-11-17T16:24:23.926Z",
+      "code": "accepted",
+      "route": {
+        "value": {
+          "track": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "action": "escalate",
+          "reasons": {
+            "value": [
+              "escalate"
+            ]
+          }
+        }
+      },
+      "out": {
+        "proposed": {
+          "value": "accept"
+        },
+        "severity": {
+          "value": "high"
+        },
+        "ranBy": {
+          "tool": "bramble-agent",
+          "version": "1"
+        },
+        "card": {
+          "value": "https://hackerone.com/reports/4211935"
+        }
+      }
+    },
+    "e802b493-50e3-4b05-9cdf-1242e54ea3a1": {
+      "stage": "assess",
+      "stageRunId": "e802b493-50e3-4b05-9cdf-1242e54ea3a1",
+      "attempt": 1,
+      "reportId": "94309a8a-cb77-4005-8309-7a69f2885f8f",
+      "externalRef": "4211936",
+      "at": "2026-11-17T16:24:29.155Z",
+      "code": "accepted",
+      "route": {
+        "value": {
+          "track": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "action": "escalate",
+          "reasons": {
+            "value": [
+              "escalate"
+            ]
+          }
+        }
+      },
+      "out": {
+        "proposed": {
+          "value": "accept"
+        },
+        "severity": {
+          "value": "medium"
+        },
+        "ranBy": {
+          "tool": "bramble-agent",
+          "version": "1"
+        },
+        "card": {
+          "value": "https://hackerone.com/reports/4211936"
         }
       }
     }
