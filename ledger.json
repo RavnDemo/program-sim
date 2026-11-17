@@ -328,8 +328,8 @@
       "report_id": "4210408",
       "filed_at": "2026-11-17T06:59:01.102Z",
       "speed": 0.25,
-      "next_step": 2,
-      "last_at": "2026-11-17T07:39:01.102Z",
+      "next_step": 4,
+      "last_at": "2026-11-17T07:46:31.102Z",
       "failures": 0
     }
   },
@@ -1934,6 +1934,18 @@
       "action": "team comment",
       "ok": true,
       "detail": "activity 46546556"
+    },
+    {
+      "at": "2026-11-17T07:58:28.131Z",
+      "id": "BRM-038",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-17T07:58:28.131Z",
+      "id": "BRM-038",
+      "action": "team severity → medium",
+      "ok": true
     }
   ],
   "backfill": {
