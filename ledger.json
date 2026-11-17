@@ -357,6 +357,13 @@
       "next_step": 4,
       "last_at": "2026-11-17T16:29:01.102Z",
       "failures": 0
+    },
+    "BRM-042": {
+      "report_id": "4212380",
+      "filed_at": "2026-11-17T18:59:01.102Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-17T18:59:01.102Z"
     }
   },
   "log": [
@@ -2078,12 +2085,19 @@
       "action": "team bounty $1500",
       "ok": true,
       "detail": "skipped: bounties disabled in config/cadence.yml ($1500)"
+    },
+    {
+      "at": "2026-11-17T19:10:26.998Z",
+      "id": "BRM-042",
+      "action": "file",
+      "ok": true,
+      "detail": "#4212380 as slopstorm"
     }
   ],
   "backfill": {
-    "remaining": 11
+    "remaining": 10
   },
-  "last_arrival_at": "2026-11-17T15:59:01.102Z",
+  "last_arrival_at": "2026-11-17T18:59:01.102Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
