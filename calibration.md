@@ -4,13 +4,13 @@ Reports judged: **22** of 38 filed.
 
 | measure | match |
 | --- | --- |
-| Agent's proposal = team's decision (accept / reject / duplicate) | 81% (17/21) |
-| Agent's proposal, valid vs not | 86% (18/21) |
+| Agent's proposal = team's decision (accept / reject / duplicate) | 77% (17/22) |
+| Agent's proposal, valid vs not | 82% (18/22) |
 | Classify: security-relevant = team found it valid | 91% (20/22) |
-| Ravn's Route (escalate = valid, close = not) | 81% (17/21) |
-| Severity on resolved reports | 33% (4/12) |
+| Ravn's Route (escalate = valid, close = not) | 82% (18/22) |
+| Severity on resolved reports | 31% (4/13) |
 
-### Mismatches (7)
+### Mismatches (8)
 
 | scenario | report | team | agent | route | title |
 | --- | --- | --- | --- | --- | --- |
@@ -21,3 +21,4 @@ Reports judged: **22** of 38 filed.
 | BRM-031 | [#4207230](https://hackerone.com/reports/4207230) | accept (high) | needs-info | ESCALATE | 2FA TOTP secret stored in plaintext and retrievable, enabling 2FA take |
 | BRM-034 | [#4209312](https://hackerone.com/reports/4209312) | reject | reject | ESCALATE | CRITICAL: User Password Exposed in Publicly Posted Media (MC SafeSearc |
 | BRM-037 | [#4210181](https://hackerone.com/reports/4210181) | reject | accept (low) | ESCALATE | CRITICAL: User Registration Accepts Empty Email and Password |
+| BRM-038 | [#4210408](https://hackerone.com/reports/4210408) | accept (medium) | needs-info | ESCALATE | No rate limiting on the forgot-password security-question answer enabl |
