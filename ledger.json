@@ -4650,6 +4650,44 @@
           "version": "bramble-agent/1"
         }
       }
+    },
+    "10c01295-de9a-4dc2-820b-5051aefa76e2": {
+      "stage": "assess",
+      "stageRunId": "10c01295-de9a-4dc2-820b-5051aefa76e2",
+      "attempt": 1,
+      "reportId": "03af5530-ef13-4f5f-9b85-e9041ccdad79",
+      "externalRef": "4213184",
+      "at": "2026-11-17T23:58:51.876Z",
+      "code": "accepted",
+      "route": {
+        "value": {
+          "track": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "action": "escalate",
+          "reasons": {
+            "value": [
+              "escalate"
+            ]
+          }
+        }
+      },
+      "out": {
+        "proposed": {
+          "value": "accept"
+        },
+        "severity": {
+          "value": "medium"
+        },
+        "ranBy": {
+          "tool": "bramble-agent",
+          "version": "1"
+        },
+        "card": {
+          "value": "https://hackerone.com/reports/4213184"
+        }
+      }
     }
   }
 }
