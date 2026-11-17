@@ -220,9 +220,10 @@
       "report_id": "4205544",
       "filed_at": "2026-11-15T15:59:01.102Z",
       "speed": 0.25,
-      "next_step": 4,
-      "last_at": "2026-11-17T04:42:46.102Z",
-      "failures": 0
+      "next_step": 5,
+      "last_at": "2026-11-17T10:42:46.102Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-026": {
       "report_id": "4205861",
@@ -330,6 +331,22 @@
       "speed": 0.25,
       "next_step": 4,
       "last_at": "2026-11-17T07:46:31.102Z",
+      "failures": 0
+    },
+    "BRM-039": {
+      "report_id": "4211935",
+      "filed_at": "2026-11-17T09:59:01.102Z",
+      "speed": 0.25,
+      "next_step": 4,
+      "last_at": "2026-11-17T10:31:31.102Z",
+      "failures": 0
+    },
+    "BRM-040": {
+      "report_id": "4211936",
+      "filed_at": "2026-11-17T12:59:01.102Z",
+      "speed": 0.25,
+      "next_step": 3,
+      "last_at": "2026-11-17T13:24:01.102Z",
       "failures": 0
     }
   },
@@ -1946,12 +1963,78 @@
       "id": "BRM-038",
       "action": "team severity → medium",
       "ok": true
+    },
+    {
+      "at": "2026-11-17T15:52:59.809Z",
+      "id": "BRM-039",
+      "action": "file",
+      "ok": true,
+      "detail": "#4211935 as nightjar"
+    },
+    {
+      "at": "2026-11-17T15:52:59.809Z",
+      "id": "BRM-040",
+      "action": "file",
+      "ok": true,
+      "detail": "#4211936 as nightjar"
+    },
+    {
+      "at": "2026-11-17T15:52:59.809Z",
+      "id": "BRM-039",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46562856"
+    },
+    {
+      "at": "2026-11-17T15:52:59.809Z",
+      "id": "BRM-039",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46562859"
+    },
+    {
+      "at": "2026-11-17T15:52:59.809Z",
+      "id": "BRM-039",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-17T15:52:59.809Z",
+      "id": "BRM-039",
+      "action": "team severity → high",
+      "ok": true
+    },
+    {
+      "at": "2026-11-17T15:52:59.809Z",
+      "id": "BRM-025",
+      "action": "team bounty $500",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($500)"
+    },
+    {
+      "at": "2026-11-17T15:52:59.809Z",
+      "id": "BRM-040",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46562872"
+    },
+    {
+      "at": "2026-11-17T15:52:59.809Z",
+      "id": "BRM-040",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-17T15:52:59.809Z",
+      "id": "BRM-040",
+      "action": "team severity → high",
+      "ok": true
     }
   ],
   "backfill": {
-    "remaining": 14
+    "remaining": 12
   },
-  "last_arrival_at": "2026-11-17T06:59:01.102Z",
+  "last_arrival_at": "2026-11-17T12:59:01.102Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
