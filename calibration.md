@@ -4,13 +4,13 @@ Reports judged: **21** of 37 filed.
 
 | measure | match |
 | --- | --- |
-| Agent's proposal = team's decision (accept / reject / duplicate) | 85% (17/20) |
-| Agent's proposal, valid vs not | 90% (18/20) |
+| Agent's proposal = team's decision (accept / reject / duplicate) | 81% (17/21) |
+| Agent's proposal, valid vs not | 86% (18/21) |
 | Classify: security-relevant = team found it valid | 90% (19/21) |
-| Ravn's Route (escalate = valid, close = not) | 85% (17/20) |
+| Ravn's Route (escalate = valid, close = not) | 81% (17/21) |
 | Severity on resolved reports | 33% (4/12) |
 
-### Mismatches (6)
+### Mismatches (7)
 
 | scenario | report | team | agent | route | title |
 | --- | --- | --- | --- | --- | --- |
@@ -20,3 +20,4 @@ Reports judged: **21** of 37 filed.
 | BRM-027 | [#4206205](https://hackerone.com/reports/4206205) | accept (low) | reject | ESCALATE | Open redirect via /redirect?to= using a stale allowlisted address |
 | BRM-031 | [#4207230](https://hackerone.com/reports/4207230) | accept (high) | needs-info | ESCALATE | 2FA TOTP secret stored in plaintext and retrievable, enabling 2FA take |
 | BRM-034 | [#4209312](https://hackerone.com/reports/4209312) | reject | reject | ESCALATE | CRITICAL: User Password Exposed in Publicly Posted Media (MC SafeSearc |
+| BRM-037 | [#4210181](https://hackerone.com/reports/4210181) | reject | accept (low) | ESCALATE | CRITICAL: User Registration Accepts Empty Email and Password |
