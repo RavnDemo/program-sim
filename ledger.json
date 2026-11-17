@@ -348,6 +348,13 @@
       "next_step": 3,
       "last_at": "2026-11-17T13:24:01.102Z",
       "failures": 0
+    },
+    "BRM-041": {
+      "report_id": "4212004",
+      "filed_at": "2026-11-17T15:59:01.102Z",
+      "speed": 0.25,
+      "next_step": 0,
+      "last_at": "2026-11-17T15:59:01.102Z"
     }
   },
   "log": [
@@ -2029,12 +2036,19 @@
       "id": "BRM-040",
       "action": "team severity → high",
       "ok": true
+    },
+    {
+      "at": "2026-11-17T16:08:38.585Z",
+      "id": "BRM-041",
+      "action": "file",
+      "ok": true,
+      "detail": "#4212004 as nightjar"
     }
   ],
   "backfill": {
-    "remaining": 12
+    "remaining": 11
   },
-  "last_arrival_at": "2026-11-17T12:59:01.102Z",
+  "last_arrival_at": "2026-11-17T15:59:01.102Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
@@ -4093,6 +4107,118 @@
         },
         "card": {
           "value": "https://hackerone.com/reports/4210408"
+        }
+      }
+    },
+    "03bcae94-1c50-4667-bfd2-adf7594833b1": {
+      "stage": "classify",
+      "stageRunId": "03bcae94-1c50-4667-bfd2-adf7594833b1",
+      "attempt": 1,
+      "reportId": "4f0c62e6-f95c-4fad-bf09-da1631a7d904",
+      "externalRef": "4211935",
+      "at": "2026-11-17T16:08:47.328Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "high"
+          },
+          "category": {
+            "value": "injection"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.85
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-943"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
+    },
+    "500d2dc3-6237-42e9-ac65-01216515c105": {
+      "stage": "classify",
+      "stageRunId": "500d2dc3-6237-42e9-ac65-01216515c105",
+      "attempt": 1,
+      "reportId": "94309a8a-cb77-4005-8309-7a69f2885f8f",
+      "externalRef": "4211936",
+      "at": "2026-11-17T16:08:57.856Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "medium"
+          },
+          "category": {
+            "value": "business-logic"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.8
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-840"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
         }
       }
     }

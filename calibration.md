@@ -1,12 +1,12 @@
 ## Calibration — Ravn with bramble-agent vs the team
 
-Reports judged: **22** of 40 filed.
+Reports judged: **24** of 41 filed.
 
 | measure | match |
 | --- | --- |
 | Agent's proposal = team's decision (accept / reject / duplicate) | 77% (17/22) |
 | Agent's proposal, valid vs not | 82% (18/22) |
-| Classify: security-relevant = team found it valid | 91% (20/22) |
+| Classify: security-relevant = team found it valid | 92% (22/24) |
 | Ravn's Route (escalate = valid, close = not) | 82% (18/22) |
 | Severity on resolved reports | 31% (4/13) |
 
