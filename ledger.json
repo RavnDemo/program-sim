@@ -309,8 +309,9 @@
       "report_id": "4209839",
       "filed_at": "2026-11-17T00:59:01.102Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-17T00:59:01.102Z"
+      "next_step": 4,
+      "last_at": "2026-11-17T01:22:46.102Z",
+      "failures": 0
     }
   },
   "log": [
@@ -1816,6 +1817,32 @@
       "action": "file",
       "ok": true,
       "detail": "#4209839 as nightjar"
+    },
+    {
+      "at": "2026-11-17T01:22:52.019Z",
+      "id": "BRM-036",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46539869"
+    },
+    {
+      "at": "2026-11-17T01:22:52.019Z",
+      "id": "BRM-036",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46539870"
+    },
+    {
+      "at": "2026-11-17T01:22:52.019Z",
+      "id": "BRM-036",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-17T01:22:52.019Z",
+      "id": "BRM-036",
+      "action": "team severity → critical",
+      "ok": true
     }
   ],
   "backfill": {
@@ -3598,6 +3625,62 @@
         },
         "card": {
           "value": "https://hackerone.com/reports/4209565"
+        }
+      }
+    },
+    "fb52e6c0-46e6-4659-bcd8-99ac9ef2be0b": {
+      "stage": "classify",
+      "stageRunId": "fb52e6c0-46e6-4659-bcd8-99ac9ef2be0b",
+      "attempt": 1,
+      "reportId": "c730f0ca-4174-482b-98f2-f9f2027d7d59",
+      "externalRef": "4209839",
+      "at": "2026-11-17T01:23:07.120Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "high"
+          },
+          "category": {
+            "value": "auth-bypass"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.9
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-287"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-4-8"
+          },
+          "version": "bramble-agent/1"
         }
       }
     }
