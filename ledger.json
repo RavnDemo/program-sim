@@ -248,8 +248,8 @@
       "report_id": "4206483",
       "filed_at": "2026-11-16T00:59:01.102Z",
       "speed": 0.25,
-      "next_step": 4,
-      "last_at": "2026-11-16T01:50:16.102Z",
+      "next_step": 5,
+      "last_at": "2026-11-17T19:50:16.102Z",
       "failures": 0
     },
     "BRM-029": {
@@ -2092,6 +2092,12 @@
       "action": "file",
       "ok": true,
       "detail": "#4212380 as slopstorm"
+    },
+    {
+      "at": "2026-11-17T19:56:06.016Z",
+      "id": "BRM-028",
+      "action": "team state → resolved",
+      "ok": true
     }
   ],
   "backfill": {
