@@ -265,8 +265,8 @@
       "report_id": "4206934",
       "filed_at": "2026-11-16T06:59:01.102Z",
       "speed": 0.25,
-      "next_step": 3,
-      "last_at": "2026-11-16T14:59:01.102Z",
+      "next_step": 4,
+      "last_at": "2026-11-18T02:59:01.102Z",
       "failures": 0
     },
     "BRM-031": {
@@ -2195,6 +2195,12 @@
       "at": "2026-11-18T01:59:53.699Z",
       "id": "BRM-044",
       "action": "team state → not-applicable",
+      "ok": true
+    },
+    {
+      "at": "2026-11-18T03:00:11.297Z",
+      "id": "BRM-030",
+      "action": "team state → resolved",
       "ok": true
     }
   ],
