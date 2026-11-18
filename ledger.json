@@ -362,8 +362,8 @@
       "report_id": "4212004",
       "filed_at": "2026-11-17T15:59:01.102Z",
       "speed": 0.25,
-      "next_step": 4,
-      "last_at": "2026-11-17T16:29:01.102Z",
+      "next_step": 5,
+      "last_at": "2026-11-18T22:29:01.102Z",
       "failures": 0
     },
     "BRM-042": {
@@ -2488,6 +2488,12 @@
       "action": "file",
       "ok": true,
       "detail": "#4216557 as slopstorm"
+    },
+    {
+      "at": "2026-11-18T22:44:02.920Z",
+      "id": "BRM-041",
+      "action": "team state → resolved",
+      "ok": true
     }
   ],
   "backfill": {
@@ -5734,6 +5740,44 @@
             "value": "claude-opus-4-8"
           },
           "version": "bramble-agent/1"
+        }
+      }
+    },
+    "e5a50c55-c3f4-4a9c-bfc1-deea587608eb": {
+      "stage": "assess",
+      "stageRunId": "e5a50c55-c3f4-4a9c-bfc1-deea587608eb",
+      "attempt": 1,
+      "reportId": "9e27edb8-15b5-4606-9092-83d1f9939576",
+      "externalRef": "4216557",
+      "at": "2026-11-18T22:44:05.887Z",
+      "code": "accepted",
+      "route": {
+        "value": {
+          "track": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "action": "escalate",
+          "reasons": {
+            "value": [
+              "escalate"
+            ]
+          }
+        }
+      },
+      "out": {
+        "proposed": {
+          "value": "duplicate"
+        },
+        "severity": {
+          "value": "high"
+        },
+        "ranBy": {
+          "tool": "bramble-agent",
+          "version": "1"
+        },
+        "card": {
+          "value": "https://hackerone.com/reports/4216557"
         }
       }
     }

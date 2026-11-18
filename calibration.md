@@ -4,10 +4,10 @@ Reports judged: **35** of 51 filed.
 
 | measure | match |
 | --- | --- |
-| Agent's proposal = team's decision (accept / reject / duplicate) | 85% (29/34) |
-| Agent's proposal, valid vs not | 88% (30/34) |
+| Agent's proposal = team's decision (accept / reject / duplicate) | 86% (30/35) |
+| Agent's proposal, valid vs not | 89% (31/35) |
 | Classify: security-relevant = team found it valid | 94% (33/35) |
-| Ravn's Route (escalate = valid, close = not) | 85% (29/34) |
+| Ravn's Route (escalate = valid, close = not) | 86% (30/35) |
 | Severity on resolved reports | 43% (9/21) |
 
 ### Mismatches (9)
