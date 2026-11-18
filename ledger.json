@@ -438,8 +438,8 @@
       "report_id": "4216081",
       "filed_at": "2026-11-18T18:59:01.102Z",
       "speed": 0.25,
-      "next_step": 2,
-      "last_at": "2026-11-18T19:11:31.102Z",
+      "next_step": 3,
+      "last_at": "2026-11-18T19:14:01.102Z",
       "failures": 0
     }
   },
@@ -2461,6 +2461,12 @@
       "at": "2026-11-18T19:12:41.331Z",
       "id": "BRM-050",
       "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-18T19:27:57.396Z",
+      "id": "BRM-050",
+      "action": "team severity → critical",
       "ok": true
     }
   ],
@@ -5559,6 +5565,62 @@
         },
         "card": {
           "value": "https://hackerone.com/reports/4215792"
+        }
+      }
+    },
+    "88d02907-f572-4091-b926-3cffa43c6889": {
+      "stage": "classify",
+      "stageRunId": "88d02907-f572-4091-b926-3cffa43c6889",
+      "attempt": 1,
+      "reportId": "dad1b609-da13-4c75-950b-892e15d8f9e4",
+      "externalRef": "4216081",
+      "at": "2026-11-18T19:27:59.687Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "critical"
+          },
+          "category": {
+            "value": "injection"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.95
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-89"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-4-8"
+          },
+          "version": "bramble-agent/1"
         }
       }
     }
