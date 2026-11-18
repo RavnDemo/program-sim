@@ -289,8 +289,8 @@
       "report_id": "4209311",
       "filed_at": "2026-11-16T15:59:01.102Z",
       "speed": 0.25,
-      "next_step": 3,
-      "last_at": "2026-11-16T16:24:01.102Z",
+      "next_step": 4,
+      "last_at": "2026-11-18T04:24:01.102Z",
       "failures": 0
     },
     "BRM-034": {
@@ -2223,6 +2223,12 @@
       "action": "file",
       "ok": true,
       "detail": "#4213777 as nightjar"
+    },
+    {
+      "at": "2026-11-18T04:31:11.914Z",
+      "id": "BRM-033",
+      "action": "team state → resolved",
+      "ok": true
     }
   ],
   "backfill": {
@@ -4906,6 +4912,44 @@
             "value": "claude-opus-5-5"
           },
           "version": "bramble-agent/1"
+        }
+      }
+    },
+    "0b75dd51-7ed7-4493-ba45-6d65f207333c": {
+      "stage": "assess",
+      "stageRunId": "0b75dd51-7ed7-4493-ba45-6d65f207333c",
+      "attempt": 1,
+      "reportId": "e5104036-60d2-48d8-b4a9-8ce3a5bb2f72",
+      "externalRef": "4213777",
+      "at": "2026-11-18T04:31:16.131Z",
+      "code": "accepted",
+      "route": {
+        "value": {
+          "track": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "action": "escalate",
+          "reasons": {
+            "value": [
+              "escalate"
+            ]
+          }
+        }
+      },
+      "out": {
+        "proposed": {
+          "value": "accept"
+        },
+        "severity": {
+          "value": "medium"
+        },
+        "ranBy": {
+          "tool": "bramble-agent",
+          "version": "1"
+        },
+        "card": {
+          "value": "https://hackerone.com/reports/4213777"
         }
       }
     }
