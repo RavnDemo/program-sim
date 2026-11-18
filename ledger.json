@@ -213,9 +213,10 @@
       "report_id": "4205495",
       "filed_at": "2026-11-15T12:59:01.102Z",
       "speed": 0.25,
-      "next_step": 5,
-      "last_at": "2026-11-18T01:27:46.102Z",
-      "failures": 0
+      "next_step": 6,
+      "last_at": "2026-11-18T07:27:46.102Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-025": {
       "report_id": "4205544",
@@ -2249,6 +2250,13 @@
       "id": "BRM-035",
       "action": "team state → resolved",
       "ok": true
+    },
+    {
+      "at": "2026-11-18T07:42:34.745Z",
+      "id": "BRM-024",
+      "action": "team bounty $3000",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($3000)"
     }
   ],
   "backfill": {
@@ -5026,6 +5034,44 @@
             "value": "claude-opus-5-5"
           },
           "version": "bramble-agent/1"
+        }
+      }
+    },
+    "fc8bea5b-4b8b-47c5-be2b-642d4e77da15": {
+      "stage": "assess",
+      "stageRunId": "fc8bea5b-4b8b-47c5-be2b-642d4e77da15",
+      "attempt": 1,
+      "reportId": "2820a642-e2d5-406d-a9d5-f62cb07711bc",
+      "externalRef": "4214111",
+      "at": "2026-11-18T07:42:37.103Z",
+      "code": "accepted",
+      "route": {
+        "value": {
+          "track": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "action": "auto-close",
+          "reasons": {
+            "value": [
+              "slop"
+            ]
+          }
+        }
+      },
+      "out": {
+        "proposed": {
+          "value": "reject"
+        },
+        "severity": {
+          "value": "none"
+        },
+        "ranBy": {
+          "tool": "bramble-agent",
+          "version": "1"
+        },
+        "card": {
+          "value": "https://hackerone.com/reports/4214111"
         }
       }
     }
