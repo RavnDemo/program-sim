@@ -363,9 +363,10 @@
       "report_id": "4212380",
       "filed_at": "2026-11-17T18:59:01.102Z",
       "speed": 0.25,
-      "next_step": 3,
-      "last_at": "2026-11-17T21:19:01.102Z",
-      "failures": 0
+      "next_step": 4,
+      "last_at": "2026-11-18T03:19:01.102Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-043": {
       "report_id": "4213184",
@@ -2201,6 +2202,12 @@
       "at": "2026-11-18T03:00:11.297Z",
       "id": "BRM-030",
       "action": "team state → resolved",
+      "ok": true
+    },
+    {
+      "at": "2026-11-18T03:30:21.871Z",
+      "id": "BRM-042",
+      "action": "team state → duplicate",
       "ok": true
     }
   ],
