@@ -276,9 +276,10 @@
       "report_id": "4207230",
       "filed_at": "2026-11-16T09:59:01.102Z",
       "speed": 0.25,
-      "next_step": 5,
-      "last_at": "2026-11-18T11:12:46.102Z",
-      "failures": 0
+      "next_step": 6,
+      "last_at": "2026-11-18T17:12:46.102Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-032": {
       "report_id": "4207662",
@@ -2410,6 +2411,13 @@
       "action": "team bounty $3000",
       "ok": true,
       "detail": "skipped: bounties disabled in config/cadence.yml ($3000)"
+    },
+    {
+      "at": "2026-11-18T17:26:46.405Z",
+      "id": "BRM-031",
+      "action": "team bounty $1500",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($1500)"
     }
   ],
   "backfill": {
@@ -5319,6 +5327,118 @@
         },
         "card": {
           "value": "https://hackerone.com/reports/4214446"
+        }
+      }
+    },
+    "6cfca7e9-c683-4758-9db0-fc8a7e786c8e": {
+      "stage": "classify",
+      "stageRunId": "6cfca7e9-c683-4758-9db0-fc8a7e786c8e",
+      "attempt": 1,
+      "reportId": "8991f2cb-7efb-45aa-84f7-27a2a5f10323",
+      "externalRef": "4215791",
+      "at": "2026-11-18T17:26:48.286Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "medium"
+          },
+          "category": {
+            "value": "path-traversal"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.8
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-22"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
+    },
+    "2f86a650-a90d-419e-9db1-c3b053837666": {
+      "stage": "classify",
+      "stageRunId": "2f86a650-a90d-419e-9db1-c3b053837666",
+      "attempt": 1,
+      "reportId": "e9b5aa83-ca0e-4964-a768-9c0d4abc8090",
+      "externalRef": "4215792",
+      "at": "2026-11-18T17:26:56.868Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": false
+          },
+          "severity": {
+            "value": "none"
+          },
+          "category": {
+            "value": "best-practice"
+          },
+          "isLikelyAiSlop": {
+            "value": true
+          },
+          "hasPoc": {
+            "value": false
+          },
+          "confidence": {
+            "value": 0.8
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-327"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
         }
       }
     }
