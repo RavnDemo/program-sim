@@ -4,13 +4,13 @@ Reports judged: **33** of 49 filed.
 
 | measure | match |
 | --- | --- |
-| Agent's proposal = team's decision (accept / reject / duplicate) | 84% (26/31) |
-| Agent's proposal, valid vs not | 87% (27/31) |
+| Agent's proposal = team's decision (accept / reject / duplicate) | 85% (28/33) |
+| Agent's proposal, valid vs not | 88% (29/33) |
 | Classify: security-relevant = team found it valid | 94% (31/33) |
-| Ravn's Route (escalate = valid, close = not) | 87% (27/31) |
-| Severity on resolved reports | 42% (8/19) |
+| Ravn's Route (escalate = valid, close = not) | 85% (28/33) |
+| Severity on resolved reports | 40% (8/20) |
 
-### Mismatches (8)
+### Mismatches (9)
 
 | scenario | report | team | agent | route | title |
 | --- | --- | --- | --- | --- | --- |
@@ -22,3 +22,4 @@ Reports judged: **33** of 49 filed.
 | BRM-034 | [#4209312](https://hackerone.com/reports/4209312) | reject | reject | ESCALATE | CRITICAL: User Password Exposed in Publicly Posted Media (MC SafeSearc |
 | BRM-037 | [#4210181](https://hackerone.com/reports/4210181) | reject | accept (low) | ESCALATE | CRITICAL: User Registration Accepts Empty Email and Password |
 | BRM-038 | [#4210408](https://hackerone.com/reports/4210408) | accept (medium) | needs-info | ESCALATE | No rate limiting on the forgot-password security-question answer enabl |
+| BRM-049 | [#4215792](https://hackerone.com/reports/4215792) | reject | reject | ESCALATE | CRITICAL: Insecure cryptography - weak hashing and encoding exposes al |

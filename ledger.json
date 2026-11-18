@@ -5441,6 +5441,82 @@
           "version": "bramble-agent/1"
         }
       }
+    },
+    "8d3d9cb3-78e8-447b-a3fb-9946b6eead96": {
+      "stage": "assess",
+      "stageRunId": "8d3d9cb3-78e8-447b-a3fb-9946b6eead96",
+      "attempt": 1,
+      "reportId": "8991f2cb-7efb-45aa-84f7-27a2a5f10323",
+      "externalRef": "4215791",
+      "at": "2026-11-18T17:42:04.978Z",
+      "code": "accepted",
+      "route": {
+        "value": {
+          "track": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "action": "escalate",
+          "reasons": {
+            "value": [
+              "escalate"
+            ]
+          }
+        }
+      },
+      "out": {
+        "proposed": {
+          "value": "accept"
+        },
+        "severity": {
+          "value": "medium"
+        },
+        "ranBy": {
+          "tool": "bramble-agent",
+          "version": "1"
+        },
+        "card": {
+          "value": "https://hackerone.com/reports/4215791"
+        }
+      }
+    },
+    "a82f1b8e-1fbf-4098-b86f-4abf9f9c2184": {
+      "stage": "assess",
+      "stageRunId": "a82f1b8e-1fbf-4098-b86f-4abf9f9c2184",
+      "attempt": 1,
+      "reportId": "e9b5aa83-ca0e-4964-a768-9c0d4abc8090",
+      "externalRef": "4215792",
+      "at": "2026-11-18T17:42:14.033Z",
+      "code": "accepted",
+      "route": {
+        "value": {
+          "track": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "action": "escalate",
+          "reasons": {
+            "value": [
+              "escalate"
+            ]
+          }
+        }
+      },
+      "out": {
+        "proposed": {
+          "value": "reject"
+        },
+        "severity": {
+          "value": "none"
+        },
+        "ranBy": {
+          "tool": "bramble-agent",
+          "version": "1"
+        },
+        "card": {
+          "value": "https://hackerone.com/reports/4215792"
+        }
+      }
     }
   }
 }
