@@ -258,8 +258,8 @@
       "report_id": "4206714",
       "filed_at": "2026-11-16T03:59:01.102Z",
       "speed": 0.25,
-      "next_step": 4,
-      "last_at": "2026-11-16T04:20:16.102Z",
+      "next_step": 5,
+      "last_at": "2026-11-18T10:20:16.102Z",
       "failures": 0
     },
     "BRM-030": {
@@ -291,9 +291,10 @@
       "report_id": "4209311",
       "filed_at": "2026-11-16T15:59:01.102Z",
       "speed": 0.25,
-      "next_step": 4,
-      "last_at": "2026-11-18T04:24:01.102Z",
-      "failures": 0
+      "next_step": 5,
+      "last_at": "2026-11-18T10:24:01.102Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-034": {
       "report_id": "4209312",
@@ -2306,6 +2307,19 @@
       "id": "BRM-045",
       "action": "team severity → medium",
       "ok": true
+    },
+    {
+      "at": "2026-11-18T10:28:42.438Z",
+      "id": "BRM-029",
+      "action": "team state → resolved",
+      "ok": true
+    },
+    {
+      "at": "2026-11-18T10:28:42.438Z",
+      "id": "BRM-033",
+      "action": "team bounty $1500",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($1500)"
     }
   ],
   "backfill": {
@@ -5121,6 +5135,62 @@
         },
         "card": {
           "value": "https://hackerone.com/reports/4214111"
+        }
+      }
+    },
+    "5088f30a-0ec4-45d1-8f4b-f44b6fd30e79": {
+      "stage": "classify",
+      "stageRunId": "5088f30a-0ec4-45d1-8f4b-f44b6fd30e79",
+      "attempt": 1,
+      "reportId": "02a34c98-03e6-4973-b95c-44a29efe9d4a",
+      "externalRef": "4214446",
+      "at": "2026-11-18T10:28:47.660Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "medium"
+          },
+          "category": {
+            "value": "xss"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.72
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-79"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
         }
       }
     }
