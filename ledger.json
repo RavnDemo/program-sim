@@ -384,9 +384,10 @@
       "report_id": "4213184",
       "filed_at": "2026-11-17T21:59:01.102Z",
       "speed": 0.25,
-      "next_step": 4,
-      "last_at": "2026-11-19T11:22:46.102Z",
-      "failures": 0
+      "next_step": 5,
+      "last_at": "2026-11-19T17:50:21.591Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-044": {
       "report_id": "4213366",
@@ -401,9 +402,10 @@
       "report_id": "4213777",
       "filed_at": "2026-11-18T03:59:01.102Z",
       "speed": 0.25,
-      "next_step": 2,
-      "last_at": "2026-11-18T10:09:01.102Z",
-      "failures": 0
+      "next_step": 4,
+      "last_at": "2026-11-19T17:50:21.591Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-046": {
       "report_id": "4214111",
@@ -418,17 +420,19 @@
       "report_id": "4214446",
       "filed_at": "2026-11-18T09:59:01.102Z",
       "speed": 0.25,
-      "next_step": 3,
-      "last_at": "2026-11-18T10:49:01.102Z",
-      "failures": 0
+      "next_step": 5,
+      "last_at": "2026-11-19T17:50:21.591Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-048": {
       "report_id": "4215791",
       "filed_at": "2026-11-18T12:59:01.102Z",
       "speed": 0.25,
-      "next_step": 3,
-      "last_at": "2026-11-18T13:25:16.102Z",
-      "failures": 0
+      "next_step": 5,
+      "last_at": "2026-11-19T17:50:21.591Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-049": {
       "report_id": "4215792",
@@ -443,9 +447,10 @@
       "report_id": "4216081",
       "filed_at": "2026-11-18T18:59:01.102Z",
       "speed": 0.25,
-      "next_step": 3,
-      "last_at": "2026-11-18T19:14:01.102Z",
-      "failures": 0
+      "next_step": 5,
+      "last_at": "2026-11-19T17:50:21.591Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-051": {
       "report_id": "4216557",
@@ -460,9 +465,74 @@
       "report_id": "4216864",
       "filed_at": "2026-11-19T00:59:01.102Z",
       "speed": 0.25,
+      "next_step": 5,
+      "last_at": "2026-11-19T17:50:21.591Z",
+      "failures": 0,
+      "done": true
+    },
+    "BRM-053": {
+      "report_id": "4219264",
+      "filed_at": "2026-11-19T17:50:21.591Z",
+      "speed": 1,
       "next_step": 3,
-      "last_at": "2026-11-19T01:57:46.102Z",
-      "failures": 0
+      "last_at": "2026-11-19T17:50:21.591Z",
+      "done": true
+    },
+    "BRM-054": {
+      "report_id": "4219266",
+      "filed_at": "2026-11-19T17:50:21.591Z",
+      "speed": 1,
+      "next_step": 3,
+      "last_at": "2026-11-19T17:50:21.591Z",
+      "done": true
+    },
+    "BRM-055": {
+      "report_id": "4219267",
+      "filed_at": "2026-11-19T17:50:21.591Z",
+      "speed": 1,
+      "next_step": 5,
+      "last_at": "2026-11-19T17:50:21.591Z",
+      "done": true
+    },
+    "BRM-056": {
+      "report_id": "4219269",
+      "filed_at": "2026-11-19T17:50:21.591Z",
+      "speed": 1,
+      "next_step": 5,
+      "last_at": "2026-11-19T17:50:21.591Z",
+      "done": true
+    },
+    "BRM-057": {
+      "report_id": "4219272",
+      "filed_at": "2026-11-19T17:50:21.591Z",
+      "speed": 1,
+      "next_step": 3,
+      "last_at": "2026-11-19T17:50:21.591Z",
+      "done": true
+    },
+    "BRM-058": {
+      "report_id": "4219273",
+      "filed_at": "2026-11-19T17:50:21.591Z",
+      "speed": 1,
+      "next_step": 2,
+      "last_at": "2026-11-19T17:50:21.591Z",
+      "done": true
+    },
+    "BRM-059": {
+      "report_id": "4219274",
+      "filed_at": "2026-11-19T17:50:21.591Z",
+      "speed": 1,
+      "next_step": 2,
+      "last_at": "2026-11-19T17:50:21.591Z",
+      "done": true
+    },
+    "BRM-060": {
+      "report_id": "4219277",
+      "filed_at": "2026-11-19T17:50:21.591Z",
+      "speed": 1,
+      "next_step": 3,
+      "last_at": "2026-11-19T17:50:21.591Z",
+      "done": true
     }
   },
   "log": [
@@ -2613,9 +2683,247 @@
       "action": "team bounty $3000",
       "ok": true,
       "detail": "skipped: bounties disabled in config/cadence.yml ($3000)"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-043",
+      "action": "team bounty (finish)",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($500)"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-045",
+      "action": "team state (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-045",
+      "action": "team bounty (finish)",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($500)"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-047",
+      "action": "team state (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-047",
+      "action": "team bounty (finish)",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($500)"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-048",
+      "action": "team state (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-048",
+      "action": "team bounty (finish)",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($1500)"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-050",
+      "action": "team state (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-050",
+      "action": "team bounty (finish)",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($3000)"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-052",
+      "action": "team state (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-052",
+      "action": "team bounty (finish)",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($1500)"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-053",
+      "action": "team comment (finish)",
+      "ok": true,
+      "detail": "activity 46647441"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-053",
+      "action": "team severity (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-053",
+      "action": "team state (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-054",
+      "action": "team comment (finish)",
+      "ok": true,
+      "detail": "activity 46647454"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-054",
+      "action": "team severity (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-054",
+      "action": "team state (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-055",
+      "action": "team comment (finish)",
+      "ok": true,
+      "detail": "activity 46647466"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-055",
+      "action": "team state (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-055",
+      "action": "team severity (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-055",
+      "action": "team state (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-055",
+      "action": "team bounty (finish)",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($500)"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-056",
+      "action": "team comment (finish)",
+      "ok": true,
+      "detail": "activity 46647480"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-056",
+      "action": "team state (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-056",
+      "action": "team severity (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-056",
+      "action": "team state (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-056",
+      "action": "team bounty (finish)",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($3000)"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-057",
+      "action": "team comment (finish)",
+      "ok": true,
+      "detail": "activity 46647498"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-057",
+      "action": "team severity (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-057",
+      "action": "team state (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-058",
+      "action": "team comment (finish)",
+      "ok": true,
+      "detail": "activity 46647503"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-058",
+      "action": "team state (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-059",
+      "action": "team comment (finish)",
+      "ok": true,
+      "detail": "activity 46647508"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-059",
+      "action": "team state (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-060",
+      "action": "team comment (finish)",
+      "ok": true,
+      "detail": "activity 46647515"
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-060",
+      "action": "team severity (finish)",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T17:50:21.591Z",
+      "id": "BRM-060",
+      "action": "team state (finish)",
+      "ok": true
     }
   ],
-  "last_arrival_at": "2026-11-19T00:59:01.102Z",
+  "last_arrival_at": "2026-11-19T17:50:21.591Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
