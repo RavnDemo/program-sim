@@ -1,16 +1,16 @@
 ## Calibration — Ravn with bramble-agent vs the team
 
-Reports judged: **36** of 52 filed.
+Reports judged: **44** of 60 filed.
 
 | measure | match |
 | --- | --- |
-| Agent's proposal = team's decision (accept / reject / duplicate) | 86% (31/36) |
-| Agent's proposal, valid vs not | 89% (32/36) |
-| Classify: security-relevant = team found it valid | 94% (34/36) |
-| Ravn's Route (escalate = valid, close = not) | 86% (31/36) |
-| Severity on resolved reports | 41% (9/22) |
+| Agent's proposal = team's decision (accept / reject / duplicate) | 84% (37/44) |
+| Agent's proposal, valid vs not | 91% (40/44) |
+| Classify: security-relevant = team found it valid | 95% (42/44) |
+| Ravn's Route (escalate = valid, close = not) | 89% (39/44) |
+| Severity on resolved reports | 38% (9/24) |
 
-### Mismatches (9)
+### Mismatches (11)
 
 | scenario | report | team | agent | route | title |
 | --- | --- | --- | --- | --- | --- |
@@ -23,3 +23,5 @@ Reports judged: **36** of 52 filed.
 | BRM-037 | [#4210181](https://hackerone.com/reports/4210181) | reject | accept (low) | ESCALATE | CRITICAL: User Registration Accepts Empty Email and Password |
 | BRM-038 | [#4210408](https://hackerone.com/reports/4210408) | accept (medium) | needs-info | ESCALATE | No rate limiting on the forgot-password security-question answer enabl |
 | BRM-049 | [#4215792](https://hackerone.com/reports/4215792) | reject | reject | ESCALATE | CRITICAL: Insecure cryptography - weak hashing and encoding exposes al |
+| BRM-054 | [#4219266](https://hackerone.com/reports/4219266) | duplicate | accept (medium) | ESCALATE | Any user can edit another customer's product review (no ownership chec |
+| BRM-055 | [#4219267](https://hackerone.com/reports/4219267) | accept (medium) | duplicate | ESCALATE | GDPR-erased accounts remain loginable: soft-delete isn't enforced at a |
