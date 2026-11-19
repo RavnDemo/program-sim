@@ -455,8 +455,9 @@
       "report_id": "4216864",
       "filed_at": "2026-11-19T00:59:01.102Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-19T00:59:01.102Z"
+      "next_step": 1,
+      "last_at": "2026-11-19T01:44:01.102Z",
+      "failures": 0
     }
   },
   "log": [
@@ -2535,6 +2536,13 @@
       "id": "BRM-040",
       "action": "team state → resolved",
       "ok": true
+    },
+    {
+      "at": "2026-11-19T01:46:25.901Z",
+      "id": "BRM-052",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46621244"
     }
   ],
   "last_arrival_at": "2026-11-19T00:59:01.102Z",
