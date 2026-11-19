@@ -6298,6 +6298,450 @@
           "value": "https://hackerone.com/reports/4216864"
         }
       }
+    },
+    "13b31e8c-e3f1-473a-941a-be3c251c3b9d": {
+      "stage": "classify",
+      "stageRunId": "13b31e8c-e3f1-473a-941a-be3c251c3b9d",
+      "attempt": 1,
+      "reportId": "6e11b67a-ac8d-4563-b704-527ff0013258",
+      "externalRef": "4219264",
+      "at": "2026-11-19T17:53:06.534Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "critical"
+          },
+          "category": {
+            "value": "injection"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.9
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-89"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": "4216081"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
+    },
+    "3d731fa1-40d6-4606-836e-ccafff2f1682": {
+      "stage": "classify",
+      "stageRunId": "3d731fa1-40d6-4606-836e-ccafff2f1682",
+      "attempt": 1,
+      "reportId": "4b38b144-2955-42df-8912-8c43ef8d06a4",
+      "externalRef": "4219266",
+      "at": "2026-11-19T17:53:18.336Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "medium"
+          },
+          "category": {
+            "value": "idor"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.72
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-639"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
+    },
+    "46fba247-8a33-4639-91a0-cc908d403f57": {
+      "stage": "classify",
+      "stageRunId": "46fba247-8a33-4639-91a0-cc908d403f57",
+      "attempt": 1,
+      "reportId": "6ac2f8ad-6a85-4854-bd39-0a56b953e62b",
+      "externalRef": "4219267",
+      "at": "2026-11-19T17:53:24.643Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "high"
+          },
+          "category": {
+            "value": "injection"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.85
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-89"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": "4216081"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
+    },
+    "57bb9a6a-ba3f-4cc8-b2d9-a18f066ced6a": {
+      "stage": "classify",
+      "stageRunId": "57bb9a6a-ba3f-4cc8-b2d9-a18f066ced6a",
+      "attempt": 1,
+      "reportId": "53d75d62-20a5-4e74-8782-bb0d07a42675",
+      "externalRef": "4219269",
+      "at": "2026-11-19T17:53:30.787Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "high"
+          },
+          "category": {
+            "value": "injection"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.85
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-89"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-4-8"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
+    },
+    "b616c515-82b2-4921-88ff-781e78690ccb": {
+      "stage": "classify",
+      "stageRunId": "b616c515-82b2-4921-88ff-781e78690ccb",
+      "attempt": 1,
+      "reportId": "990a0ec9-91d2-4879-b0a7-f0204aa293ce",
+      "externalRef": "4219272",
+      "at": "2026-11-19T17:53:36.760Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "high"
+          },
+          "category": {
+            "value": "injection"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.85
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-89"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": "4219269"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
+    },
+    "0d424f3d-de72-40b2-9dbd-1bdc80b080d2": {
+      "stage": "classify",
+      "stageRunId": "0d424f3d-de72-40b2-9dbd-1bdc80b080d2",
+      "attempt": 1,
+      "reportId": "c2f45547-f17a-4064-83b2-2e11a878b1cb",
+      "externalRef": "4219273",
+      "at": "2026-11-19T17:53:42.822Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": false
+          },
+          "severity": {
+            "value": "none"
+          },
+          "category": {
+            "value": "out-of-scope"
+          },
+          "isLikelyAiSlop": {
+            "value": true
+          },
+          "hasPoc": {
+            "value": false
+          },
+          "confidence": {
+            "value": 0.88
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-770"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
+    },
+    "888c02f5-b1cf-4377-8d65-dc07db306b2b": {
+      "stage": "classify",
+      "stageRunId": "888c02f5-b1cf-4377-8d65-dc07db306b2b",
+      "attempt": 1,
+      "reportId": "85f50ccd-cfbc-4432-974f-010d82837041",
+      "externalRef": "4219274",
+      "at": "2026-11-19T17:53:48.117Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": false
+          },
+          "severity": {
+            "value": "none"
+          },
+          "category": {
+            "value": "best-practice"
+          },
+          "isLikelyAiSlop": {
+            "value": true
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.85
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-20"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": null,
+            "reason": "not-observed"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
+    },
+    "c0ae06d6-64e4-4238-8981-ab6484417f63": {
+      "stage": "classify",
+      "stageRunId": "c0ae06d6-64e4-4238-8981-ab6484417f63",
+      "attempt": 1,
+      "reportId": "3fe83d24-26db-49f4-80da-74678830732d",
+      "externalRef": "4219277",
+      "at": "2026-11-19T17:53:54.612Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "low"
+          },
+          "category": {
+            "value": "path-traversal"
+          },
+          "isLikelyAiSlop": {
+            "value": true
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.8
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-158"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": "4203942"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-5-5"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
     }
   }
 }
