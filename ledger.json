@@ -347,9 +347,10 @@
       "report_id": "4211935",
       "filed_at": "2026-11-17T09:59:01.102Z",
       "speed": 0.25,
-      "next_step": 5,
-      "last_at": "2026-11-19T04:31:31.102Z",
-      "failures": 0
+      "next_step": 6,
+      "last_at": "2026-11-19T10:31:31.102Z",
+      "failures": 0,
+      "done": true
     },
     "BRM-040": {
       "report_id": "4211936",
@@ -2588,6 +2589,13 @@
     {
       "at": "2026-11-19T10:10:28.264Z",
       "id": "BRM-040",
+      "action": "team bounty $1500",
+      "ok": true,
+      "detail": "skipped: bounties disabled in config/cadence.yml ($1500)"
+    },
+    {
+      "at": "2026-11-19T10:40:39.719Z",
+      "id": "BRM-039",
       "action": "team bounty $1500",
       "ok": true,
       "detail": "skipped: bounties disabled in config/cadence.yml ($1500)"
