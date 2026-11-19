@@ -446,8 +446,10 @@
       "report_id": "4216557",
       "filed_at": "2026-11-18T21:59:01.102Z",
       "speed": 0.25,
-      "next_step": 0,
-      "last_at": "2026-11-18T21:59:01.102Z"
+      "next_step": 3,
+      "last_at": "2026-11-18T23:12:46.102Z",
+      "failures": 0,
+      "done": true
     }
   },
   "log": [
@@ -2493,6 +2495,25 @@
       "at": "2026-11-18T22:44:02.920Z",
       "id": "BRM-041",
       "action": "team state → resolved",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T00:15:10.776Z",
+      "id": "BRM-051",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46619786"
+    },
+    {
+      "at": "2026-11-19T00:15:10.776Z",
+      "id": "BRM-051",
+      "action": "team severity → critical",
+      "ok": true
+    },
+    {
+      "at": "2026-11-19T00:15:10.776Z",
+      "id": "BRM-051",
+      "action": "team state → duplicate",
       "ok": true
     }
   ],
