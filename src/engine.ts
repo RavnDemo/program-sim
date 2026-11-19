@@ -195,3 +195,46 @@ export async function stepNow(now: number, id: string, c: Corpus, cfg: Config, l
   l.log.push({ at: iso(now), id, action: label, ok: true, detail, ...(dryRun ? { dry_run: true } : {}) })
   return `${label}${detail ? ` — ${detail}` : ''}`
 }
+
+/**
+ * Fast-forward (manual, for demos): run every remaining step of each open timeline now, then file the next `more`
+ * scenarios and run theirs straight through. Outcomes are the corpus's own, so the program stays truthful; only the
+ * pacing is skipped. Writes are 1.5s apart.
+ */
+export async function finishNow(now: number, more: number, c: Corpus, cfg: Config, l: Ledger, h1: H1, dryRun: boolean, say: (s: string) => void, save?: () => void) {
+  const pace = () => (dryRun ? Promise.resolve() : new Promise((r) => setTimeout(r, 1500)))
+  const runAll = async (id: string) => {
+    const s = c.scenarios.get(id)!
+    const e = l.scenarios[id]
+    while (!e.done && s.timeline[e.next_step]) {
+      const step = s.timeline[e.next_step]
+      try {
+        const detail = await runStep(s, step, e, cfg, l, h1)
+        e.next_step += 1
+        e.last_at = iso(now)
+        if (e.next_step >= s.timeline.length) e.done = true
+        l.log.push({ at: iso(now), id, action: `${step.by} ${step.do} (finish)`, ok: true, detail, ...(dryRun ? { dry_run: true } : {}) })
+        say(`${id} #${e.report_id}: ${step.by} ${step.do}${step.do === 'state' ? ` → ${step.state}` : ''}${detail ? ` (${detail})` : ''}`)
+      } catch (err) {
+        l.log.push({ at: iso(now), id, action: `${step.by} ${step.do} (finish)`, ok: false, detail: (err as Error).message })
+        say(`FAILED ${id}: ${(err as Error).message}`)
+        break
+      }
+      save?.()
+      await pace()
+    }
+  }
+  for (const id of Object.keys(l.scenarios).filter((id) => !l.scenarios[id].done).sort()) await runAll(id)
+  for (let i = 0; i < more; i++) {
+    const id = nextUnfiled(c, l)
+    if (!id) break
+    const reportId = await fileScenario(c.scenarios.get(id)!, cfg, l, h1)
+    l.scenarios[id] = { report_id: reportId, filed_at: iso(now), speed: 1, next_step: 0, last_at: iso(now) }
+    l.last_arrival_at = iso(now)
+    say(`filed ${id} → #${reportId}`)
+    save?.()
+    await pace()
+    // Give Ravn's agent a moment to see the report before the team closes it (Classify waits up to 1h; it'll still be judged).
+    await runAll(id)
+  }
+}

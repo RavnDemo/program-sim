@@ -19,7 +19,7 @@ import { fileURLToPath } from 'node:url'
 import { loadConfig } from './config.ts'
 import { loadCorpus, validate } from './corpus.ts'
 import { readLedger, writeLedger, emptyLedger } from './ledger.ts'
-import { tick, status, fileNow, stepNow } from './engine.ts'
+import { tick, status, fileNow, stepNow, finishNow } from './engine.ts'
 import { DryRunH1, LiveH1, type H1 } from './h1.ts'
 import { iso, parseDuration } from './util.ts'
 import { RavnIsa } from './ravn.ts'
@@ -104,6 +104,13 @@ async function main() {
         : `${arg}: ${await stepNow(now, arg, corpus, cfg, l, h1(), !live)}`
       writeLedger(ledgerPath, l)
       console.log(out)
+      return
+    }
+    case 'finish': {
+      const l = readLedger(ledgerPath, handle)
+      const save = () => writeLedger(ledgerPath, l)
+      await finishNow(now, Number(arg ?? 0), corpus, cfg, l, h1(), !live, log, save)
+      save()
       return
     }
     case 'retry': {
