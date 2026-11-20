@@ -538,8 +538,9 @@
       "report_id": "4222677",
       "filed_at": "2026-11-20T16:41:38.782Z",
       "speed": 1,
-      "next_step": 0,
-      "last_at": "2026-11-20T16:41:38.782Z"
+      "next_step": 1,
+      "last_at": "2026-11-20T22:41:38.782Z",
+      "failures": 0
     }
   },
   "log": [
@@ -2935,6 +2936,13 @@
       "action": "file",
       "ok": true,
       "detail": "#4222677 as slopstorm"
+    },
+    {
+      "at": "2026-11-20T22:46:15.367Z",
+      "id": "BRM-061",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46691553"
     }
   ],
   "last_arrival_at": "2026-11-20T16:41:38.782Z",
