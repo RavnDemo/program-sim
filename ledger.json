@@ -538,8 +538,8 @@
       "report_id": "4222677",
       "filed_at": "2026-11-20T16:41:38.782Z",
       "speed": 1,
-      "next_step": 1,
-      "last_at": "2026-11-20T22:41:38.782Z",
+      "next_step": 2,
+      "last_at": "2026-11-20T23:41:38.782Z",
       "failures": 0
     }
   },
@@ -2943,6 +2943,12 @@
       "action": "team comment",
       "ok": true,
       "detail": "activity 46691553"
+    },
+    {
+      "at": "2026-11-20T23:46:31.129Z",
+      "id": "BRM-061",
+      "action": "team severity → high",
+      "ok": true
     }
   ],
   "last_arrival_at": "2026-11-20T16:41:38.782Z",
