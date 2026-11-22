@@ -549,6 +549,13 @@
       "speed": 1,
       "next_step": 0,
       "last_at": "2026-11-21T15:36:52.229Z"
+    },
+    "BRM-063": {
+      "report_id": "4228019",
+      "filed_at": "2026-11-22T14:36:01.931Z",
+      "speed": 1,
+      "next_step": 0,
+      "last_at": "2026-11-22T14:36:01.931Z"
     }
   },
   "log": [
@@ -2970,9 +2977,16 @@
       "action": "file",
       "ok": true,
       "detail": "#4225189 as quillfeather"
+    },
+    {
+      "at": "2026-11-22T14:42:53.269Z",
+      "id": "BRM-063",
+      "action": "file",
+      "ok": true,
+      "detail": "#4228019 as nightjar"
     }
   ],
-  "last_arrival_at": "2026-11-21T15:36:52.229Z",
+  "last_arrival_at": "2026-11-22T14:36:01.931Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
