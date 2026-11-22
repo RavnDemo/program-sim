@@ -547,15 +547,17 @@
       "report_id": "4225189",
       "filed_at": "2026-11-21T15:36:52.229Z",
       "speed": 1,
-      "next_step": 0,
-      "last_at": "2026-11-21T15:36:52.229Z"
+      "next_step": 2,
+      "last_at": "2026-11-22T16:06:52.229Z",
+      "failures": 0
     },
     "BRM-063": {
       "report_id": "4228019",
       "filed_at": "2026-11-22T14:36:01.931Z",
       "speed": 1,
-      "next_step": 0,
-      "last_at": "2026-11-22T14:36:01.931Z"
+      "next_step": 3,
+      "last_at": "2026-11-22T16:01:01.931Z",
+      "failures": 0
     }
   },
   "log": [
@@ -2984,6 +2986,37 @@
       "action": "file",
       "ok": true,
       "detail": "#4228019 as nightjar"
+    },
+    {
+      "at": "2026-11-22T17:45:27.665Z",
+      "id": "BRM-063",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46736079"
+    },
+    {
+      "at": "2026-11-22T17:45:27.665Z",
+      "id": "BRM-062",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-22T17:45:27.665Z",
+      "id": "BRM-063",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-22T17:45:27.665Z",
+      "id": "BRM-063",
+      "action": "team severity → critical",
+      "ok": true
+    },
+    {
+      "at": "2026-11-22T17:45:27.665Z",
+      "id": "BRM-062",
+      "action": "team severity → low",
+      "ok": true
     }
   ],
   "last_arrival_at": "2026-11-22T14:36:01.931Z",
