@@ -558,6 +558,14 @@
       "next_step": 3,
       "last_at": "2026-11-22T16:01:01.931Z",
       "failures": 0
+    },
+    "BRM-064": {
+      "report_id": "4232073",
+      "filed_at": "2026-11-23T14:05:09.509Z",
+      "speed": 1,
+      "next_step": 1,
+      "last_at": "2026-11-23T20:05:09.509Z",
+      "failures": 0
     }
   },
   "log": [
@@ -3017,9 +3025,23 @@
       "id": "BRM-062",
       "action": "team severity → low",
       "ok": true
+    },
+    {
+      "at": "2026-11-23T20:05:09.509Z",
+      "id": "BRM-064",
+      "action": "file",
+      "ok": true,
+      "detail": "#4232073 as quillfeather"
+    },
+    {
+      "at": "2026-11-23T20:05:09.509Z",
+      "id": "BRM-064",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46775453"
     }
   ],
-  "last_arrival_at": "2026-11-22T14:36:01.931Z",
+  "last_arrival_at": "2026-11-23T14:05:09.509Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
