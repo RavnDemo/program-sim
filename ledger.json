@@ -563,9 +563,10 @@
       "report_id": "4232073",
       "filed_at": "2026-11-23T14:05:09.509Z",
       "speed": 1,
-      "next_step": 2,
-      "last_at": "2026-11-23T21:05:09.509Z",
-      "failures": 0
+      "next_step": 3,
+      "last_at": "2026-11-23T21:35:09.509Z",
+      "failures": 0,
+      "done": true
     }
   },
   "log": [
@@ -3044,6 +3045,12 @@
       "at": "2026-11-23T21:05:56.696Z",
       "id": "BRM-064",
       "action": "team severity → critical",
+      "ok": true
+    },
+    {
+      "at": "2026-11-23T21:36:05.945Z",
+      "id": "BRM-064",
+      "action": "team state → duplicate",
       "ok": true
     }
   ],
