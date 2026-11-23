@@ -7473,6 +7473,61 @@
           "value": "https://hackerone.com/reports/4228019"
         }
       }
+    },
+    "92b9dae2-dde3-4fe1-829d-a066a0a2454b": {
+      "stage": "classify",
+      "stageRunId": "92b9dae2-dde3-4fe1-829d-a066a0a2454b",
+      "attempt": 1,
+      "reportId": "f9884cef-819d-4416-8c16-c846d416c908",
+      "externalRef": "4232073",
+      "at": "2026-11-23T20:20:27.029Z",
+      "code": "accepted",
+      "out": {
+        "verdict": {
+          "isSecurityRelevant": {
+            "value": true
+          },
+          "severity": {
+            "value": "critical"
+          },
+          "category": {
+            "value": "auth-bypass"
+          },
+          "isLikelyAiSlop": {
+            "value": false
+          },
+          "hasPoc": {
+            "value": true
+          },
+          "confidence": {
+            "value": 0.85
+          },
+          "weaknesses": {
+            "value": [
+              {
+                "cwe": "CWE-347"
+              }
+            ]
+          },
+          "products": {
+            "value": null,
+            "reason": "not-declared"
+          },
+          "duplicateOf": {
+            "value": "4228019"
+          }
+        },
+        "answers": {
+          "value": null,
+          "reason": "not-declared"
+        },
+        "ranBy": {
+          "model": {
+            "value": "claude-opus-4-8"
+          },
+          "version": "bramble-agent/1"
+        }
+      }
     }
   }
 }
