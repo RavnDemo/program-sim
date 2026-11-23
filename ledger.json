@@ -563,8 +563,8 @@
       "report_id": "4232073",
       "filed_at": "2026-11-23T14:05:09.509Z",
       "speed": 1,
-      "next_step": 1,
-      "last_at": "2026-11-23T20:05:09.509Z",
+      "next_step": 2,
+      "last_at": "2026-11-23T21:05:09.509Z",
       "failures": 0
     }
   },
@@ -3039,6 +3039,12 @@
       "action": "team comment",
       "ok": true,
       "detail": "activity 46775453"
+    },
+    {
+      "at": "2026-11-23T21:05:56.696Z",
+      "id": "BRM-064",
+      "action": "team severity → critical",
+      "ok": true
     }
   ],
   "last_arrival_at": "2026-11-23T14:05:09.509Z",
