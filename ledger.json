@@ -567,6 +567,14 @@
       "last_at": "2026-11-23T21:35:09.509Z",
       "failures": 0,
       "done": true
+    },
+    "BRM-065": {
+      "report_id": "4235426",
+      "filed_at": "2026-11-24T13:12:11.723Z",
+      "speed": 1,
+      "next_step": 1,
+      "last_at": "2026-11-24T17:12:11.723Z",
+      "failures": 0
     }
   },
   "log": [
@@ -3052,9 +3060,23 @@
       "id": "BRM-064",
       "action": "team state → duplicate",
       "ok": true
+    },
+    {
+      "at": "2026-11-24T17:30:47.785Z",
+      "id": "BRM-065",
+      "action": "file",
+      "ok": true,
+      "detail": "#4235426 as nightjar"
+    },
+    {
+      "at": "2026-11-24T17:30:47.785Z",
+      "id": "BRM-065",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46810589"
     }
   ],
-  "last_arrival_at": "2026-11-23T14:05:09.509Z",
+  "last_arrival_at": "2026-11-24T13:12:11.723Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
