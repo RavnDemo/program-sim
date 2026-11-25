@@ -575,6 +575,13 @@
       "next_step": 3,
       "last_at": "2026-11-24T18:12:11.723Z",
       "failures": 0
+    },
+    "BRM-066": {
+      "report_id": "4238360",
+      "filed_at": "2026-11-25T12:23:10.192Z",
+      "speed": 1,
+      "next_step": 0,
+      "last_at": "2026-11-25T12:23:10.192Z"
     }
   },
   "log": [
@@ -3086,9 +3093,16 @@
       "id": "BRM-065",
       "action": "team severity → medium",
       "ok": true
+    },
+    {
+      "at": "2026-11-25T14:10:42.158Z",
+      "id": "BRM-066",
+      "action": "file",
+      "ok": true,
+      "detail": "#4238360 as slopstorm"
     }
   ],
-  "last_arrival_at": "2026-11-24T13:12:11.723Z",
+  "last_arrival_at": "2026-11-25T12:23:10.192Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
