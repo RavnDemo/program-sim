@@ -580,9 +580,10 @@
       "report_id": "4238360",
       "filed_at": "2026-11-25T12:23:10.192Z",
       "speed": 1,
-      "next_step": 1,
-      "last_at": "2026-11-25T19:23:10.192Z",
-      "failures": 0
+      "next_step": 2,
+      "last_at": "2026-11-25T20:08:10.192Z",
+      "failures": 0,
+      "done": true
     }
   },
   "log": [
@@ -3108,6 +3109,12 @@
       "action": "team comment",
       "ok": true,
       "detail": "activity 46853017"
+    },
+    {
+      "at": "2026-11-26T00:12:57.190Z",
+      "id": "BRM-066",
+      "action": "team state → not-applicable",
+      "ok": true
     }
   ],
   "last_arrival_at": "2026-11-25T12:23:10.192Z",
