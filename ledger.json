@@ -589,8 +589,16 @@
       "report_id": "4241146",
       "filed_at": "2026-11-26T11:38:04.917Z",
       "speed": 1,
+      "next_step": 3,
+      "last_at": "2026-11-27T13:58:04.917Z",
+      "failures": 0
+    },
+    "BRM-068": {
+      "report_id": "4245650",
+      "filed_at": "2026-11-27T10:56:55.898Z",
+      "speed": 1,
       "next_step": 0,
-      "last_at": "2026-11-26T11:38:04.917Z"
+      "last_at": "2026-11-27T10:56:55.898Z"
     }
   },
   "log": [
@@ -3129,9 +3137,35 @@
       "action": "file",
       "ok": true,
       "detail": "#4241146 as quillfeather"
+    },
+    {
+      "at": "2026-11-27T16:31:52.047Z",
+      "id": "BRM-068",
+      "action": "file",
+      "ok": true,
+      "detail": "#4245650 as quillfeather"
+    },
+    {
+      "at": "2026-11-27T16:31:52.047Z",
+      "id": "BRM-067",
+      "action": "team comment",
+      "ok": true,
+      "detail": "activity 46916978"
+    },
+    {
+      "at": "2026-11-27T16:31:52.047Z",
+      "id": "BRM-067",
+      "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-27T16:31:52.047Z",
+      "id": "BRM-067",
+      "action": "team severity → medium",
+      "ok": true
     }
   ],
-  "last_arrival_at": "2026-11-26T11:38:04.917Z",
+  "last_arrival_at": "2026-11-27T10:56:55.898Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
