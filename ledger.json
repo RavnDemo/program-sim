@@ -599,6 +599,13 @@
       "speed": 1,
       "next_step": 0,
       "last_at": "2026-11-27T10:56:55.898Z"
+    },
+    "BRM-069": {
+      "report_id": "4247593",
+      "filed_at": "2026-11-28T10:19:43.134Z",
+      "speed": 1,
+      "next_step": 0,
+      "last_at": "2026-11-28T10:19:43.134Z"
     }
   },
   "log": [
@@ -3163,9 +3170,16 @@
       "id": "BRM-067",
       "action": "team severity → medium",
       "ok": true
+    },
+    {
+      "at": "2026-11-28T10:28:27.391Z",
+      "id": "BRM-069",
+      "action": "file",
+      "ok": true,
+      "detail": "#4247593 as quillfeather"
     }
   ],
-  "last_arrival_at": "2026-11-27T10:56:55.898Z",
+  "last_arrival_at": "2026-11-28T10:19:43.134Z",
   "agent": {
     "e580a077-c551-4834-9ede-1870e8e7bec1": {
       "stage": "classify",
