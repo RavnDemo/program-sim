@@ -597,8 +597,8 @@
       "report_id": "4245650",
       "filed_at": "2026-11-27T10:56:55.898Z",
       "speed": 1,
-      "next_step": 2,
-      "last_at": "2026-11-28T13:56:55.898Z",
+      "next_step": 3,
+      "last_at": "2026-11-28T14:16:55.898Z",
       "failures": 0
     },
     "BRM-069": {
@@ -3190,6 +3190,12 @@
       "at": "2026-11-28T13:59:35.222Z",
       "id": "BRM-068",
       "action": "team state → triaged",
+      "ok": true
+    },
+    {
+      "at": "2026-11-28T14:29:44.866Z",
+      "id": "BRM-068",
+      "action": "team severity → high",
       "ok": true
     }
   ],
